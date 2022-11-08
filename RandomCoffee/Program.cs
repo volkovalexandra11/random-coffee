@@ -9,11 +9,10 @@ builder.Services.AddSwaggerGen();
 
 if (!builder.Environment.IsDevelopment())
 {
-    var port = Environment.GetEnvironmentVariable("PORT");
-    if (port is null)
+    if (Environment.GetEnvironmentVariable("PORT") is not { } port)
         throw new Exception("Required PORT environment variable not found");
     
-    builder.WebHost.UseUrls($"https://*:{port}");
+    builder.WebHost.UseUrls($"http://*:{port}");
 }
 
 var app = builder.Build();
