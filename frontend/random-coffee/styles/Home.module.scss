@@ -1,3 +1,11 @@
+.wrapper {
+  display: flex;
+}
+
+.GroupName {
+  flex-grow: 1;
+}
+
 .container {
   padding: 0 2rem;
 }

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { TGroup } from '../../types/group';
-import styles from './group-table-row.less'
+import style from './group-table-row.module.scss';
 
 type Props = {
 	group: TGroup;
@@ -8,11 +8,11 @@ type Props = {
 
 export const GroupTableRow: FC<Props> = ({ group }) => {
 	return (
-		<section className={styles.wrapper}>
+		<section className={style.wrapper}>
 			<div>
 				<img src={group.picturePath} alt='picture'/>
 			</div>
-			<div className={styles.GroupName}>{group.name}</div>
+			<div className={style.GroupName}>{group.name}</div>
 			<div>{group.users.length}</div>
 		</section>
 	);

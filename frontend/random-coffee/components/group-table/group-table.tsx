@@ -9,7 +9,10 @@ type Props = {
 export const GroupTable: FC<Props> = ({ groups }) => {
 	return (
 		<>
-			{groups.map((group) => <GroupTableRow group={group}/>)}
+			{groups.map((group) =>
+				<div key={group.id}>
+					<GroupTableRow group={group}/>
+				</div>)}
 		</>
 	);
 }

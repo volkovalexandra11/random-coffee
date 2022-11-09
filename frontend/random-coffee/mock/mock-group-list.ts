@@ -20,5 +20,19 @@ export const mockGroupList : TGroup[] = [
 			}
 		],
 		picturePath: '/img/picture.jpg'
+	},
+	{
+		id: 2,
+		name: 'Test2',
+		description: 'Test group2',
+		users: [
+			{
+				id: 1,
+				firstName: 'Vasya',
+				lastName: 'Pupkin',
+				avatarPath: '/img/avatar/jpg'
+			}
+		],
+		picturePath: '/img/avatar.jpg'
 	}
 ];
