@@ -1,0 +1,17 @@
+.wrapper {
+  display: flex;
+  background: rgb(242,242,242);
+  border-radius: 10px;
+  margin: 20px 40px;
+
+  img{
+      border-radius: 10px;
+      margin: 10px;
+      height: 130px;
+      width: 130px;
+    }
+}
+
+.GroupName {
+  flex-grow: 1;
+}
