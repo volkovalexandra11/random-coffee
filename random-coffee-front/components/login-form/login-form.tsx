@@ -40,7 +40,7 @@ export const LoginForm: FC = () => {
 					<Button onClick={handleButtonClick} use='primary'>Войти</Button>
 					<Button>Забыли пароль</Button>
 				</Gapped>
-				<p className={style.toSignUp}>Нет аккаунта? <Link href='/signup/signup'>Зарегистрируйтесь!</Link></p>
+				<p className={style.toSignUp}>Нет аккаунта? <Link href='/signup'>Зарегистрируйтесь!</Link></p>
 			</div>
 		</div>
 	)
