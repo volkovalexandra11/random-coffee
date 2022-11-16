@@ -1,0 +1,105 @@
+$bg-color: white;
+$text-color: #333;
+
+
+.wrapper{
+  height: 50px;
+}
+.navBar {
+  width: 100%;
+  background: $bg-color;
+  display: inline-flex;
+  color: $text-color;
+  justify-content: space-between;
+  position: fixed;
+  align-items: center;
+  font-family: "Segoe UI", "Helvetica Neue", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  z-index: 8;
+
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  img{
+    max-height: 5%;
+    max-width: 5%;
+  }
+
+  button{
+    background: $bg-color;
+    color: $text-color;
+    border: none;
+    &:hover{
+      background: rgb(242,242,242);
+    }
+  }
+
+  &:after{
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 100vw;
+    content: '';
+    display: block;
+    height: 2px;
+    background-color: #F2F2F2;
+  }
+}
+
+.logo{
+  padding-left: 20px;
+}
+
+.image{
+  margin-left: -0.0714285714285714em;
+  margin-right: -0.0714285714285714em;
+  font-size: 20px;
+  padding: 0 8px;
+  img{
+  }
+}
+
+.test{
+  font-size: 20px;
+  padding: 0 8px;
+  background: url("/img/bell.png");
+}
+
+.line{
+  width: 0;
+  height: 30px;
+  border-left: 2px solid #eee;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.text{
+  padding: 0 15px;
+}
+
+.buttons{
+  display: flex;
+  &:hover{
+    background: rgb(242,242,242);
+  }
+}
+
+
+
+.userPanel{
+  display: inline-flex;
+  padding-right: 8px;
+}
+
+.exit{
+  display: flex;
+  height: 50px;
+  line-height: 55px;
+}
