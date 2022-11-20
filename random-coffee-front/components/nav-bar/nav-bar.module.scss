@@ -2,9 +2,10 @@ $bg-color: white;
 $text-color: #333;
 
 
-.wrapper{
+.wrapper {
   height: 50px;
 }
+
 .navBar {
   width: 100%;
   background: $bg-color;
@@ -27,21 +28,22 @@ $text-color: #333;
     justify-content: center;
   }
 
-  img{
+  img {
     max-height: 5%;
     max-width: 5%;
   }
 
-  button{
+  button {
     background: $bg-color;
     color: $text-color;
     border: none;
-    &:hover{
-      background: rgb(242,242,242);
+
+    &:hover {
+      background: rgb(242, 242, 242);
     }
   }
 
-  &:after{
+  &:after {
     position: fixed;
     top: 50px;
     left: 0;
@@ -53,26 +55,27 @@ $text-color: #333;
   }
 }
 
-.logo{
+.logo {
   padding-left: 20px;
 }
 
-.image{
+.image {
   margin-left: -0.0714285714285714em;
   margin-right: -0.0714285714285714em;
   font-size: 20px;
   padding: 0 8px;
-  img{
+
+  img {
   }
 }
 
-.test{
+.test {
   font-size: 20px;
   padding: 0 8px;
   background: url("/img/bell.png");
 }
 
-.line{
+.line {
   width: 0;
   height: 30px;
   border-left: 2px solid #eee;
@@ -80,25 +83,27 @@ $text-color: #333;
   margin-bottom: 10px;
 }
 
-.text{
+.text {
   padding: 0 15px;
 }
 
-.buttons{
+.buttons {
   display: flex;
-  &:hover{
-    background: rgb(242,242,242);
+  height: 100%;
+
+  &:hover {
+    background: rgb(242, 242, 242);
   }
 }
 
-
-
-.userPanel{
-  display: inline-flex;
+.userPanel {
+  display: flex;
   padding-right: 8px;
+  height: 100%;
+  align-items: center;
 }
 
-.exit{
+.exit {
   display: flex;
   height: 50px;
   line-height: 55px;
