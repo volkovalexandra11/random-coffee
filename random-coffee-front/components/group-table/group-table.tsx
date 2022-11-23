@@ -2,19 +2,31 @@ import { FC } from 'react';
 import { TGroup } from '../../types/group';
 import { GroupTableRow } from '../group-table-row/group-table-row';
 import {NavBar} from "../nav-bar/nav-bar";
+import style from './group-table.module.scss'
+import {Button, Input} from '@skbkontur/react-ui';
+// import SearchIcon from '@skbkontur/react-icons/Search';
 
 type Props = {
 	groups: TGroup[];
 }
 
-export const GroupTable: FC<Props> = ({ groups }) => {
+export const GroupTable: FC<Props> = ({groups}) => {
 	return (
 		<>
-			<NavBar id={1} avatarPath={''} firstName={"Самсонов"} lastName={"Иван"}/>
-			{groups.map((group) =>
-				<div key={group.id}>
-					<GroupTableRow group={group}/>
-				</div>)}
+			<div className={style.background}>
+				<NavBar id={1} avatarPath={''} firstName={"Самсонов"} lastName={"Иван"}/>
+				<div className={style.header}>
+					<span className={style.name}>Группы</span>
+					<Button className={style.button} use='primary'>+ Создать группу</Button>
+				</div>
+				<div className={style.wrapper}>
+					{/*<Input leftIcon={<SearchIcon/>}/>*/}
+					{groups.map((group) =>
+						<div key={group.id}>
+							<GroupTableRow group={group}/>
+						</div>)}
+				</div>
+			</div>
 		</>
 	);
 }

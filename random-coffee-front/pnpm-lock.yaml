@@ -1,6 +1,8 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@skbkontur/icons': ^0.12.0
+  '@skbkontur/react-icons': ^5.2.6
   '@skbkontur/react-ui': ^4.8.0
   '@types/node': 18.11.8
   '@types/react': 18.0.24
@@ -14,6 +16,8 @@ specifiers:
   typescript: 4.8.4
 
 dependencies:
+  '@skbkontur/icons': 0.12.0
+  '@skbkontur/react-icons': 5.2.6_biqbaboplfbrettd7655fr4n2y
   '@skbkontur/react-ui': 4.8.0_knhnagtyfncgg2hpin7s37uixq
   next: 13.0.0_orpxj3vgaelozwpc7iiuainqz4
   react: 18.2.0
@@ -373,6 +377,21 @@ packages:
   /@rushstack/eslint-patch/1.2.0:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
     dev: true
+
+  /@skbkontur/icons/0.12.0:
+    resolution: {integrity: sha512-MjEgS+vWZhq+zIVwo/bwp7ZijoSRujCx7Hhh9ccLHGQfHmwcyM5/SNEFBlAb2Ka6jIvre/1c7cps7E7XurmUBw==}
+    dev: false
+
+  /@skbkontur/react-icons/5.2.6_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-/z1WuGyus5WExzmjLAI20JTpfij7HPwwtne33WQZy4meNKHmqxJZzLpb+7ZDWIzzz+mgubsLkalRtztK2SGjQg==}
+    peerDependencies:
+      react: '>=15'
+      react-dom: '>=15'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      tslib: 1.14.1
+    dev: false
 
   /@skbkontur/react-ui/4.8.0_knhnagtyfncgg2hpin7s37uixq:
     resolution: {integrity: sha512-qX2zaCYpkxS/wGZUMDJH6SR+Szuc0YEqdJLypQfYAYke5rwqnWLFp2TtspkaNnqBxn6nbi6SD4pTdQ2I7yoGEg==}
@@ -2262,7 +2281,6 @@ packages:
 
   /tslib/1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
-    dev: true
 
   /tslib/2.4.0:
     resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
