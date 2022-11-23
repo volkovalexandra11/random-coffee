@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomCoffee", "RandomCoffee.csproj", "{07D0B3BE-B5E1-4896-B177-129107E6614E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomCoffeeServer", "RandomCoffeeServer.csproj", "{07D0B3BE-B5E1-4896-B177-129107E6614E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
