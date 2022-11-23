@@ -36,7 +36,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 3,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -50,7 +50,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 4,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -64,7 +64,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 5,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -78,7 +78,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 6,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -92,7 +92,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 7,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -106,7 +106,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 8,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -120,7 +120,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 9,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -134,7 +134,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 10,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -148,7 +148,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 11,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -162,7 +162,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 12,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -176,7 +176,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 13,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -190,7 +190,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 14,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -204,7 +204,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 15,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -218,7 +218,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 16,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -232,7 +232,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 17,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -246,7 +246,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 18,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -260,7 +260,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 19,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -274,7 +274,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 20,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -288,7 +288,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 21,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -302,7 +302,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 22,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -316,7 +316,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 23,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -330,7 +330,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 24,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -344,7 +344,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 25,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -358,7 +358,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 26,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [
@@ -372,7 +372,7 @@ export const mockGroupList : TGroup[] = [
 		picturePath: '/img/avatar.jpg'
 	},
 	{
-		id: 2,
+		id: 27,
 		name: 'Test2',
 		description: 'Test group2',
 		users: [

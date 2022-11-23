@@ -1,0 +1,32 @@
+$div-width: 95%;
+
+.background {
+  display: flex;
+  height: auto;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgb(242, 242, 242);
+}
+
+.wrapper {
+  display: flex;
+  width: $div-width;
+  flex-direction: column;
+  border-radius: 20px;
+  background-color: white;
+}
+
+.header {
+  width: $div-width;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.name {
+  font-family: "Segoe UI", "Helvetica Neue", Roboto, Arial, sans-serif;
+  font-size: 30px;
+}
+
