@@ -5,5 +5,5 @@ export type TGroup = {
 	name: string;
 	description: string;
 	users: TUser[];
-	picturePath: string;
+	picturePath?: string;
 }

@@ -19,7 +19,6 @@ export const mockGroupList : TGroup[] = [
 				avatarPath: '/img/avatar.jpg'
 			}
 		],
-		picturePath: '/img/picture.jpg'
 	},
 	{
 		id: 2,
@@ -33,7 +32,6 @@ export const mockGroupList : TGroup[] = [
 				avatarPath: '/img/avatar/jpg'
 			}
 		],
-		picturePath: '/img/avatar.jpg'
 	},
 	{
 		id: 2,

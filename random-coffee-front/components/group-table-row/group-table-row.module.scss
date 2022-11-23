@@ -1,15 +1,19 @@
 .wrapper {
   display: flex;
-  background: rgb(242,242,242);
+  align-items: center;
+  background: rgb(242, 242, 242);
   border-radius: 10px;
   margin: 20px 40px;
+  height: 80px;
+  padding-left: 20px;
+  padding-right: 20px;
 
-  img{
-      border-radius: 10px;
-      margin: 10px;
-      height: 130px;
-      width: 130px;
-    }
+  img {
+    border-radius: 10px;
+    margin-right: 20px;
+    height: 60px;
+    width: 60px;
+  }
 }
 
 .GroupName {
