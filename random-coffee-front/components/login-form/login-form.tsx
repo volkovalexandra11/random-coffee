@@ -11,7 +11,7 @@ export const LoginForm: FC = () => {
 	}
 
 	const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
-	  setPasswordEmpty(event.target.value.length === 0);
+		setPasswordEmpty(event.target.value.length === 0);
 	}
 
 	const handleButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
