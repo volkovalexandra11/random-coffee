@@ -10,11 +10,14 @@ type Props = {
 export const GroupTableRow: FC<Props> = ({ group }) => {
 	return (
 		<section className={style.wrapper}>
-			<div>
+			<div className={style.NameAvatar}>
 				<ImageWithPlaceholder showPlaceholder={group.picturePath === undefined} picturePath={group.picturePath}/>
+				<div className={style.GroupName}>{group.name}</div>
 			</div>
-			<div className={style.GroupName}>{group.name}</div>
-			<div>{group.users.length}</div>
+			<div className={style.information}>
+				<div className={style.params}>{group.users.length}</div>
+				<div className={style.params}>{group.id}</div>
+			</div>
 		</section>
 	);
 }
