@@ -1,0 +1,13 @@
+﻿POST http://localhost:5678/groups
+Content-Type: application/json
+
+{
+  "name": "jp[",
+  "isPrivate": false,
+  "nextRoundDate": "2022-10-11",
+  "intervalDays": 10
+}
+
+###
+
+GET http://localhost:5678/

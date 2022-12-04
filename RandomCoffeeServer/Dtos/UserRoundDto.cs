@@ -2,7 +2,7 @@
 
 public class UserRoundDto
 {
-    public long UserId { get; init; }
-    public long RoundId { get; init; }
-    public long MatchUserId { get; init; }
+    public Guid UserId { get; init; }
+    public Guid RoundId { get; init; }
+    public Guid MatchUserId { get; init; }
 }

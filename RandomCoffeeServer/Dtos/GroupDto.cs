@@ -5,19 +5,19 @@ namespace RandomCoffee.Dtos;
 
 public class GroupDto
 {
-    public ulong GroupId { get; init; }
-    public ulong AdminUserId { get; init; }
+    public Guid GroupId { get; init; }
+    public Guid AdminUserId { get; init; }
     public string Name { get; init; }
     public bool IsPrivate { get; init; }
 
-    public YdbValue ToYdb()
+    public Dictionary<string, YdbValue> ToYdb()
     {
-        return YdbValue.MakeStruct(new Dictionary<string, YdbValue>
+        return new Dictionary<string, YdbValue>
         {
-            ["group_id"] = YdbValue.MakeUint64(GroupId),
-            ["admin_user_id"] = YdbValue.MakeUint64(AdminUserId),
+            ["group_id"] = YdbValue.MakeString(GroupId.ToByteArray()),
+            ["admin_user_id"] = YdbValue.MakeString(AdminUserId.ToByteArray()),
             ["name"] = YdbValue.MakeUtf8(Name),
-            ["IsPrivate"] = YdbValue.MakeInt32(IsPrivate ? 1 : 0)
-        });
+            ["is_private"] = YdbValue.MakeInt32(IsPrivate ? 1 : 0)
+        };
     }
 }
