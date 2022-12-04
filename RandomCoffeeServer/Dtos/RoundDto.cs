@@ -2,8 +2,8 @@
 
 public class RoundDto
 {
-    public long RoundId { get; init; }
-    public long GroupId { get; init; }
+    public Guid RoundId { get; init; }
+    public Guid GroupId { get; init; }
     public DateTime Date { get; init; }
     public bool WasNotifiedAbout { get; init; }
 }

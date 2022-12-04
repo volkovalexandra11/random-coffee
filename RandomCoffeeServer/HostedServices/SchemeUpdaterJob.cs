@@ -1,4 +1,5 @@
 ﻿using RandomCoffee.schema;
+using Ydb.Sdk;
 
 namespace RandomCoffee.Services;
 
@@ -24,9 +25,28 @@ public class SchemeUpdaterJob : IHostedService
     {
         var tables = Schema.Tables;
         var queries = tables.Select(table => table.ToDdl());
-        foreach (var query in queries)
+
+        try
         {
-            await ydbService.ExecuteScheme(query);
+            foreach (var query in queries)
+            {
+                await ydbService.ExecuteScheme(query);
+            }
+        }
+        catch (StatusUnsuccessfulException ex)
+        {
+            if (ex.Status.Issues.First().IssueCode == TypeAnnotationIssueCode)
+            {
+                Console.WriteLine("Conflict when updating database schema. RESET REMOTE DATABASE? [YES/NO]");
+                var answer = Console.ReadLine();
+                if (answer == "YES")
+                {
+                    await DeleteScheme();
+                    await UpdateScheme();
+                    return;
+                }
+            }
+            throw;
         }
     }
 
@@ -41,4 +61,5 @@ public class SchemeUpdaterJob : IHostedService
     }
 
     private readonly YdbService ydbService;
+    private const int TypeAnnotationIssueCode = 1030;
 }

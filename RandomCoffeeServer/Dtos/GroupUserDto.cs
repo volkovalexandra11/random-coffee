@@ -4,15 +4,15 @@ namespace RandomCoffee.Dtos;
 
 public class GroupUserDto
 {
-    public ulong GroupId { get; init; }
-    public ulong UserId { get; init; }
+    public Guid GroupId { get; init; }
+    public Guid UserId { get; init; }
     
-    public YdbValue ToYdb()
+    public Dictionary<string, YdbValue> ToYdb()
     {
-        return YdbValue.MakeStruct(new Dictionary<string, YdbValue>
+        return new Dictionary<string, YdbValue>
         {
-            ["group_id"] = YdbValue.MakeUint64(GroupId),
-            ["user_id"] = YdbValue.MakeUint64(UserId),
-        });
+            ["group_id"] = YdbValue.MakeString(GroupId.ToByteArray()),
+            ["user_id"] = YdbValue.MakeString(UserId.ToByteArray()),
+        };
     }
 }
