@@ -1,7 +1,5 @@
 ﻿using RandomCoffee.Dtos;
 using RandomCoffee.Repositories;
-using RandomCoffee.schema;
-using Ydb.Sdk.Value;
 
 namespace RandomCoffee;
 

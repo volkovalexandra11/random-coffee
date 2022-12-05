@@ -1,7 +1,7 @@
 ﻿using Autofac;
-using RandomCoffee.CredentialProviders;
 using RandomCoffee.Repositories;
-using Ydb.Sdk.Auth;
+using RandomCoffee.Services;
+using RandomCoffeeServer.Services.YandexCloud.Lockbox;
 
 namespace RandomCoffee;
 
@@ -14,18 +14,31 @@ public class RandomCoffeeModule : Module
 
     protected override void Load(ContainerBuilder builder)
     {
-        builder.Register((ctx) => CredentialProviderFactory.GetSa().GetAwaiter().GetResult()).As<ICredentialsProvider>().SingleInstance();
-
+        RegisterJobs(builder);
         RegisterServices(builder);
         RegisterRepositories(builder);
     }
 
+    private void RegisterJobs(ContainerBuilder builder)
+    {
+        builder.RegisterType<SchemeUpdater>().SingleInstance();
+        builder.RegisterType<PopulateWithMockDataJob>().SingleInstance();
+    }
+
     private void RegisterServices(ContainerBuilder builder)
     {
+        builder.RegisterType<LockboxFactory>().SingleInstance();
+        builder.Register(
+                ctx => ctx.Resolve<LockboxFactory>().Create(hostCtx.HostingEnvironment))
+            .SingleInstance();
+
+        builder.RegisterType<YdbFactory>().SingleInstance();
+        builder.Register(ctx =>
+                ctx.Resolve<YdbFactory>().Create(hostCtx.HostingEnvironment, ctx.Resolve<ILoggerFactory>()))
+            .SingleInstance();
+
         builder.RegisterType<GroupService>().SingleInstance(); // <=> .AsSelf()
         builder.RegisterType<UserService>().SingleInstance();
-        
-        builder.RegisterType<YdbService>().SingleInstance();
     }
 
     private void RegisterRepositories(ContainerBuilder builder)

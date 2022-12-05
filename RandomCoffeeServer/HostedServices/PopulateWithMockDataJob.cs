@@ -2,7 +2,7 @@
 
 namespace RandomCoffee.Services;
 
-public class PopulateWithMockDataJob : IHostedService
+public class PopulateWithMockDataJob
 {
     public PopulateWithMockDataJob(UserService userService, GroupService groupService)
     {
@@ -10,19 +10,10 @@ public class PopulateWithMockDataJob : IHostedService
         this.groupService = groupService;
     }
     
-    public Task StartAsync(CancellationToken cancellationToken)
-    {
-        return Fill();
-    }
-
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
-        return Task.CompletedTask;
-    }
-
-    public async Task Fill()
+    public async Task Fill(CancellationToken cancellationToken)
     {
         // todo!
+        return;
         await userService.AddUser(new UserDto
         {
             // UserId = 1,

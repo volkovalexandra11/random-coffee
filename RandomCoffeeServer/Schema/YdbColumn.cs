@@ -1,5 +1,4 @@
-﻿using Ydb.Sdk.Value;
-using Type = Ydb.Type;
+﻿using Type = Ydb.Type;
 
 namespace RandomCoffee.schema;
 
