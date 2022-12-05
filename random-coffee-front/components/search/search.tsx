@@ -1,4 +1,4 @@
-import {FC, useEffect, useState} from "react";
+import {ChangeEvent, FC, useEffect, useState} from "react";
 import {Input} from '@skbkontur/react-ui';
 import {Filter} from "../filter/filter";
 import style from './search.module.scss';
@@ -10,7 +10,8 @@ type Props = {
 }
 
 export const Search: FC<Props> =({groups, setGroups}) =>{
-    
+
+    const [copyData, setCopy] = useState(groups);
     const [first, setFirst] = useState(0);
     const [second, setSecond] = useState(0);
     useEffect( () => {
@@ -22,7 +23,6 @@ export const Search: FC<Props> =({groups, setGroups}) =>{
 
 
     function sortDate(paramToSort: string) : void{
-        const copyData = groups.concat();
         let sortData: TGroup[];
 
 
@@ -54,10 +54,25 @@ export const Search: FC<Props> =({groups, setGroups}) =>{
         setGroups(sortData);
     }
 
+    function SearchGroup(event: ChangeEvent<HTMLInputElement>){
+        const target = event.target;
+        const input = target.value;
+        if (input == "") {
+            setGroups(copyData);
+            return;
+        }
+        let resultData: TGroup[] = [];
+        for (let i = 0; i< copyData.length; i++){
+            if (copyData[i].name.includes(input))
+                resultData.push(copyData[i])
+        }
+        setGroups(resultData);
+    }
+
     return (
         <div className={style.wrapper}>
             <div className={style.input}>
-                <Input width={'100%'} placeholder={'Введите название группы'}/>
+                <Input width={'100%'} placeholder={'Введите название группы'} onChange={(event)=>{SearchGroup(event)}}/>
             </div>
             <div className={style.filters}>
                 <Filter name={"Количество участников"}  state={first} setState={setFirst} setOtherState={setSecond}/>
