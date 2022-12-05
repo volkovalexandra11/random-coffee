@@ -1,8 +1,7 @@
 ﻿using System.Text;
-using RandomCoffee.QueryBuilder;
-using Ydb.Sdk.Value;
+using RandomCoffeeServer.Helpers;
 
-namespace RandomCoffee.schema;
+namespace RandomCoffeeServer.DbSchema;
 
 public class YdbTable
 {
@@ -38,7 +37,7 @@ public class YdbTable
     public string ToDeclare()
     {
         var declare = new StringBuilder("DECLARE ");
-        declare.Append(YdbValueConverter.DataParamName);
+        declare.Append(YdbConverter.DataParamName);
         declare.Append(" AS List<Struct<\n");
         AddColumnList(declare);
         declare.Append(">>;");

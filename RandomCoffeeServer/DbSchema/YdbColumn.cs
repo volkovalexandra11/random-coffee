@@ -1,6 +1,6 @@
 ﻿using Type = Ydb.Type;
 
-namespace RandomCoffee.schema;
+namespace RandomCoffeeServer.DbSchema;
 
 public class YdbColumn
 {

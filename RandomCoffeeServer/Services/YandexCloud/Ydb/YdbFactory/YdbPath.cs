@@ -1,4 +1,4 @@
-﻿namespace RandomCoffee;
+﻿namespace RandomCoffeeServer.Services.YandexCloud.Ydb.YdbFactory;
 
 public class YdbPath
 {

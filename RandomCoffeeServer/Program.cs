@@ -1,9 +1,9 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
-using RandomCoffee;
-using RandomCoffee.Controllers;
-using RandomCoffee.Services;
+using RandomCoffeeServer;
+using RandomCoffeeServer.Helpers;
+using RandomCoffeeServer.Jobs;
 
 DotEnv.Load("./.env");
 
@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddApplicationPart(typeof(TestController).Assembly);
+builder.Services.AddControllers();
 builder.Services.Configure<JsonOptions>(options =>
 {
     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
@@ -42,7 +42,7 @@ builder.Services.AddLogging();
 
 var app = builder.Build();
 
-await app.Services.GetRequiredService<SchemeUpdater>().UpdateScheme(app.Lifetime.ApplicationStopping);
+await app.Services.GetRequiredService<SchemeUpdateJob>().UpdateScheme(app.Lifetime.ApplicationStopping);
 await app.Services.GetRequiredService<PopulateWithMockDataJob>().Fill(app.Lifetime.ApplicationStopping);
 
 // app.UseHttpsRedirection();

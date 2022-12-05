@@ -2,7 +2,7 @@
 using Yandex.Cloud.Credentials;
 using Ydb.Sdk.Yc;
 
-namespace RandomCoffee;
+namespace RandomCoffeeServer.Services.YandexCloud.Ydb.YdbFactory;
 
 public class YdbFactory
 {

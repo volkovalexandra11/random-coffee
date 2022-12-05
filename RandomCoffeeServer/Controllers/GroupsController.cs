@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RandomCoffee.Dtos;
-using RandomCoffee.Models;
+using RandomCoffeeServer.Controllers.GroupsControllerDtos;
+using RandomCoffeeServer.Dtos;
+using RandomCoffeeServer.Services.Coffee;
 
-namespace RandomCoffee.Controllers;
+namespace RandomCoffeeServer.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class GroupsController : ControllerBase
 {
     public GroupsController(GroupService groupService)

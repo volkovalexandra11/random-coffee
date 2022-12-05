@@ -3,7 +3,7 @@ using Yandex.Cloud;
 using Yandex.Cloud.Credentials;
 using Yandex.Cloud.Ydb.V1;
 
-namespace RandomCoffee;
+namespace RandomCoffeeServer.Services.YandexCloud.Ydb.YdbFactory;
 
 public class YdbDiscoverer
 {

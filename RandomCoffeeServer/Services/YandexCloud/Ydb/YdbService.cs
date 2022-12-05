@@ -1,10 +1,11 @@
-﻿using Ydb.Sdk;
+﻿using RandomCoffeeServer.Services.YandexCloud.Ydb.YdbFactory;
+using Ydb.Sdk;
 using Ydb.Sdk.Auth;
 using Ydb.Sdk.Client;
 using Ydb.Sdk.Table;
 using Ydb.Sdk.Value;
 
-namespace RandomCoffee;
+namespace RandomCoffeeServer.Services.YandexCloud.Ydb;
 
 public class YdbService
 {

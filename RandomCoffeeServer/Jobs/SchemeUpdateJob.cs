@@ -1,11 +1,12 @@
-﻿using RandomCoffee.schema;
+﻿using RandomCoffeeServer.DbSchema;
+using RandomCoffeeServer.Services.YandexCloud.Ydb;
 using Ydb.Sdk;
 
-namespace RandomCoffee.Services;
+namespace RandomCoffeeServer.Jobs;
 
-public class SchemeUpdater
+public class SchemeUpdateJob
 {
-    public SchemeUpdater(YdbService ydbService)
+    public SchemeUpdateJob(YdbService ydbService)
     {
         this.ydbService = ydbService;
     }

@@ -1,4 +1,4 @@
-﻿namespace RandomCoffee.Models;
+﻿namespace RandomCoffeeServer.Controllers.GroupsControllerDtos;
 
 public class CreateGroupDto
 {

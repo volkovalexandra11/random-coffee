@@ -1,4 +1,4 @@
-﻿namespace RandomCoffee;
+﻿namespace RandomCoffeeServer.Helpers;
 
 public class DotEnv
 {

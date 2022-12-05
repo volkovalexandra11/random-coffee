@@ -1,6 +1,8 @@
-﻿using RandomCoffee.schema;
+﻿using RandomCoffeeServer.DbSchema;
+using RandomCoffeeServer.Helpers;
+using RandomCoffeeServer.Services.YandexCloud.Ydb;
 
-namespace RandomCoffee.Repositories;
+namespace RandomCoffeeServer.Repositories;
 
 public abstract class RepositoryBase
 {
@@ -8,7 +10,7 @@ public abstract class RepositoryBase
     {
         this.Ydb = ydb;
         this.Table = Schema.Tables.Single(ydbTable => ydbTable.TableName == tableName);
-        this.DeclareStatement = QueryBuilder.QueryBuilder.AsTableDeclare(this.Table);
+        this.DeclareStatement = QueryBuilder.AsTableDeclare(this.Table);
     }
 
     protected readonly YdbService Ydb;
