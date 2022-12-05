@@ -24,7 +24,7 @@ export const Search: FC<Props> =({groups, setGroups}) =>{
 
     function sortDate(paramToSort: string) : void{
         let sortData: TGroup[];
-
+        let copyData = groups.concat();
 
         if (paramToSort === 'users.length') {
             if (first == 0)
