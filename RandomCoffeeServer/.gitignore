@@ -1,0 +1,4 @@
+.keys/
+bin/
+obj/
+**/*DotSettings.user

@@ -3,7 +3,6 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using RandomCoffee;
 using RandomCoffee.Controllers;
-using RandomCoffee.CredentialProviders;
 using RandomCoffee.Services;
 
 DotEnv.Load("./.env");
@@ -27,13 +26,6 @@ builder.Host.ConfigureContainer<ContainerBuilder>((hostBuilder, containerBuilder
     containerBuilder.RegisterModule(new RandomCoffeeModule(hostBuilder));
 });
 
-var cred = await CredentialProviderFactory.GetSa();
-builder.Services
-    .AddHostedService<SchemeUpdaterJob>();
-    // .AddHostedService<PopulateWithMockDataJob>();
-
-new LockboxService();
-
 if (!builder.Environment.IsDevelopment())
 {
     if (Environment.GetEnvironmentVariable("PORT") is not { } port)
@@ -49,6 +41,9 @@ else
 builder.Services.AddLogging();
 
 var app = builder.Build();
+
+await app.Services.GetRequiredService<SchemeUpdater>().UpdateScheme(app.Lifetime.ApplicationStopping);
+await app.Services.GetRequiredService<PopulateWithMockDataJob>().Fill(app.Lifetime.ApplicationStopping);
 
 // app.UseHttpsRedirection();
 

@@ -1,7 +1,5 @@
 ﻿using RandomCoffee.Dtos;
 using RandomCoffee.QueryBuilder;
-using RandomCoffee.schema;
-using Ydb.Sdk.Value;
 
 namespace RandomCoffee.Repositories;
 
@@ -16,8 +14,8 @@ public class GroupRepository : RepositoryBase
     {
         var @params = YdbValueConverter.ToDataParams(group.ToYdb());
         await Ydb.Execute(
-            $"{DeclareStatement};\n" +
-            $"REPLCACE INTO groups SELECT * FROM AS_TABLE($data);",
+            $"{DeclareStatement}\n" +
+            $"REPLACE INTO groups SELECT * FROM AS_TABLE($data);",
             @params);
     }
 }

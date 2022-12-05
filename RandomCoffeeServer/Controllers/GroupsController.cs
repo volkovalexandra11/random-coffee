@@ -1,11 +1,6 @@
-﻿using System.Text;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
 using RandomCoffee.Dtos;
 using RandomCoffee.Models;
-using RandomCoffee.QueryBuilder;
-using RandomCoffee.schema;
-using Ydb.Sdk.Value;
 
 namespace RandomCoffee.Controllers;
 

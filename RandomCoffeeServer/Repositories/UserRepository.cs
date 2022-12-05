@@ -16,8 +16,8 @@ public class UserRepository : RepositoryBase
     {
         var @params = YdbValueConverter.ToDataParams(user.ToYdb());
         await Ydb.Execute(
-            $"{DeclareStatement};\n" +
-            "UPSERT INTO users SELECT * FROM AS_TABLE($data);",
+            $"{DeclareStatement}\n" +
+            "REPLACE INTO users SELECT * FROM AS_TABLE($data);",
             @params
         );
     }

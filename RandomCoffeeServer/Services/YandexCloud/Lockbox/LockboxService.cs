@@ -1,47 +1,40 @@
-﻿using System.Text;
-using Grpc.Core;
-using Newtonsoft.Json;
-using RandomCoffee.Lockbox;
+﻿using RandomCoffee.Lockbox;
 using Yandex.Cloud;
 using Yandex.Cloud.Credentials;
-using Yandex.Cloud.Iam.V1;
 using Yandex.Cloud.Lockbox.V1;
 
 namespace RandomCoffee;
 
-    public class SaCredentialsProvider : ICredentialsProvider
-    {
-        private readonly string iam;
-    
-        public SaCredentialsProvider(string saIam)
-        {
-            iam = saIam;
-        }
-    
-        public string GetToken()
-        {
-            return iam;
-        }
-    }
-    
 public class LockboxService
 {
-
-    public LockboxService()
+    public LockboxService(ICredentialsProvider credentialsProvider)
     {
-        var sdk = new Sdk(new OAuthCredentialsProvider("тоже мой токен"));
-        
-        var iam = sdk.Services.Iam.IamTokenService
-            .CreateForServiceAccountAsync(
-                new CreateIamTokenForServiceAccountRequest() { ServiceAccountId = "ajeta551repsehi6ko29" }).GetAwaiter()
-            .GetResult().IamToken;
-
-        var lockboxSdk = new Sdk(new SaCredentialsProvider(iam));
-        
-        var a = lockboxSdk.Services.Lockbox.PayloadService.GetAsync(new GetPayloadRequest { SecretId = SecretsIds.Coffee }).GetAwaiter().GetResult();
-            
-        Console.WriteLine(a);
-        Console.WriteLine(JsonConvert.SerializeObject(a));
-        Console.WriteLine();
+        payloadService = new Sdk(credentialsProvider).Services.Lockbox.PayloadService;
     }
+
+    public async Task<byte[]> GetCoffeeDbServiceAccountKey()
+    {
+        var secret = await GetBinaryAsync(SecretId.CoffeeDbSaKey);
+        return secret.Single().Value;
+    } 
+
+    private async Task<Dictionary<string, string>> GetTextAsync(SecretId secretId)
+    {
+        var secret = await GetAsync(secretId);
+        return secret.Entries.ToDictionary(entry => entry.Key, entry => entry.TextValue);
+    }
+    
+    private async Task<Dictionary<string, byte[]>> GetBinaryAsync(SecretId secretId)
+    {
+        var secret = await GetAsync(secretId);
+        return secret.Entries.ToDictionary(entry => entry.Key, entry => entry.BinaryValue.ToByteArray());
+    }
+
+    private async Task<Payload> GetAsync(SecretId secretId)
+    {
+        var secretIdString = secretId.AsIdString();
+        return await payloadService.GetAsync(new GetPayloadRequest { SecretId = secretIdString });
+    }
+
+    private readonly PayloadService.PayloadServiceClient payloadService;
 }

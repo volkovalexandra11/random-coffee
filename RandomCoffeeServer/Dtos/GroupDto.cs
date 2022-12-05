@@ -1,5 +1,4 @@
-﻿using Ydb;
-using Ydb.Sdk.Value;
+﻿using Ydb.Sdk.Value;
 
 namespace RandomCoffee.Dtos;
 
