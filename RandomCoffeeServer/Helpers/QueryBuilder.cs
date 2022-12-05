@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using RandomCoffee.schema;
+using RandomCoffeeServer.DbSchema;
 
-namespace RandomCoffee.QueryBuilder;
+namespace RandomCoffeeServer.Helpers;
 
 public static class QueryBuilder
 {

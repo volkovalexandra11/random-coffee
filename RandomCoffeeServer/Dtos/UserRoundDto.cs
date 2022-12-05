@@ -1,4 +1,4 @@
-﻿namespace RandomCoffee.Dtos;
+﻿namespace RandomCoffeeServer.Dtos;
 
 public class UserRoundDto
 {

@@ -1,9 +1,8 @@
-﻿using RandomCoffee.Lockbox;
-using Yandex.Cloud;
+﻿using Yandex.Cloud;
 using Yandex.Cloud.Credentials;
 using Yandex.Cloud.Lockbox.V1;
 
-namespace RandomCoffee;
+namespace RandomCoffeeServer.Services.YandexCloud.Lockbox;
 
 public class LockboxService
 {

@@ -1,6 +1,6 @@
 ﻿using Ydb.Sdk.Value;
 
-namespace RandomCoffee.Dtos;
+namespace RandomCoffeeServer.Dtos;
 
 public class GroupUserDto
 {

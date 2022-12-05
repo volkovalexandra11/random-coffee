@@ -1,7 +1,8 @@
-﻿using RandomCoffee.Dtos;
-using RandomCoffee.QueryBuilder;
+﻿using RandomCoffeeServer.Dtos;
+using RandomCoffeeServer.Helpers;
+using RandomCoffeeServer.Services.YandexCloud.Ydb;
 
-namespace RandomCoffee.Repositories;
+namespace RandomCoffeeServer.Repositories;
 
 public class GroupRepository : RepositoryBase
 {
@@ -12,7 +13,7 @@ public class GroupRepository : RepositoryBase
 
     public async Task AddGroup(GroupDto group)
     {
-        var @params = YdbValueConverter.ToDataParams(group.ToYdb());
+        var @params = YdbConverter.ToDataParams(group.ToYdb());
         await Ydb.Execute(
             $"{DeclareStatement}\n" +
             $"REPLACE INTO groups SELECT * FROM AS_TABLE($data);",

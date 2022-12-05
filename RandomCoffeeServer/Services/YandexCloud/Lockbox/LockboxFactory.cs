@@ -1,5 +1,4 @@
-﻿using RandomCoffee;
-using Yandex.Cloud.Credentials;
+﻿using Yandex.Cloud.Credentials;
 
 namespace RandomCoffeeServer.Services.YandexCloud.Lockbox;
 

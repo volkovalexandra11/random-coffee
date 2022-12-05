@@ -1,7 +1,7 @@
-﻿using RandomCoffee.Dtos;
-using RandomCoffee.Repositories;
+﻿using RandomCoffeeServer.Dtos;
+using RandomCoffeeServer.Repositories;
 
-namespace RandomCoffee;
+namespace RandomCoffeeServer.Services.Coffee;
 
 public class UserService
 {

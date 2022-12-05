@@ -1,4 +1,4 @@
-﻿namespace RandomCoffee.schema;
+﻿namespace RandomCoffeeServer.DbSchema;
 
 public class YdbIndex
 {

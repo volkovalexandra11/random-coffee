@@ -1,9 +1,11 @@
 ﻿using Autofac;
-using RandomCoffee.Repositories;
-using RandomCoffee.Services;
+using RandomCoffeeServer.Jobs;
+using RandomCoffeeServer.Repositories;
+using RandomCoffeeServer.Services.Coffee;
 using RandomCoffeeServer.Services.YandexCloud.Lockbox;
+using RandomCoffeeServer.Services.YandexCloud.Ydb.YdbFactory;
 
-namespace RandomCoffee;
+namespace RandomCoffeeServer;
 
 public class RandomCoffeeModule : Module
 {
@@ -21,7 +23,7 @@ public class RandomCoffeeModule : Module
 
     private void RegisterJobs(ContainerBuilder builder)
     {
-        builder.RegisterType<SchemeUpdater>().SingleInstance();
+        builder.RegisterType<SchemeUpdateJob>().SingleInstance();
         builder.RegisterType<PopulateWithMockDataJob>().SingleInstance();
     }
 

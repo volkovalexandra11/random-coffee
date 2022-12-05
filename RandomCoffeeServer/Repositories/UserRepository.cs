@@ -1,9 +1,8 @@
-﻿using RandomCoffee.Dtos;
-using RandomCoffee.QueryBuilder;
-using RandomCoffee.schema;
-using Ydb.Sdk.Value;
+﻿using RandomCoffeeServer.Dtos;
+using RandomCoffeeServer.Helpers;
+using RandomCoffeeServer.Services.YandexCloud.Ydb;
 
-namespace RandomCoffee.Repositories;
+namespace RandomCoffeeServer.Repositories;
 
 public class UserRepository : RepositoryBase
 {
@@ -14,7 +13,7 @@ public class UserRepository : RepositoryBase
 
     public async Task AddUser(UserDto user)
     {
-        var @params = YdbValueConverter.ToDataParams(user.ToYdb());
+        var @params = YdbConverter.ToDataParams(user.ToYdb());
         await Ydb.Execute(
             $"{DeclareStatement}\n" +
             "REPLACE INTO users SELECT * FROM AS_TABLE($data);",

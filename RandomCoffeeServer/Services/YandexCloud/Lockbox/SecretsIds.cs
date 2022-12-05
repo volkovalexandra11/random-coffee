@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
-using RandomCoffeeServer.Services.YandexCloud.Lockbox;
 
-namespace RandomCoffee.Lockbox;
+namespace RandomCoffeeServer.Services.YandexCloud.Lockbox;
 
 public enum SecretId
 {

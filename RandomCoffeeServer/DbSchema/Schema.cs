@@ -1,6 +1,6 @@
 ﻿using PrimitiveTypeId = Ydb.Type.Types.PrimitiveTypeId;
 
-namespace RandomCoffee.schema;
+namespace RandomCoffeeServer.DbSchema;
 
 public static class Schema
 {

@@ -1,6 +1,7 @@
-﻿using RandomCoffee.Dtos;
+﻿using RandomCoffeeServer.Dtos;
+using RandomCoffeeServer.Services.Coffee;
 
-namespace RandomCoffee.Services;
+namespace RandomCoffeeServer.Jobs;
 
 public class PopulateWithMockDataJob
 {

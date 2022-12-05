@@ -2,7 +2,7 @@
 Content-Type: application/json
 
 {
-  "name": "jp[",
+  "name": "jp[1",
   "isPrivate": false,
   "nextRoundDate": "2022-10-11",
   "intervalDays": 10
