@@ -8,7 +8,6 @@ import reportWebVitals from './reportWebVitals';
 import {store} from "./store";
 import {Provider} from "react-redux";
 import {setGroups, setUser} from "./store/action";
-import {mockGroupList} from "./mock/mock-group-list";
 import {TUser} from "./types/user";
 
 const root = ReactDOM.createRoot(
@@ -16,14 +15,13 @@ const root = ReactDOM.createRoot(
 );
 
 let AppStore = store;
-const groupList = mockGroupList;
 const user: TUser| null = {
     id: 1,
     firstName: "Самсонов",
     lastName: "Иван",
     avatarPath: ""
 }
-AppStore.dispatch(setGroups({groups: groupList}))
+// AppStore.dispatch(setGroups({groups: groupList}));
 AppStore.dispatch(setUser({user: user}))
 
 

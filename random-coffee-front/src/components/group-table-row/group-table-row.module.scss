@@ -8,6 +8,10 @@
   padding-left: 20px;
   padding-right: 20px;
 
+  &:hover {
+    background: rgb(242, 242, 242);
+  }
+
   img {
     border-radius: 10px;
     margin-right: 20px;
