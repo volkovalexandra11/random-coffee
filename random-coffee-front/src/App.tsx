@@ -9,12 +9,8 @@ import { NavBar } from "./components/nav-bar/nav-bar";
 import { CreateGroup } from "./pages/create-group";
 import LoginWithGoogle from './pages/login-with-google';
 
-type Props = {
-	groupList: TGroup[];
-}
-
 function App() {
-	let groupList = mockGroupList;
+	const groupList = mockGroupList;
 	return (
 		<main>
 			<NavBar id={1} avatarPath={''} firstName={"Самсонов"} lastName={"Иван"}/>

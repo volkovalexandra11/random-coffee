@@ -3,11 +3,6 @@ import jwt_decode from 'jwt-decode';
 import style from './login-with-google.module.scss';
 
 export const LoginWithGoogleForm = () => {
-	const getUserInfo = async () => {
-		const a = await fetch('https://www.googleapis.com/oauth2/v1/userinfo?alt=json');
-		console.log(a);
-	}
-
 	const handleSuccess = (res: CredentialResponse) => {
 		console.log('Success', res);
 		if (res.credential) {
