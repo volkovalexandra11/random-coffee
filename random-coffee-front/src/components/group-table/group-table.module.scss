@@ -13,7 +13,7 @@ $div-width: 95%;
   display: flex;
   width: $div-width;
   flex-direction: column;
-  border-radius: 20px;
+  border-radius: 10px;
   background-color: white;
 }
 
@@ -28,4 +28,9 @@ $div-width: 95%;
 .name {
   font-family: "Segoe UI", "Helvetica Neue", Roboto, Arial, sans-serif;
   font-size: 30px;
+}
+
+.button{
+  border-radius: 10px;
+  overflow: hidden;
 }

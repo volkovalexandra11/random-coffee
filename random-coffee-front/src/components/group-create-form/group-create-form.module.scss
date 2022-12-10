@@ -1,0 +1,55 @@
+.label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 14px;
+  justify-content: space-between;
+  width: 30%;
+}
+
+#description{
+  display: flex;
+  align-items: flex-start;
+}
+
+.name{
+    display: flex;
+    justify-content: end;
+    width: 10%;
+}
+
+.radioGroup{
+  display: flex;
+  justify-content: space-between;
+}
+
+.input{
+  width: 80%;
+}
+
+.buttons {
+  width: 15%;
+  justify-self: end;
+}
+
+.gapped{
+  margin: 2%;
+}
+
+.close{
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  cursor: pointer;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.test{
+  display: flex;
+  justify-content: end;
+}

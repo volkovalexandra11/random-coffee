@@ -17,7 +17,7 @@ export const ImageWithPlaceholder : FC<Props> = ({showPlaceholder, picturePath})
 		return getPlaceholder();
 	} else {
 		return (
-			<img src={picturePath} alt='picture'/>
+			<img src={String("." + picturePath)} alt='picture'/>
 		);
 	}
 };

@@ -3,13 +3,14 @@ import {Input} from '@skbkontur/react-ui';
 import {Filter} from "../filter/filter";
 import style from './search.module.scss';
 import {TGroup} from "../../types/group";
+import {Search} from '@skbkontur/react-icons';
 
 type Props = {
     groups: TGroup[];
     setGroups: (value: TGroup[]) => void;
 }
 
-export const Search: FC<Props> =({groups, setGroups}) =>{
+export const SearchGroup: FC<Props> =({groups, setGroups}) =>{
 
     const [copyData, setCopy] = useState(groups);
     const [first, setFirst] = useState(0);
@@ -69,10 +70,13 @@ export const Search: FC<Props> =({groups, setGroups}) =>{
         setGroups(resultData);
     }
 
+
     return (
         <div className={style.wrapper}>
             <div className={style.input}>
-                <Input width={'100%'} placeholder={'Введите название группы'} onChange={(event)=>{SearchGroup(event)}}/>
+                <Input width={'100%'} placeholder={'Введите название группы'} leftIcon={<Search/>} onChange={(event) => {
+                    SearchGroup(event)
+                }}/>
             </div>
             <div className={style.filters}>
                 <Filter name={"Количество участников"}  state={first} setState={setFirst} setOtherState={setSecond}/>

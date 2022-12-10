@@ -22,7 +22,7 @@ export const mockGroupList : TGroup[] = [
 	},
 	{
 		id: 2,
-		name: 'Test2',
+		name: 'Moon',
 		description: 'Test group2',
 		users: [
 			{
@@ -35,7 +35,7 @@ export const mockGroupList : TGroup[] = [
 	},
 	{
 		id: 3,
-		name: 'Test2',
+		name: 'Sunshine',
 		description: 'Test group2',
 		users: [
 			{
