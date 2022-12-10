@@ -1,6 +1,6 @@
-import {FC, useState} from 'react';
+import {FC} from 'react';
 import style from './group-create-form.module.scss';
-import {Button, Dropdown, Gapped, Input, MenuItem, Modal, Radio, RadioGroup, Textarea} from '@skbkontur/react-ui';
+import {Button, Dropdown, Gapped, Input, MenuItem, Radio, RadioGroup, Textarea} from '@skbkontur/react-ui';
 import {Add} from '@skbkontur/react-icons';
 import {useNavigate} from "react-router-dom";
 

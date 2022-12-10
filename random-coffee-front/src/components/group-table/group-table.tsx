@@ -1,11 +1,9 @@
-import {FC, useState} from 'react';
+import { FC, useState } from 'react';
 import { TGroup } from '../../types/group';
 import { GroupTableRow } from '../group-table-row/group-table-row';
-import {NavBar} from "../nav-bar/nav-bar";
 import style from './group-table.module.scss'
-import {Button} from '@skbkontur/react-ui';
-// import SearchIcon from '@skbkontur/react-icons/search';
-import {SearchGroup} from "../search/search";
+import { Button } from '@skbkontur/react-ui';
+import { SearchGroup } from "../search/search";
 import { useNavigate } from "react-router-dom";
 
 type Props = {

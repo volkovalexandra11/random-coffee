@@ -12,7 +12,7 @@ type Props = {
 
 export const SearchGroup: FC<Props> =({groups, setGroups}) =>{
 
-    const [copyData, setCopy] = useState(groups);
+    const [copyData, _] = useState(groups);
     const [first, setFirst] = useState(0);
     const [second, setSecond] = useState(0);
     useEffect( () => {
@@ -28,7 +28,7 @@ export const SearchGroup: FC<Props> =({groups, setGroups}) =>{
         let copyData = groups.concat();
 
         if (paramToSort === 'users.length') {
-            if (first == 0)
+            if (first === 0)
                 return;
             sortData = first === 1  ? copyData.sort(
                 (a, b) => { // @ts-ignore
@@ -40,7 +40,7 @@ export const SearchGroup: FC<Props> =({groups, setGroups}) =>{
                 })
         }
         else {
-            if (second == 0)
+            if (second === 0)
                 return;
             sortData = second === 1 ? copyData.sort(
                 (a, b) => { // @ts-ignore
@@ -58,7 +58,7 @@ export const SearchGroup: FC<Props> =({groups, setGroups}) =>{
     function SearchGroup(event: ChangeEvent<HTMLInputElement>){
         const target = event.target;
         const input = target.value;
-        if (input == "") {
+        if (input === "") {
             setGroups(copyData);
             return;
         }

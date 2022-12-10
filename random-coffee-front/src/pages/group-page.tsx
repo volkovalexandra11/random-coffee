@@ -1,14 +1,10 @@
 import { FC } from 'react';
-import { TGroup } from '../types/group';
 import { GroupTable } from '../components/group-table/group-table';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import { useAppSelector } from '../hooks';
 
-type Props = {
-	groupList: TGroup[];
-}
-
-export const GroupPage: FC<Props> = ({ groupList }) => {
+export const GroupPage: FC = () => {
+	const { groups } = useAppSelector((state) => state);
 	return (
-		<GroupTable groups={groupList}/>
+		<GroupTable groups={groups}/>
 	);
 };
