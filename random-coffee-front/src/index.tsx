@@ -5,12 +5,33 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import {store} from "./store";
+import {Provider} from "react-redux";
+import {setGroups, setUser} from "./store/action";
+import {mockGroupList} from "./mock/mock-group-list";
+import {TUser} from "./types/user";
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+let AppStore = store;
+const groupList = mockGroupList;
+const user: TUser| null = {
+    id: 1,
+    firstName: "Самсонов",
+    lastName: "Иван",
+    avatarPath: ""
+}
+AppStore.dispatch(setGroups({groups: groupList}))
+AppStore.dispatch(setUser({user: user}))
+
+
 root.render(
     <BrowserRouter>
+        <Provider store={AppStore}>
         <App />
+        </Provider>
     </BrowserRouter>
 );
 

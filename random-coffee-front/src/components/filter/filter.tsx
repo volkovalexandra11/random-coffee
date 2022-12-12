@@ -3,24 +3,26 @@ import style from './filter.module.scss';
 
 
 type Props = {
-    name: string;
-    state: number;
-    setState: (value: number) => void;
-    setOtherState: (value: number) => void;
+    orderBy: string;
+    usageState: number;
+    setUsageState: (value: number) => void;
+    setOtherFilterState: (value: number) => void;
 }
 
+type FType = (stateNow: number, setState: (value: number) => void, setOtherState: (value: number) => void) => void
 
-export const Filter: FC<Props> =({name= 'Что-то', state, setState, setOtherState}) =>{
+export const Filter: FC<Props> =({orderBy= 'Что-то', usageState, setUsageState, setOtherFilterState}) =>{
 
-    function MakeFilter(stateNow: number, setState: (value: number) => void, setOtherState: (value: number) => void) {
+    const MakeFilter = (...args: Parameters<FType>): ReturnType<FType> => {
+        const [stateNow, setState, setOtherState] = args;
         let newState = stateNow + 1 === 3? 0 : stateNow + 1;
         setState(newState);
         setOtherState(0);
     }
 
     return (
-        <div className={style.wrapper} onClick={()=>{MakeFilter(state, setState, setOtherState)}}>
-            <span>{name}{state === 1 && '▲'}{state === 2 && '▼'}</span>
+        <div className={style.wrapper} onClick={()=>{MakeFilter(usageState, setUsageState, setOtherFilterState)}}>
+            <span>{orderBy}{usageState === 1 && '▲'}{usageState === 2 && '▼'}</span>
         </div>
     )
 }

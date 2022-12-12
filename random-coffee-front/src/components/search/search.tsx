@@ -7,23 +7,16 @@ import {Search} from '@skbkontur/react-icons';
 
 type Props = {
     groups: TGroup[];
-    setGroups: (value: TGroup[]) => void;
+    onSetGroups: (value: TGroup[]) => void;
 }
 
-export const SearchGroup: FC<Props> =({groups, setGroups}) =>{
+export const SearchGroup: FC<Props> =({groups, onSetGroups}) =>{
 
-    const [copyData, _] = useState(groups);
+    const [copyData] = useState(groups);
     const [first, setFirst] = useState(0);
     const [second, setSecond] = useState(0);
-    useEffect( () => {
-        sortDate ('users.length');
-    }, [first])
-    useEffect( () => {
-        sortDate ('id');
-    }, [second])
 
-
-    function sortDate(paramToSort: string) : void{
+    const sortDate = (paramToSort: string) => {
         let sortData: TGroup[];
         let copyData = groups.concat();
 
@@ -52,14 +45,24 @@ export const SearchGroup: FC<Props> =({groups, setGroups}) =>{
                 }
             )
         }
-        setGroups(sortData);
+        onSetGroups(sortData);
     }
+
+    useEffect( () => {
+        sortDate ('users.length');
+    }, [first])
+    useEffect( () => {
+        sortDate ('id');
+    }, [second])
+
+
+
 
     function SearchGroup(event: ChangeEvent<HTMLInputElement>){
         const target = event.target;
         const input = target.value;
         if (input === "") {
-            setGroups(copyData);
+            onSetGroups(copyData);
             return;
         }
         let resultData: TGroup[] = [];
@@ -67,7 +70,7 @@ export const SearchGroup: FC<Props> =({groups, setGroups}) =>{
             if (copyData[i].name.includes(input))
                 resultData.push(copyData[i])
         }
-        setGroups(resultData);
+        onSetGroups(resultData);
     }
 
 
@@ -79,8 +82,8 @@ export const SearchGroup: FC<Props> =({groups, setGroups}) =>{
                 }}/>
             </div>
             <div className={style.filters}>
-                <Filter name={"Количество участников"}  state={first} setState={setFirst} setOtherState={setSecond}/>
-                <Filter name={"id"} state={second} setState={setSecond} setOtherState={setFirst}/>
+                <Filter orderBy={"Количество участников"} usageState={first} setUsageState={setFirst} setOtherFilterState={setSecond}/>
+                <Filter orderBy={"id"} usageState={second} setUsageState={setSecond} setOtherFilterState={setFirst}/>
             </div>
         </div>
     )

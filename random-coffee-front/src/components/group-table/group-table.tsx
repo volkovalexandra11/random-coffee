@@ -21,7 +21,7 @@ export const GroupTable: FC<Props> = (props) => {
 				<Button className={style.button} use='primary' onClick={() => navigate('/create')}>+ Создать группу</Button>
 			</div>
 			<div className={style.wrapper}>
-				<SearchGroup groups={groups} setGroups={SetGroups}/>
+				<SearchGroup groups={groups} onSetGroups={SetGroups}/>
 				{groups.map((group) =>
 					<div key={group.id}>
 						<GroupTableRow group={group}/>

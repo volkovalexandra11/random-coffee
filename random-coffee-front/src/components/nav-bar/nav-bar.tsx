@@ -2,11 +2,13 @@ import {FC, useState} from 'react';
 import { NotificationBellIcon } from '@skbkontur/icons'
 import {User} from '@skbkontur/react-icons';
 import style from './nav-bar.module.scss'
-import { TUser } from "../../types/user";
 import {Button, Modal} from '@skbkontur/react-ui';
 import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
-export const NavBar: FC<TUser> = (props) => {
+export const NavBar: FC = () => {
+	// @ts-ignore
+	let user = useSelector(state => state.user);
 	const [opened, setOpened] = useState(false);
 
 	function renderModal() {
@@ -46,7 +48,7 @@ export const NavBar: FC<TUser> = (props) => {
 						<br/><NotificationBellIcon/>
 					</Button>
 					<a className={style.buttons} href={''}>
-						<span className={style.text}><User/>{props.firstName + " " + props.lastName}</span>
+						<span className={style.text}><User/>{user.firstName + " " + user.lastName}</span>
 					</a>
 					{opened && renderModal()}
 					<span className={style.line}/>
