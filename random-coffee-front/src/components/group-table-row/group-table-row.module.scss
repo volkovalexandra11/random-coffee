@@ -1,0 +1,39 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 10px;
+  margin: 3px 40px;
+  height: 80px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  img {
+    border-radius: 10px;
+    margin-right: 20px;
+    height: 60px;
+    width: 60px;
+  }
+}
+
+.GroupName {
+  flex-grow: 1;
+}
+
+.params{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.NameAvatar {
+  width: 50%;
+  display: inline-flex;
+  align-items: center;
+}
+
+.information{
+  display: flex;
+  width: 50%;
+  justify-content: center;
+}

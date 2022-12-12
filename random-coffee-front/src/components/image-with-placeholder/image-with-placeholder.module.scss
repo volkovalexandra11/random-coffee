@@ -1,0 +1,8 @@
+.placeholder {
+  $colors: (#F08080, #DA70D6, #98FB98, #00BFFF);
+  background: nth($colors, random(length($colors)));
+  border-radius: 10px;
+  margin-right: 20px;
+  width: 60px;
+  height: 60px;
+}
