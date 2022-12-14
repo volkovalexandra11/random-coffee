@@ -34,5 +34,17 @@ public class GroupsController : ControllerBase
         return Ok();
     }
 
+    // [HttpGet]
+    // public async Task<ActionResult> Get()
+    // {
+    //     return await db.Users.ToListAsync();
+    // }
+    
+    [HttpGet("{id}")]
+    public async Task<ActionResult> Get(Guid id)
+    {
+        return Ok(await groupService.GetGroup(id));
+    }
+
     private readonly GroupService groupService;
 }
