@@ -8,7 +8,9 @@ public class GroupDto
     public Guid AdminUserId { get; init; }
     public string Name { get; init; }
     public bool IsPrivate { get; init; }
+    public List<string> Users { get; init; }
 
+    
     public Dictionary<string, YdbValue> ToYdb()
     {
         return new Dictionary<string, YdbValue>
