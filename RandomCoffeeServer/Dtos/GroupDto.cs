@@ -21,4 +21,16 @@ public class GroupDto
             ["is_private"] = YdbValue.MakeInt32(IsPrivate ? 1 : 0)
         };
     }
+
+    public static GroupDto FromYdbRow(ResultSet.Row row, List<string> users)
+    {
+        return new GroupDto
+        {
+            GroupId = new Guid(row["group_id"].GetOptionalString()),
+            AdminUserId = new Guid(row["admin_user_id"].GetOptionalString()),
+            Name = (string)row["name"],
+            IsPrivate = row["is_private"].GetOptionalInt32() != 0,
+            Users = users
+        };
+    }
 }

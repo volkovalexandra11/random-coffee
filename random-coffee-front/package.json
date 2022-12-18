@@ -2,6 +2,7 @@
   "name": "random-coffee-front",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5678",
   "dependencies": {
     "@react-oauth/google": "^0.5.1",
     "@reduxjs/toolkit": "^1.9.1",

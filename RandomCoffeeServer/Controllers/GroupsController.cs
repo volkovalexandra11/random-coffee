@@ -34,11 +34,72 @@ public class GroupsController : ControllerBase
         return Ok();
     }
 
-    // [HttpGet]
-    // public async Task<ActionResult> Get()
-    // {
-    //     return await db.Users.ToListAsync();
-    // }
+    [HttpGet]
+    public async Task<ActionResult> Get()
+    {
+	    return Ok(@"	{
+	    ""groups"": [{
+				""id"": 1,
+				""name"": ""Test"",
+				""description"": ""Test group"",
+				""users"": [
+					{
+						""id"": 1,
+				""firstName"": ""Vasya"",
+				""lastName"": ""Pupkin"",
+				""avatarPath"": ""/img/avatar/jpg""
+			},
+			{
+				""id"": 2,
+				""firstName"": ""Putya"",
+				""lastName"": ""Ivanov"",
+				""avatarPath"": ""/img/avatar.jpg""
+			}
+		]
+	},
+	{
+		""id"": 2,
+		""name"": ""Moon"",
+		""description"": ""Test group2"",
+		""users"": [
+			{
+				""id"": 1,
+				""firstName"": ""Vasya"",
+				""lastName"": ""Pupkin"",
+				""avatarPath"": ""/img/avatar/jpg""
+			}
+		]
+	},
+	{
+		""id"": 3,
+		""name"": ""Sunshine"",
+		""description"": ""Test group2"",
+		""users"": [
+			{
+				""id"": 1,
+				""firstName"": ""Vasya"",
+				""lastName"": ""Pupkin"",
+				""avatarPath"": ""/img/avatar/jpg""
+			}
+		],
+		""picturePath"": ""/img/avatar.jpg""
+	},
+	{
+		""id"": 4,
+		""name"": ""Test2"",
+		""description"": ""Test group2"",
+		""users"": [
+			{
+				""id"": 1,
+				""firstName"": ""Vasya"",
+				""lastName"": ""Pupkin"",
+				""avatarPath"": ""/img/avatar/jpg""
+			}
+		],
+		""picturePath"": ""/img/avatar.jpg""
+	}]
+	}");
+    }
     
     [HttpGet("{id}")]
     public async Task<ActionResult> Get(Guid id)
