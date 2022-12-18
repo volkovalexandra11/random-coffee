@@ -20,17 +20,16 @@ public class GroupService
     
     public async Task<GroupDto> GetGroup(Guid id)
     {
-        var group =  await groupRepository.GetGroup(id);
-        var groupDto = new GroupDto
-        {
-            GroupId = new Guid(group.Rows[0]["group_id"].GetOptionalString()),
-            AdminUserId = new Guid(group.Rows[0]["admin_user_id"].GetOptionalString()),
-            Name = (string)group.Rows[0]["name"],
-            IsPrivate = group.Rows[0]["is_private"].GetOptionalInt32() != 0,
-            Users = await GetUsers(id)
-        };
-        return groupDto;
+        var group = await groupRepository.GetGroup(id);
+        var users = await GetUsers(id);
+        return GroupDto.FromYdbRow(group.Rows[0], users);
     }
+
+    // public async Task<List<GroupDto>> GetAllGroups()
+    // {
+        // var groups = await groupRepository.GetAllGroups();
+        // var groupsUsers = groups.Select(group => await GetUsers(group))
+    // }
 
     public async Task<List<string>> GetUsers(Guid id)
     {
@@ -43,7 +42,7 @@ public class GroupService
 
         return groupsId;
     }
-
+    
     private readonly GroupRepository groupRepository;
     private readonly GroupUserRepository groupUserRepository;
 }
