@@ -9,9 +9,10 @@ namespace RandomCoffeeServer.Controllers;
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
-    public UsersController(UserService userService)
+    public UsersController(UserService userService, GroupService groupService)
     {
         this.userService = userService;
+        this.groupService = groupService;
     }
 
     [HttpPost]
@@ -25,23 +26,39 @@ public class UsersController : ControllerBase
                 UserId = userId,
                 FirstName = createUserDto.FirstName,
                 LastName = createUserDto.LastName,
-                Email = createUserDto.Email
+                Email = createUserDto.Email,
+                ProfilePictureUrl = createUserDto.ProfilePictureUrl
             });
 
         return Ok();
     }
-    
-    [HttpGet("{id}/groups")]
-    public async Task<ActionResult> GetUserGroups(Guid id)
+
+    [HttpGet]
+    public async Task<IActionResult> Find([FromQuery] Guid groupId)
     {
-        return Ok(new Dictionary<string, List<string>>{["groups"] = await userService.GetGroups(id)});
+        if (groupId == Guid.Empty)
+            return BadRequest();
+
+        var users = await groupService.GetUsersInGroup(groupId);
+        if (users is null)
+            return NotFound();
+
+        return Ok(users);
     }
-    
-    [HttpGet("{id}")]
-    public async Task<ActionResult> GetUser(Guid id)
+
+    [HttpGet("{userId:guid}")]
+    public async Task<ActionResult> GetUser(Guid userId)
     {
-        return Ok(await userService.GetUser(id));
+        if (userId == Guid.Empty)
+            return BadRequest();
+
+        var user = await userService.GetUser(userId);
+        if (user is null)
+            return NotFound();
+        
+        return Ok(user);
     }
 
     private readonly UserService userService;
+    private readonly GroupService groupService;
 }

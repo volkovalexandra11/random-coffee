@@ -1,4 +1,4 @@
-﻿POST http://localhost:5678/groups
+﻿POST http://localhost:5678/api/groups
 Content-Type: application/json
 
 {
@@ -10,4 +10,5 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:5678/
+GET http://localhost:5678/api/Groups/9f048110-0000-0000-0000-000000000000
+Content-Type: application/json

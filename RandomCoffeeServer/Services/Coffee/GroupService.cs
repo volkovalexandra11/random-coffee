@@ -16,31 +16,31 @@ public class GroupService
     public async Task AddGroup(GroupDto group)
     {
         await groupRepository.AddGroup(group);
+        await AddUserToGroup(group.AdminUserId, group.GroupId);
     }
     
-    public async Task<GroupDto> GetGroup(Guid id)
+    public async Task<GroupDto?> GetGroup(Guid groupId)
     {
-        var group = await groupRepository.GetGroup(id);
-        var users = await GetUsers(id);
-        return GroupDto.FromYdbRow(group.Rows[0], users);
+        return await groupRepository.FindGroup(groupId);
     }
 
-    // public async Task<List<GroupDto>> GetAllGroups()
-    // {
-        // var groups = await groupRepository.GetAllGroups();
-        // var groupsUsers = groups.Select(group => await GetUsers(group))
-    // }
-
-    public async Task<List<string>> GetUsers(Guid id)
+    public async Task<Guid[]?> GetUsersInGroup(Guid groupId)
     {
-        var c = await groupUserRepository.GetUsers(id);
-        var groupsId = new List<string>();
-        foreach (var row in c.Rows)
+        return await groupUserRepository.FindUsersInGroup(groupId);
+    }
+    
+    public async Task<Guid[]> GetGroupsByUser(Guid userId)
+    {
+        return await groupUserRepository.FindGroupsByUser(userId);
+    }
+    
+    public async Task AddUserToGroup(Guid userId, Guid groupId)
+    {
+        await groupUserRepository.AddToGroup(new GroupUserDto
         {
-            groupsId.Add(new Guid(row["user_id"].GetOptionalString()).ToString());
-        }
-
-        return groupsId;
+            UserId = userId,
+            GroupId = groupId
+        });
     }
     
     private readonly GroupRepository groupRepository;
