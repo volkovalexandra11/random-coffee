@@ -5,8 +5,6 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <SpaRoot>..\random-coffee-front\</SpaRoot>
-        <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,11 +17,4 @@
         <PackageReference Include="Ydb.Sdk.Yc.Auth" Version="0.0.5" />
     </ItemGroup>
     
-    <ItemGroup>
-        <!-- Don't publish the SPA source files, but do show them in the project files list -->
-        <Content Remove="$(SpaRoot)" />
-        <None Remove="$(SpaRoot)" />
-        <None Include="$(SpaRoot)" Exclude="$(SpaRoot)node_modules\" />
-    </ItemGroup>
-
 </Project>

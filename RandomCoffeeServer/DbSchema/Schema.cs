@@ -4,6 +4,9 @@ namespace RandomCoffeeServer.DbSchema;
 
 public static class Schema
 {
+    // Группы по конст айди юзера 
+    // Юзеры в группе
+    // 
     public static readonly YdbTable[] Tables = new[]
     {
         new YdbTable
@@ -14,7 +17,8 @@ public static class Schema
                 new("user_id", PrimitiveTypeId.String),
                 new("email", PrimitiveTypeId.Utf8),
                 new("first_name", PrimitiveTypeId.Utf8),
-                new("last_name", PrimitiveTypeId.Utf8)
+                new("last_name", PrimitiveTypeId.Utf8),
+                new("profile_picture_url", PrimitiveTypeId.Utf8)
             },
             PrimaryKeyColumns = new[] { 0 }
         },

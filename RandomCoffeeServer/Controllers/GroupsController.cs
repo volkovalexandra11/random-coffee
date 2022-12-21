@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RandomCoffeeServer.Controllers.GroupsControllerDtos;
 using RandomCoffeeServer.Dtos;
+using RandomCoffeeServer.Repositories;
 using RandomCoffeeServer.Services.Coffee;
 
 namespace RandomCoffeeServer.Controllers;
@@ -9,9 +10,9 @@ namespace RandomCoffeeServer.Controllers;
 [Route("api/[controller]")]
 public class GroupsController : ControllerBase
 {
-    public GroupsController(GroupService groupService)
+    public GroupsController(GroupService groupRepository1)
     {
-        this.groupService = groupService;
+        this.groupService = groupRepository1;
     }
 
     [HttpPost]
@@ -35,76 +36,38 @@ public class GroupsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult> Get()
+    public async Task<IActionResult> Find([FromQuery] Guid userId)
     {
-	    return Ok(@"	{
-	    ""groups"": [{
-				""id"": 1,
-				""name"": ""Test"",
-				""description"": ""Test group"",
-				""users"": [
-					{
-						""id"": 1,
-				""firstName"": ""Vasya"",
-				""lastName"": ""Pupkin"",
-				""avatarPath"": ""/img/avatar/jpg""
-			},
-			{
-				""id"": 2,
-				""firstName"": ""Putya"",
-				""lastName"": ""Ivanov"",
-				""avatarPath"": ""/img/avatar.jpg""
-			}
-		]
-	},
-	{
-		""id"": 2,
-		""name"": ""Moon"",
-		""description"": ""Test group2"",
-		""users"": [
-			{
-				""id"": 1,
-				""firstName"": ""Vasya"",
-				""lastName"": ""Pupkin"",
-				""avatarPath"": ""/img/avatar/jpg""
-			}
-		]
-	},
-	{
-		""id"": 3,
-		""name"": ""Sunshine"",
-		""description"": ""Test group2"",
-		""users"": [
-			{
-				""id"": 1,
-				""firstName"": ""Vasya"",
-				""lastName"": ""Pupkin"",
-				""avatarPath"": ""/img/avatar/jpg""
-			}
-		],
-		""picturePath"": ""/img/avatar.jpg""
-	},
-	{
-		""id"": 4,
-		""name"": ""Test2"",
-		""description"": ""Test group2"",
-		""users"": [
-			{
-				""id"": 1,
-				""firstName"": ""Vasya"",
-				""lastName"": ""Pupkin"",
-				""avatarPath"": ""/img/avatar/jpg""
-			}
-		],
-		""picturePath"": ""/img/avatar.jpg""
-	}]
-	}");
+        if (userId == Guid.Empty)
+            return BadRequest();
+
+        var groupIds = await groupService.GetGroupsByUser(userId);
+        return Ok(groupIds);
     }
-    
-    [HttpGet("{id}")]
-    public async Task<ActionResult> Get(Guid id)
+
+    [HttpGet("{groupId:guid}")]
+    public async Task<ActionResult> Get(Guid groupId)
     {
-        return Ok(await groupService.GetGroup(id));
+        if (groupId == Guid.Empty)
+            return BadRequest();
+
+        var group = await groupService.GetGroup(groupId);
+        if (group is null)
+            return NotFound();
+
+        return Ok(group);
+    }
+
+    [HttpPost("{groupId:guid}/join")]
+    public async Task<IActionResult> Join(Guid groupId)
+    {
+        if (groupId == Guid.Empty)
+            return BadRequest();
+
+        var userId = Guid.Empty; // todo
+
+        await groupService.AddUserToGroup(userId, groupId);
+        return Ok();
     }
 
     private readonly GroupService groupService;

@@ -13,7 +13,6 @@ public class YdbTable
     public YdbTable()
     {
         var properties = GetType().GetProperties();
-        // var ydbTypes = new 
     }
 
     public string ToDdl()
@@ -49,7 +48,7 @@ public class YdbTable
     {
         foreach (var column in Columns)
         {
-            sb.AppendFormat("  {0} {1},\n", column.Name, column.Type);
+            sb.Append($"  {column.ToDdl()},\n");
         }
         return sb.Remove(sb.Length - 2, 2);
     }

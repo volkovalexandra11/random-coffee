@@ -1,4 +1,5 @@
-﻿using Ydb.Sdk.Value;
+﻿using RandomCoffeeServer.Helpers;
+using Ydb.Sdk.Value;
 
 namespace RandomCoffeeServer.Dtos;
 
@@ -7,9 +8,7 @@ public class GroupDto
     public Guid GroupId { get; init; }
     public Guid AdminUserId { get; init; }
     public string Name { get; init; }
-    public bool IsPrivate { get; init; }
-    public List<string> Users { get; init; }
-
+    public bool IsPrivate { get; init; } = true;
     
     public Dictionary<string, YdbValue> ToYdb()
     {
@@ -22,15 +21,14 @@ public class GroupDto
         };
     }
 
-    public static GroupDto FromYdbRow(ResultSet.Row row, List<string> users)
+    public static GroupDto FromYdbRow(ResultSet.Row row)
     {
         return new GroupDto
         {
-            GroupId = new Guid(row["group_id"].GetOptionalString()),
-            AdminUserId = new Guid(row["admin_user_id"].GetOptionalString()),
-            Name = (string)row["name"],
-            IsPrivate = row["is_private"].GetOptionalInt32() != 0,
-            Users = users
+            GroupId = row["group_id"].GetNonNullGuid(),
+            AdminUserId = row["admin_user_id"].GetNonNullGuid(),
+            Name = row["name"].GetNonNullUtf8(),
+            IsPrivate = row["is_private"].GetNonNullBool(),
         };
     }
 }

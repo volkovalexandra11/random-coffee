@@ -13,40 +13,78 @@ public class PopulateWithMockDataJob
     
     public async Task Fill(CancellationToken cancellationToken)
     {
-        // todo!
-        return;
-        await userService.AddUser(new UserDto
-        {
-            // UserId = 1,
-            Email = "sergei.lugovykh@mail.ru",
-            FirstName = "Сергей",
-            LastName = "Луговых"
-        });
-        await userService.AddUser(new UserDto
-        {
-            // UserId = 2,
-            Email = "sasha.volk@ya.ru",
-            FirstName = "Саша",
-            LastName = "Волк"
-        });
+        var user1Id = Guid.Parse("43ef1000-0000-0000-0000-000000000000");
+        var user2Id = Guid.Parse("43ef2000-0000-0000-0000-000000000000");
+        var user3Id = Guid.Parse("43ef3000-0000-0000-0000-000000000000");
 
-        await groupService.AddGroup(new GroupDto
+        var group1Id = Guid.Parse("9f048110-0000-0000-0000-000000000000");
+        var group2Id = Guid.Parse("9f048120-0000-0000-0000-000000000000");
+        var group3Id = Guid.Parse("9f048130-0000-0000-0000-000000000000");
+        var group4Id = Guid.Parse("9f048140-0000-0000-0000-000000000000");
+        
+        var users = new UserDto[]
         {
-            // GroupId = 1,
-            Name = "Kontur.Group",
-            // AdminUserId = 1,
-        });
-        await groupService.AddGroup(new GroupDto
-        {
-            // GroupId = 2,
-            Name = "Home.Group",
-            // AdminUserId = 2,
-            IsPrivate = true
-        });
+            new UserDto()
+            {
+                UserId = user1Id,
+                Email = "vasya.pupkin@mail.ru",
+                FirstName = "Вася",
+                LastName = "Пупкин",
+                ProfilePictureUrl = null
+            },
+            new UserDto()
+            {
+                UserId = user2Id,
+                Email = "pasya.vutkin@mail.ru",
+                FirstName = "Пася",
+                LastName = "Вуткин",
+                ProfilePictureUrl = "/static/img/avatar.jpg"
+            },
+            new UserDto()
+            {
+                UserId = user3Id,
+                Email = "user3@yandex.ru",
+                FirstName = "Some",
+                LastName = "One",
+                ProfilePictureUrl = null
+            }
+        };
 
-        // await groupService.AddToGroup(new GroupUserDto { UserId = 1, GroupId = 1 });
-        // await groupService.AddToGroup(new GroupUserDto { UserId = 2, GroupId = 2 });
-        // await groupService.AddToGroup(new GroupUserDto { UserId = 2, GroupId = 2 });
+        var groups = new GroupDto[]
+        {
+            new GroupDto()
+            {
+                GroupId = group1Id,
+                Name = "Test group",
+                AdminUserId = user2Id,
+            },
+            new GroupDto()
+            {
+                GroupId = group2Id,
+                Name = "Moon group",
+                AdminUserId = user1Id
+            },
+            new GroupDto()
+            {
+                GroupId = group3Id,
+                Name = "Sunshine group",
+                AdminUserId = user1Id
+            },
+            new GroupDto()
+            {
+                GroupId = group4Id,
+                Name = "Test group2",
+                AdminUserId = user1Id
+            }
+        };
+
+        await Task.WhenAll(users.Select(user => userService.AddUser(user)));
+        await Task.WhenAll(groups.Select(group => groupService.AddGroup(group)));
+
+        await Task.WhenAll(new Task[]
+        {
+            groupService.AddUserToGroup(user2Id, group1Id)
+        });
     }
 
     private readonly UserService userService;
