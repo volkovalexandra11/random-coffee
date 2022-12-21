@@ -11,6 +11,7 @@ public class YdbService
 {
     public YdbService(YdbPath ydbPath, ICredentialsProvider credentialsProvider, ILoggerFactory loggerFactory)
     {
+        this.ydbPath = ydbPath;
         var config = new DriverConfig(ydbPath.Endpoint, ydbPath.Database, credentialsProvider);
         ydbDriver = new Driver(config, loggerFactory);
         ydbDriver.Initialize().ConfigureAwait(false).GetAwaiter().GetResult();
@@ -19,7 +20,10 @@ public class YdbService
     public async Task<ExecuteSchemeQueryResponse> ExecuteScheme(string query)
     {
         using var tableClient = new TableClient(ydbDriver, new TableClientConfig());
-        var response = await tableClient.SessionExec(async sesstion => await sesstion.ExecuteSchemeQuery(query, new ExecuteSchemeQuerySettings() { OperationTimeout = TimeSpan.FromMinutes(1) }));
+        var response = await tableClient.SessionExec(async sesstion => await sesstion.ExecuteSchemeQuery(
+            GetQueryInDirectory(query),
+            new ExecuteSchemeQuerySettings() { OperationTimeout = TimeSpan.FromMinutes(1) })
+        );
         response.Status.EnsureSuccess();
         return (ExecuteSchemeQueryResponse)response;
     }
@@ -28,7 +32,7 @@ public class YdbService
     {
         using var tableClient = new TableClient(ydbDriver, new TableClientConfig());
         var response = await tableClient.SessionExec(async session => await session.ExecuteDataQuery(
-            query,
+            GetQueryInDirectory(query),
             TxControl.BeginSerializableRW().Commit(),
             @params,
             new ExecuteDataQuerySettings()
@@ -37,5 +41,11 @@ public class YdbService
         return (ExecuteDataQueryResponse)response;
     }
 
+    private string GetQueryInDirectory(string query)
+    {
+        return $"PRAGMA TablePathPrefix('{ydbPath.Database}/{ydbPath.Path}');\n{query}";
+    }
+
+    private readonly YdbPath ydbPath;
     private readonly Driver ydbDriver;
 }
