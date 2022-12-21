@@ -26,13 +26,13 @@ public class YdbFactory
         }
         if (environment.IsDevelopment())
         {
-            if (Environment.GetEnvironmentVariable("DEV_NAME") is not { } devName)
-                throw new InvalidProgramException("DEV_NAME env variable is required in Development");
+            if (Environment.GetEnvironmentVariable("DEV_DB_PATH") is not { } devDbPath)
+                throw new InvalidProgramException("DEV_DB_PATH env variable is required in Development");
             if (Environment.GetEnvironmentVariable("DEV_OAUTH_TOKEN") is not { } devOauthToken)
                 throw new InvalidProgramException("DEV_OAUTH_TOKEN env variable is required in Development");
 
             var dbDiscoverer = new YdbDiscoverer(new OAuthCredentialsProvider(devOauthToken));
-            var path = dbDiscoverer.Discover(folderId, dbSuffix: devName).GetAwaiter().GetResult();
+            var path = dbDiscoverer.Discover(folderId, dbWithPath: devDbPath).GetAwaiter().GetResult();
             var saKeyPath = GetAndSaveSaKey().GetAwaiter().GetResult();
             return new YdbService(path, new ServiceAccountProvider(saKeyPath), loggerFactory);
         }
