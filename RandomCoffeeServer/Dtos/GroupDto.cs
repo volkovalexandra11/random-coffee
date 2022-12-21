@@ -25,10 +25,10 @@ public class GroupDto
     {
         return new GroupDto
         {
-            GroupId = row["group_id"].GetGuid(),
-            AdminUserId = row["admin_user_id"].GetGuid(),
-            Name = row["name"].GetUtf8(),
-            IsPrivate = row["is_private"].GetOptionalInt32() != 0,
+            GroupId = row["group_id"].GetNonNullGuid(),
+            AdminUserId = row["admin_user_id"].GetNonNullGuid(),
+            Name = row["name"].GetNonNullUtf8(),
+            IsPrivate = row["is_private"].GetNonNullBool(),
         };
     }
 }

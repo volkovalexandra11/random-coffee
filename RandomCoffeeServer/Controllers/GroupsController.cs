@@ -41,7 +41,7 @@ public class GroupsController : ControllerBase
         if (userId == Guid.Empty)
             return BadRequest();
 
-        var groupIds = groupService.GetGroupsByUser(userId);
+        var groupIds = await groupService.GetGroupsByUser(userId);
         return Ok(groupIds);
     }
 

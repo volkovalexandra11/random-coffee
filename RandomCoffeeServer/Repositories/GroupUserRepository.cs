@@ -36,7 +36,7 @@ public class GroupUserRepository : RepositoryBase
         var queryResponse = (ExecuteDataQueryResponse)response;
         var resultSet = queryResponse.Result.ResultSets[0];
         return resultSet.Rows.Count > 0
-            ? resultSet.Rows.Select(row => row["user_id"].GetGuid()).ToArray()
+            ? resultSet.Rows.Select(row => row["user_id"].GetNonNullGuid()).ToArray()
             : null;
     }
 
@@ -53,6 +53,6 @@ public class GroupUserRepository : RepositoryBase
         response.Status.EnsureSuccess();
         var queryResponse = (ExecuteDataQueryResponse)response;
         var resultSet = queryResponse.Result.ResultSets[0];
-        return resultSet.Rows.Select(row => row["group_id"].GetGuid()).ToArray();
+        return resultSet.Rows.Select(row => row["group_id"].GetNonNullGuid()).ToArray();
     }
 }

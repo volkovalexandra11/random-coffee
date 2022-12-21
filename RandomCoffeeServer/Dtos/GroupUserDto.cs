@@ -21,8 +21,8 @@ public class GroupUserDto
     {
         return new GroupUserDto
         {
-            GroupId = row["group_id"].GetGuid(),
-            UserId = row["user_id"].GetGuid()
+            GroupId = row["group_id"].GetNonNullGuid(),
+            UserId = row["user_id"].GetNonNullGuid()
         };
     }
 }

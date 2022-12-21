@@ -27,10 +27,10 @@ public class UserDto
     {
         return new UserDto
         {
-            UserId = row["user_id"].GetGuid(),
-            FirstName = row["first_name"].GetUtf8(),
-            LastName = row["last_name"].GetUtf8(),
-            Email = row["email"].GetUtf8(),
+            UserId = row["user_id"].GetNonNullGuid(),
+            FirstName = row["first_name"].GetNonNullUtf8(),
+            LastName = row["last_name"].GetNonNullUtf8(),
+            Email = row["email"].GetNonNullUtf8(),
             ProfilePictureUrl = row["profile_picture_url"].GetOptionalUtf8()
         };
     }
