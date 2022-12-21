@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RandomCoffeeServer.Controllers.GroupsControllerDtos;
 using RandomCoffeeServer.Dtos;
-using RandomCoffeeServer.Repositories;
 using RandomCoffeeServer.Services.Coffee;
 
 namespace RandomCoffeeServer.Controllers;
@@ -51,7 +50,7 @@ public class GroupsController : ControllerBase
         if (groupId == Guid.Empty)
             return BadRequest();
 
-        var group = await groupService.GetGroup(groupId);
+        var group = await groupService.GetGroupWithUsers(groupId);
         if (group is null)
             return NotFound();
 
