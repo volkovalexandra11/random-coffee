@@ -2,20 +2,20 @@
 
 namespace RandomCoffeeServer.Controllers.GroupsControllerDtos;
 
-public class GetGroupDto
+public class GroupWithParticipantsDto
 {
     public Guid GroupId { get; }
     public Guid AdminUserId { get; }
     public string Name { get; }
     public bool IsPrivate { get; }
-    public IEnumerable<GetGroupUserDto> Users { get; }
+    public List<ParticipantDto> Participants { get; }
 
-    public GetGroupDto(GroupDto groupDto, IEnumerable<UserDto> users)
+    public GroupWithParticipantsDto(GroupDto groupDto, IEnumerable<ParticipantDto> participants)
     {
         GroupId = groupDto.GroupId;
         AdminUserId = groupDto.AdminUserId;
         Name = groupDto.Name;
         IsPrivate = groupDto.IsPrivate;
-        Users = users.Select(user => new GetGroupUserDto(user));
+        Participants = participants.ToList();
     }
 }

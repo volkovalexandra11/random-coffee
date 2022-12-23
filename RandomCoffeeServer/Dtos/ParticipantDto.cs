@@ -2,14 +2,14 @@
 
 namespace RandomCoffeeServer.Controllers.GroupsControllerDtos;
 
-public class GetGroupUserDto
+public class ParticipantDto
 {
     public Guid UserId { get; init; }
     public string FirstName { get; init; }
     public string LastName { get; init; }
     public string? ProfilePictureUrl { get; init; }
 
-    public GetGroupUserDto(UserDto user)
+    public ParticipantDto(UserDto user)
     {
         UserId = user.UserId;
         FirstName = user.FirstName;

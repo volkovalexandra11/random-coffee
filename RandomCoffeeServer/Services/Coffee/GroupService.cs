@@ -8,7 +8,8 @@ public class GroupService
 {
     public GroupService(
         GroupRepository groupRepository,
-        GroupUserRepository groupUserRepository, UserRepository userRepository)
+        GroupUserRepository groupUserRepository, 
+        UserRepository userRepository)
     {
         this.groupRepository = groupRepository;
         this.groupUserRepository = groupUserRepository;
@@ -26,17 +27,18 @@ public class GroupService
         return await groupRepository.FindGroup(groupId);
     }
 
-    public async Task<GetGroupDto?> GetGroupWithUsers(Guid groupId)
+    public async Task<GroupWithParticipantsDto?> GetGroupWithParticipants(Guid groupId)
     {
         var group = await GetGroup(groupId);
         if (group is null)
-        {
             return null;
-        }
 
-        var users = GetUsersInGroup(groupId).Result!.Select(userId => userRepository.FindUser(userId).Result);
+        var participants = GetUsersInGroup(groupId).Result!
+            .Select(userId => userRepository.FindUser(userId).Result)
+            .Where(user => user is not null)
+            .Select(user => new ParticipantDto(user!));
 
-        return new GetGroupDto(group, users!);
+        return new GroupWithParticipantsDto(group, participants);
     }
 
     public async Task<Guid[]?> GetUsersInGroup(Guid groupId)
@@ -44,10 +46,12 @@ public class GroupService
         return await groupUserRepository.FindUsersInGroup(groupId);
     }
 
-    public async Task<IEnumerable<UserGroupDto>> GetGroupsByUser(Guid userId)
+    public async Task<IEnumerable<ShortFormatGroupDto>> GetGroupsByUser(Guid userId)
     {
-        return groupUserRepository.FindGroupsByUser(userId).Result.Select(groupId => GetGroupWithUsers(groupId).Result)
-            .Where(group => group is not null).Select(group => new UserGroupDto(group!));
+        return groupUserRepository.FindGroupsByUser(userId).Result
+            .Select(groupId => GetGroupWithParticipants(groupId).Result)
+            .Where(group => group is not null)
+            .Select(group => new ShortFormatGroupDto(group!.GroupId, group.Name, group.Participants.Count));
     }
 
     public async Task AddUserToGroup(Guid userId, Guid groupId)

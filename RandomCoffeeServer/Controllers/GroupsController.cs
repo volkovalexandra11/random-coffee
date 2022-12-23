@@ -50,7 +50,7 @@ public class GroupsController : ControllerBase
         if (groupId == Guid.Empty)
             return BadRequest();
 
-        var group = await groupService.GetGroupWithUsers(groupId);
+        var group = await groupService.GetGroupWithParticipants(groupId);
         if (group is null)
             return NotFound();
 
