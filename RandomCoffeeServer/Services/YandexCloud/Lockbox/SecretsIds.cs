@@ -8,7 +8,13 @@ public enum SecretId
     Coffee,
 
     [SecretId("e6qpcaa6n128re2a5qrq")]
-    CoffeeDbSaKey
+    CoffeeDbSaKey,
+    
+    [SecretId("e6qrg8sqrhnifb1hq4sn")]
+    CoffeeLocalSashaOpenIdSecret,
+    
+    [SecretId("e6qnidor1t8v4qh3ud4d")]
+    CoffeeLocalSashaOpenIdId
 }
 
 public static class SecretIdExtensions
