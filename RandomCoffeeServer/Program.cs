@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using RandomCoffeeServer;
 using RandomCoffeeServer.Helpers;
 using RandomCoffeeServer.Jobs;
+using RandomCoffeeServer.Services.YandexCloud.Lockbox;
 
 DotEnv.Load("./.env");
 
@@ -19,6 +20,14 @@ builder.Services.Configure<JsonOptions>(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var lockboxService = new LockboxFactory().Create(builder.Environment); // todo this is bad!!!
+builder.Services.AddAuthentication().AddGoogle(o =>
+{
+    o.ClientId = lockboxService.GetCoffeeLocalOpenIdId().GetAwaiter().GetResult();
+    o.ClientSecret = lockboxService.GetCoffeeLocalOpenIdSecret().GetAwaiter().GetResult();
+    o.SaveTokens = true; // what is this
+});
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>((hostBuilder, containerBuilder) =>
@@ -56,6 +65,7 @@ if (app.Environment.IsDevelopment())
 
 // app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

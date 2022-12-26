@@ -15,7 +15,19 @@ public class LockboxService
     {
         var secret = await GetBinaryAsync(SecretId.CoffeeDbSaKey);
         return secret.Single().Value;
-    } 
+    }
+
+    public async Task<string> GetCoffeeLocalOpenIdSecret()
+    {
+        var secret = await GetTextAsync(SecretId.CoffeeLocalSashaOpenIdSecret);
+        return secret.Single().Value;
+    }
+    
+    public async Task<string> GetCoffeeLocalOpenIdId()
+    {
+        var secret = await GetTextAsync(SecretId.CoffeeLocalSashaOpenIdId);
+        return secret.Single().Value;
+    }
 
     private async Task<Dictionary<string, string>> GetTextAsync(SecretId secretId)
     {
