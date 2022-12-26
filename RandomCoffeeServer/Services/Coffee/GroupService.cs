@@ -8,7 +8,7 @@ public class GroupService
 {
     public GroupService(
         GroupRepository groupRepository,
-        GroupUserRepository groupUserRepository, 
+        GroupUserRepository groupUserRepository,
         UserRepository userRepository)
     {
         this.groupRepository = groupRepository;
@@ -33,8 +33,13 @@ public class GroupService
         if (group is null)
             return null;
 
-        var participants = GetUsersInGroup(groupId).Result!
-            .Select(userId => userRepository.FindUser(userId).Result)
+        var participantsIds = await GetUsersInGroup(groupId);
+
+        if (participantsIds is null)
+            return null;
+
+        var participantsAsUsers = await Task.WhenAll(participantsIds.Select(userId => userRepository.FindUser(userId)));
+        var participants = participantsAsUsers
             .Where(user => user is not null)
             .Select(user => new ParticipantDto(user!));
 
@@ -48,8 +53,10 @@ public class GroupService
 
     public async Task<IEnumerable<ShortFormatGroupDto>> GetGroupsByUser(Guid userId)
     {
-        return groupUserRepository.FindGroupsByUser(userId).Result
-            .Select(groupId => GetGroupWithParticipants(groupId).Result)
+        var groupIds = await groupUserRepository.FindGroupsByUser(userId);
+        var groupsWithParticipantsDto =
+            await Task.WhenAll(groupIds.Select(async groupId => await GetGroupWithParticipants(groupId)));
+        return groupsWithParticipantsDto
             .Where(group => group is not null)
             .Select(group => new ShortFormatGroupDto(group!.GroupId, group.Name, group.Participants.Count));
     }
