@@ -40,7 +40,7 @@ public class GroupUserRepository : RepositoryBase
             : null;
     }
 
-    public async Task<Guid[]> FindGroupsByUser(Guid userId)
+    public async Task<Guid[]?> FindGroupsByParticipant(Guid userId)
     {
         var response = await Ydb.Execute(
             $"DECLARE $id AS String;\n" +
@@ -53,6 +53,25 @@ public class GroupUserRepository : RepositoryBase
         response.Status.EnsureSuccess();
         var queryResponse = (ExecuteDataQueryResponse)response;
         var resultSet = queryResponse.Result.ResultSets[0];
-        return resultSet.Rows.Select(row => row["group_id"].GetNonNullGuid()).ToArray();
+        return resultSet.Rows.Count > 0
+            ? resultSet.Rows.Select(row => row["group_id"].GetNonNullGuid()).ToArray()
+            : null;
+    }
+    
+    public async Task<int?> GetParticipantsCount(Guid groupId)
+    {
+        var response = await Ydb.Execute(
+            $"DECLARE $id AS String;\n" +
+            $"SELECT Count(*) FROM groups_users WHERE group_id = $id;",
+            new Dictionary<string, YdbValue>
+            {
+                ["$id"] = YdbValue.MakeString(groupId.ToByteArray())
+            });
+        response.Status.EnsureSuccess();
+        var queryResponse = (ExecuteDataQueryResponse)response;
+        var resultSet = queryResponse.Result.ResultSets[0];
+        return resultSet.Rows.Count > 0
+            ? (int)resultSet.Rows[0][0].GetUint64()
+            : null;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using RandomCoffeeServer.Controllers.GroupsControllerDtos;
 using RandomCoffeeServer.Dtos;
 using RandomCoffeeServer.Repositories;
+using Ydb.Sdk.Value;
 
 namespace RandomCoffeeServer.Services.Coffee;
 
@@ -38,27 +39,32 @@ public class GroupService
         if (participantsIds is null)
             return null;
 
-        var participantsAsUsers = await Task.WhenAll(participantsIds.Select(userId => userRepository.FindUser(userId)));
-        var participants = participantsAsUsers
+        var participants = await Task.WhenAll(participantsIds.Select(userId => userRepository.FindUser(userId)));
+        var participantsAsDto = participants
             .Where(user => user is not null)
             .Select(user => new ParticipantDto(user!));
 
-        return new GroupWithParticipantsDto(group, participants);
+        return new GroupWithParticipantsDto(group, participantsAsDto);
     }
 
     public async Task<Guid[]?> GetUsersInGroup(Guid groupId)
     {
         return await groupUserRepository.FindUsersInGroup(groupId);
     }
+    
+    public async Task<int?> GetParticipantsCountInGroup(Guid groupId)
+    {
+        return await groupUserRepository.GetParticipantsCount(groupId);
+    }
 
     public async Task<IEnumerable<ShortFormatGroupDto>> GetGroupsByUser(Guid userId)
     {
-        var groupIds = await groupUserRepository.FindGroupsByUser(userId);
-        var groupsWithParticipantsDto =
-            await Task.WhenAll(groupIds.Select(async groupId => await GetGroupWithParticipants(groupId)));
-        return groupsWithParticipantsDto
+        var groupIds = await groupUserRepository.FindGroupsByParticipant(userId);
+        var groupsDto =
+            await Task.WhenAll(groupIds.Select(async groupId => await GetGroup(groupId)));
+        return await Task.WhenAll(groupsDto
             .Where(group => group is not null)
-            .Select(group => new ShortFormatGroupDto(group!.GroupId, group.Name, group.Participants.Count));
+            .Select(async group => new ShortFormatGroupDto(group!.GroupId, group.Name, await GetParticipantsCountInGroup(group.GroupId))));
     }
 
     public async Task AddUserToGroup(Guid userId, Guid groupId)
