@@ -39,7 +39,7 @@ public class UsersController : ControllerBase
         if (groupId == Guid.Empty)
             return BadRequest();
 
-        var users = await groupService.GetUsersInGroup(groupId);
+        var users = await groupService.GetParticipantsInGroup(groupId);
         if (users is null)
             return NotFound();
 
@@ -55,7 +55,7 @@ public class UsersController : ControllerBase
         var user = await userService.GetUser(userId);
         if (user is null)
             return NotFound();
-        
+
         return Ok(user);
     }
 
