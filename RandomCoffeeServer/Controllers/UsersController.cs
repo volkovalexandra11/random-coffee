@@ -55,7 +55,7 @@ public class UsersController : ControllerBase
         var user = await userService.GetUser(userId);
         if (user is null)
             return NotFound();
-        
+
         return Ok(user);
     }
 

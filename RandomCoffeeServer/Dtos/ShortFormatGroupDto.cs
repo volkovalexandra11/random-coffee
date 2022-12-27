@@ -2,14 +2,7 @@
 
 public class ShortFormatGroupDto
 {
-    public Guid GroupId { get; }
-    public string Name { get; }
-    public int ParticipantsCount { get; }
-
-    public ShortFormatGroupDto(Guid groupId, string name, int? participantsCount)
-    {
-        GroupId = groupId;
-        Name = name;
-        ParticipantsCount = participantsCount ?? 0;
-    }
+    public Guid GroupId { get; init; }
+    public string Name { get; init; }
+    public int ParticipantsCount { get; init; }
 }

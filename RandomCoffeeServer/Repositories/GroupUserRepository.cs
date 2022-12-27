@@ -57,7 +57,7 @@ public class GroupUserRepository : RepositoryBase
             ? resultSet.Rows.Select(row => row["group_id"].GetNonNullGuid()).ToArray()
             : null;
     }
-    
+
     public async Task<int?> GetParticipantsCount(Guid groupId)
     {
         var response = await Ydb.Execute(

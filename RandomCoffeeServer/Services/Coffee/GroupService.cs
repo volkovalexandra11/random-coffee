@@ -42,16 +42,29 @@ public class GroupService
         var participants = await Task.WhenAll(participantsIds.Select(userId => userRepository.FindUser(userId)));
         var participantsAsDto = participants
             .Where(user => user is not null)
-            .Select(user => new ParticipantDto(user!));
+            .Select(user => new ParticipantDto
+            {
+                UserId = user.UserId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ProfilePictureUrl = user.ProfilePictureUrl
+            });
 
-        return new GroupWithParticipantsDto(group, participantsAsDto);
+        return new GroupWithParticipantsDto
+        {
+            GroupId = group.GroupId,
+            AdminUserId = group.AdminUserId,
+            Name = group.Name,
+            IsPrivate = group.IsPrivate,
+            Participants = participantsAsDto.ToList()
+        };
     }
 
     public async Task<Guid[]?> GetUsersInGroup(Guid groupId)
     {
         return await groupUserRepository.FindUsersInGroup(groupId);
     }
-    
+
     public async Task<int?> GetParticipantsCountInGroup(Guid groupId)
     {
         return await groupUserRepository.GetParticipantsCount(groupId);
@@ -64,7 +77,11 @@ public class GroupService
             await Task.WhenAll(groupIds.Select(async groupId => await GetGroup(groupId)));
         return await Task.WhenAll(groupsDto
             .Where(group => group is not null)
-            .Select(async group => new ShortFormatGroupDto(group!.GroupId, group.Name, await GetParticipantsCountInGroup(group.GroupId))));
+            .Select(async group => new ShortFormatGroupDto
+            {
+                GroupId = group!.GroupId, Name = group.Name,
+                ParticipantsCount = await GetParticipantsCountInGroup(group.GroupId) ?? 0
+            }));
     }
 
     public async Task AddUserToGroup(Guid userId, Guid groupId)
