@@ -34,7 +34,7 @@ public class GroupService
         if (group is null)
             return null;
 
-        var participantsIds = await GetUsersInGroup(groupId);
+        var participantsIds = await groupUserRepository.FindUsersInGroup(groupId);
 
         if (participantsIds is null)
             return null;
@@ -60,7 +60,7 @@ public class GroupService
         };
     }
 
-    public async Task<Guid[]?> GetUsersInGroup(Guid groupId)
+    public async Task<Guid[]?> GetParticipantsInGroup(Guid groupId)
     {
         return await groupUserRepository.FindUsersInGroup(groupId);
     }
