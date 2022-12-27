@@ -1,3 +1,8 @@
 .idea/
 .vs/
 .env
+**/bin/
+**/obj/
+**/.idea/
+**/.keys/
+**/.env

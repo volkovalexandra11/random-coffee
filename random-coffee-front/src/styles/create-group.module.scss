@@ -1,0 +1,35 @@
+$div-width: 50%;
+
+.background {
+  display: flex;
+  height: auto;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgb(242, 242, 242);
+}
+
+.wrapper {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+  width: 500px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.header {
+  //width: $div-width;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.name {
+  font-family: "Segoe UI", "Helvetica Neue", Roboto, Arial, sans-serif;
+  font-size: 30px;
+}

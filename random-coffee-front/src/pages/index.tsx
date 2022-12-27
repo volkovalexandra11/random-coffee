@@ -1,6 +1,6 @@
-import { GroupPage } from './group-page';
+import { GroupsPage } from './groups-page';
 
 
 export default function Home() {
-  return (<GroupPage/>);
+  return (<GroupsPage/>);
 }

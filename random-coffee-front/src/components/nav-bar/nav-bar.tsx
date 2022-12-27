@@ -1,37 +1,22 @@
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import { NotificationBellIcon } from '@skbkontur/icons'
 import {User} from '@skbkontur/react-icons';
 import style from './nav-bar.module.scss'
-import {Button, Modal} from '@skbkontur/react-ui';
-import {useNavigate} from "react-router-dom";
+import {Button} from '@skbkontur/react-ui';
+import {useNavigate, useLocation} from "react-router-dom";
 import {useSelector} from "react-redux";
+import {ExitModal} from "../logout-modal/logout-modal";
 
 export const NavBar: FC = () => {
 	// @ts-ignore
-	let user = useSelector(state => state.user);
+	const user = useSelector(state => state.user);
 	const [opened, setOpened] = useState(false);
 
-	function renderModal() {
-		return (
-			<Modal width={"120%"} onClose={close}>
-				<Modal.Header>Хочешь выйти?</Modal.Header>
-				<Modal.Body>
-				</Modal.Body>
-				<Modal.Footer>
-					<div className={style.modalButtons}>
-						<Button className={style.button} use="danger" onClick={() => {alert('Logout'); close()}}>Да</Button>
-						<Button className={style.button} onClick={close}>Отменить</Button>
-					</div>
-				</Modal.Footer>
-			</Modal>
-		);
-	}
-
-	function open() {
+	const openModal = () => {
 		setOpened(true);
 	}
 
-	function close() {
+	const closeModal = () => {
 		setOpened(false);
 	}
 
@@ -40,7 +25,7 @@ export const NavBar: FC = () => {
 	return (
 		<>
 			<div className={style.navBar}>
-				<div className={style.logo} onClick={() => navigate('/')}>
+				<div className={style.logo} onClick={()=>{navigate('')}}>
 					<div><h2>Cлучайный кофе</h2></div>
 				</div>
 				<div className={style.userPanel}>
@@ -50,9 +35,9 @@ export const NavBar: FC = () => {
 					<a className={style.buttons} href={''}>
 						<span className={style.text}><User/>{user.firstName + " " + user.lastName}</span>
 					</a>
-					{opened && renderModal()}
+					<ExitModal opened={opened} close={closeModal}/>
 					<span className={style.line}/>
-					<Button className={style.buttons} onClick={open} borderless>
+					<Button className={style.buttons} onClick={openModal} borderless>
 						<span className={style.text}>Выйти</span>
 					</Button>
 				</div>

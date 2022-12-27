@@ -4,7 +4,8 @@
   align-items: center;
   font-size: 14px;
   justify-content: space-between;
-  width: 30%;
+  width: 95%;
+  //border: 1px solid black;
 }
 
 #description{
@@ -15,41 +16,36 @@
 .name{
     display: flex;
     justify-content: end;
-    width: 10%;
-}
-
-.radioGroup{
-  display: flex;
-  justify-content: space-between;
+    width: 20%;
+  //border: 1px solid crimson;
 }
 
 .input{
-  width: 80%;
+  width: 75%;
+  //border: 1px solid blue;
 }
 
-.buttons {
-  width: 15%;
-  justify-self: end;
+.button {
+  display: flex;
+  justify-content: center;
+  justify-self: center;
 }
 
 .gapped{
-  margin: 2%;
-}
-
-.close{
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -o-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-  cursor: pointer;
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
+  width: 95%;
+  height: 95%;
+  //border: 1px solid blue;
 }
 
 .test{
   display: flex;
   justify-content: end;
+}
+
+.form{
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
