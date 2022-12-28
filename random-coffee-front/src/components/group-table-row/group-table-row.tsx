@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { TGroup } from '../../types/group';
+import { TGroupShort } from '../../types/group';
 import style from './group-table-row.module.scss';
 import { ImageWithPlaceholder } from '../image-with-placeholder/image-with-placeholder';
 
 type Props = {
-	group: TGroup;
+	group: TGroupShort;
 }
 
 export const GroupTableRow: FC<Props> = ({ group }) => {
@@ -15,8 +15,8 @@ export const GroupTableRow: FC<Props> = ({ group }) => {
 				<div className={style.GroupName}>{group.name}</div>
 			</div>
 			<div className={style.information}>
-				<div className={style.params}>{group.users.length}</div>
-				<div className={style.params}>{group.id}</div>
+				<div className={style.params}>{group.participantsCount}</div>
+				<div className={style.params}>{group.groupId}</div>
 			</div>
 		</section>
 	);

@@ -1,44 +1,39 @@
-import {FC, useEffect, useState} from 'react';
-import style from "../styles/group-page.module.scss";
-import {TGroup} from "../types/group";
-import {Button} from "@skbkontur/react-ui";
-import {UserTableRow} from "../components/user-table-row/user-table-row";
-import {useNavigate, useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {TUser} from "../types/user";
+import { FC, useEffect, useState } from 'react';
+import { useParams } from "react-router-dom";
+import { TGroup } from '../types/group';
+import { GroupInfo } from '../components/group-info/group-info';
 
 
 export const Group: FC = () => {
-    const { groupId } = useParams();
-    // @ts-ignore
-    const groupList: TGroup[] = useSelector(state => state.groups);
-    // @ts-ignore
-    const group = groupList.find(group => group.id == groupId);
-    if (group == undefined) return (<></>)
-    return (
-        <div className={style.background}>
-            <div className={style.header}>
-                <span className={style.name}>Группа {group.name}</span>
-            </div>
-            <div className={style.wrapper}>
-                <div className={style.information}>
-                    <div className={style.about}>
-                        <div className={style.avatar}/>
-                        <div>
-                            <div className={style.description}>{group.description}</div>
-                            <div className={style.admin}>Администратор: ???</div>
-                        </div>
-                    </div>
-                    <Button use='primary' className={style.button}>Присоединиться</Button>
-                </div>
-                <div className={style.users}>
-                    <h2>Участники</h2>
-                    {group.users.map((user: TUser)=>
-                        <div key={user.id}>
-                            <UserTableRow user={user}/>
-                        </div>)}
-                </div>
-            </div>
-        </div>
-    );
+	const { groupId } = useParams();
+	// @ts-ignore
+	//const groupList: TGroup[] = useSelector(state => state.groups);
+	// @ts-ignore
+	//const group = groupList.find(group => group.id == groupId);
+
+	const [group, setGroup] = useState<TGroup>(undefined);
+	const [loaded, setLoaded] = useState(false);
+
+	// TODO унести в редакс тулкит
+	useEffect(() => {
+		async function getGroupInfo() {
+			const resp = await fetch(`/api/groups/${groupId}`);
+			const respJson = await resp.json();
+			setGroup(respJson);
+			setLoaded(true);
+		}
+
+		getGroupInfo();
+	}, [])
+
+
+	if (!loaded) {
+		return <p>Loading</p>
+	}
+
+	console.log(group);
+
+	return (
+		<GroupInfo group={group}></GroupInfo>
+	);
 };

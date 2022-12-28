@@ -4,6 +4,11 @@ import style from './login-with-google.module.scss';
 
 export const LoginWithGoogleForm = () => {
 	const handleSuccess = (res: CredentialResponse) => {
+		// const resp = await fetch('/api/users/', {
+		// 	method: 'POST',
+		// 	body: JSON.stringify(res)
+		// })
+
 		console.log('Success', res);
 		if (res.credential) {
 			const decoded = jwt_decode(res.credential);

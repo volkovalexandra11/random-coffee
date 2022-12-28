@@ -1,16 +1,16 @@
 import { FC, useState } from 'react';
-import { TGroup } from '../../types/group';
+import { TGroupShort } from '../../types/group';
 import { GroupTableRow } from '../group-table-row/group-table-row';
 import style from './group-table.module.scss'
 import { Button } from '@skbkontur/react-ui';
 import {Link, useNavigate} from "react-router-dom";
 
 type Props = {
-	groups: TGroup[];
+	groups: TGroupShort[];
 }
 
 export const GroupTable: FC<Props> = (props) => {
-	const [groups, setGroups] = useState(props.groups)
+	const [groups, _] = useState(props.groups)
 	const navigate = useNavigate();
 
 	return (
@@ -21,7 +21,7 @@ export const GroupTable: FC<Props> = (props) => {
 			</div>
 			<div className={style.wrapper}>
 				{groups.map((group) =>
-					<Link key={group.id} to={`/group/${group.id}`}>
+					<Link key={group.groupId} to={`/group/${group.groupId}`}>
 						<GroupTableRow group={group}/>
 					</Link>)}
 			</div>

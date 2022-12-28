@@ -2,12 +2,12 @@ import { AuthStatus } from '../types/authStatus';
 import { AppState } from '../types/store';
 import { createReducer } from '@reduxjs/toolkit';
 import { changeAuthStatus, setGroups, setUser } from './action';
-import { TGroup } from '../types/group';
+import { TGroupShort } from '../types/group';
 
 export const INITIAL_STATE: AppState = {
 	user: null,
 	authStatus: AuthStatus.Unknown,
-	groups: new Array<TGroup>(),
+	groups: new Array<TGroupShort>(),
 };
 
 export const globalReducer = createReducer(INITIAL_STATE, (builder) => {

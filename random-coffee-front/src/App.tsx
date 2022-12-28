@@ -3,7 +3,7 @@ import './App.scss';
 import { GroupsPage } from "./pages/groups-page";
 import { Route, Routes } from 'react-router-dom';
 
-import { TGroup } from './types/group';
+import { TGroupShort } from './types/group';
 import { NavBar } from "./components/nav-bar/nav-bar";
 import { CreateGroup } from "./pages/create-group";
 import { LoginWithGoogle } from './pages/login-with-google';
