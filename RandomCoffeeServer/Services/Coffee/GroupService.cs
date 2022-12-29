@@ -48,15 +48,16 @@ public class GroupService
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 ProfilePictureUrl = user.ProfilePictureUrl
-            });
+            })
+            .ToList();
 
         return new GroupWithParticipantsDto
         {
             GroupId = group.GroupId,
-            AdminUserId = group.AdminUserId,
+            Admin = participantsAsDto.First(participant => participant.UserId == group.AdminUserId),
             Name = group.Name,
             IsPrivate = group.IsPrivate,
-            Participants = participantsAsDto.ToList()
+            Participants = participantsAsDto
         };
     }
 
