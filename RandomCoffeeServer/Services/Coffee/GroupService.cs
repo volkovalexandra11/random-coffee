@@ -57,7 +57,8 @@ public class GroupService
             Admin = participantsAsDto.First(participant => participant.UserId == group.AdminUserId),
             Name = group.Name,
             IsPrivate = group.IsPrivate,
-            Participants = participantsAsDto
+            Participants = participantsAsDto,
+            NextRoundDate = DateTime.Now
         };
     }
 

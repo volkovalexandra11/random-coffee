@@ -7,4 +7,5 @@ public class GroupWithParticipantsDto
     public string Name { get; init; }
     public bool IsPrivate { get; init; }
     public List<ParticipantDto> Participants { get; init; }
+    public DateTime NextRoundDate { get; init; }
 }
