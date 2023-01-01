@@ -10,7 +10,7 @@ export type TGroupShort = {
 export type TGroup = {
 	groupId: string;
 	name: string;
-	adminUserId: string;
+	admin: TUser;
 	participantsCount: number;
 	picturePath?: string;
 	participants: TUser[];

@@ -22,7 +22,7 @@ export const GroupInfo : FC<Props> = ({group}) => {
 						<div className={style.avatar}/>
 						<div>
 							<div className={style.description}>{group.description}</div>
-							<AdminInfo userId={group.adminUserId}/>
+							<AdminInfo user={group.admin}/>
 						</div>
 					</div>
 					<Button use='primary' className={style.button}>Присоединиться</Button>

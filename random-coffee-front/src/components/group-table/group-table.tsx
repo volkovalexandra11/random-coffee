@@ -9,8 +9,7 @@ type Props = {
 	groups: TGroupShort[];
 }
 
-export const GroupTable: FC<Props> = (props) => {
-	const [groups, _] = useState(props.groups)
+export const GroupTable: FC<Props> = ({groups}) => {
 	const navigate = useNavigate();
 
 	return (
