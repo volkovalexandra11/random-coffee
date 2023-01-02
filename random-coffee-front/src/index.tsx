@@ -9,12 +9,13 @@ import {store} from "./store";
 import {Provider} from "react-redux";
 import {setGroups, setUser} from "./store/action";
 import {TUser} from "./types/user";
+import {fetchGroupByIdAction, fetchGroupsAction} from './store/api-action';
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-let AppStore = store;
 const user: TUser| null = {
     id: 1,
     firstName: "Самсонов",
@@ -22,16 +23,19 @@ const user: TUser| null = {
     avatarPath: ""
 }
 // AppStore.dispatch(setGroups({groups: groupList}));
-AppStore.dispatch(setUser({user: user}))
+store.dispatch(fetchGroupsAction());
+store.dispatch(setUser({user: user}))
+
 
 
 root.render(
     <BrowserRouter>
-        <Provider store={AppStore}>
+        <Provider store={store}>
         <App />
         </Provider>
     </BrowserRouter>
 );
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
