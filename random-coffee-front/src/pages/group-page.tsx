@@ -24,7 +24,7 @@ export const Group: FC = () => {
 		}
 
 		getGroupInfo();
-	}, [])
+	}, [groupId])
 
 
 	if (!loaded) {

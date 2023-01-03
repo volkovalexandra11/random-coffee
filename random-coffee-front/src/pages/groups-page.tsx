@@ -4,7 +4,7 @@ import { useAppSelector } from '../hooks';
 import { TGroupShort } from '../types/group';
 
 export const GroupsPage: FC = () => {
-	// TODO убрать в редакс
+	//TODO убрать в редакс
 	//const { groups } = useAppSelector((state) => state);
 	const [loaded, setLoaded] = useState(false);
 	const [groups, setGroups] = useState<TGroupShort[]>([]);
