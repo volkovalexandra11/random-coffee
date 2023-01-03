@@ -1,35 +1,27 @@
-import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
-import jwt_decode from 'jwt-decode';
 import style from './login-with-google.module.scss';
+import { Button, Modal } from '@skbkontur/react-ui';
+import { GoogleSvg } from './google-svg';
 
 export const LoginWithGoogleForm = () => {
-	const handleSuccess = (res: CredentialResponse) => {
-		// const resp = await fetch('/api/users/', {
-		// 	method: 'POST',
-		// 	body: JSON.stringify(res)
-		// })
-
-		console.log('Success', res);
-		if (res.credential) {
-			const decoded = jwt_decode(res.credential);
-			console.log(decoded);
+	const handleClick = () => {
+		async function loginOnBack() {
+			const resp = await fetch('/login', { method: 'POST' });
+			const respJson = await resp.json();
+			console.log(respJson);
 		}
-		else
-			handleError();
-	}
 
-	const handleError = () => {
-		console.log('Error')
+		loginOnBack();
 	}
-
 	return (
-		<div className={style.page}>
-			<div className={style.wrapper}>
-				<GoogleLogin
-					onSuccess={handleSuccess}
-					onError={handleError}
-				/>
-			</div>
-		</div>
+		<Modal>
+			<Modal.Header>Войдите или зарегистрируйтесь</Modal.Header>
+			<Modal.Footer>
+				<div className={style.center}>
+					<button className={style.googleButton} onClick={handleClick}>
+						<GoogleSvg/>
+					</button>
+				</div>
+			</Modal.Footer>
+		</Modal>
 	)
-}
+};
