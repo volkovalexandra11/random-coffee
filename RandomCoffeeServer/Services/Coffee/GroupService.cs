@@ -81,8 +81,10 @@ public class GroupService
             .Where(group => group is not null)
             .Select(async group => new ShortFormatGroupDto
             {
-                GroupId = group!.GroupId, Name = group.Name,
-                ParticipantsCount = await GetParticipantsCountInGroup(group.GroupId) ?? 0
+                GroupId = group!.GroupId, 
+                Name = group.Name,
+                ParticipantsCount = await GetParticipantsCountInGroup(group.GroupId) ?? 0,
+                NextRoundDate = DateTime.Now
             }));
     }
 
