@@ -41,6 +41,8 @@ public class RandomCoffeeModule : Module
 
         builder.RegisterType<GroupService>().SingleInstance(); // <=> .AsSelf()
         builder.RegisterType<UserService>().SingleInstance();
+        builder.RegisterType<RoundService>().SingleInstance();
+        builder.RegisterType<ScheduleService>().SingleInstance();
     }
 
     private void RegisterRepositories(ContainerBuilder builder)
@@ -48,6 +50,8 @@ public class RandomCoffeeModule : Module
         builder.RegisterType<GroupRepository>().SingleInstance();
         builder.RegisterType<GroupUserRepository>().SingleInstance();
         builder.RegisterType<UserRepository>().SingleInstance();
+        builder.RegisterType<RoundRepository>().SingleInstance();
+        builder.RegisterType<ScheduleRepository>().SingleInstance();
     }
 
     private readonly HostBuilderContext hostCtx;
