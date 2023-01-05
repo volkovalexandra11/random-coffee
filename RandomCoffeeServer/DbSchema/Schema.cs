@@ -54,6 +54,49 @@ public static class Schema
         },
         new YdbTable
         {
+            TableName = "users_asp",
+            Columns = new YdbColumn[]
+            {
+                new("user_id", PrimitiveTypeId.String),
+                new("email", PrimitiveTypeId.Utf8),
+                new("first_name", PrimitiveTypeId.Utf8),
+                new("last_name", PrimitiveTypeId.Utf8),
+                new("profile_picture_url", PrimitiveTypeId.Utf8),
+                
+                new("username", PrimitiveTypeId.Utf8),
+                new("normalized_username", PrimitiveTypeId.Utf8)
+            },
+            PrimaryKeyColumns = new[] { 0 },
+            Indexes = new[]
+            {
+                new YdbIndex()
+                {
+                    IndexName = "users_asp_by_normalized_username",
+                    IndexColumns = new[] { 6 }
+                }
+            }
+        },
+        new YdbTable
+        {
+            TableName = "roles_asp",
+            Columns = new YdbColumn[]
+            {
+                new("role_id", PrimitiveTypeId.String),
+                new("name", PrimitiveTypeId.Utf8),
+                new("normalized_name", PrimitiveTypeId.Utf8),
+            },
+            PrimaryKeyColumns = new[] { 0 },
+            Indexes = new[]
+            {
+                new YdbIndex()
+                {
+                    IndexName = "roles_asp_by_normalized_name",
+                    IndexColumns = new[] { 2 }
+                }
+            }
+        },
+        new YdbTable
+        {
             TableName = "schedules",
             Columns = new YdbColumn[]
             {
