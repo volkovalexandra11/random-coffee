@@ -18,7 +18,7 @@ function App() {
 				<Route path={'/login'} element={<LoginWithGoogle/>}/>
 				<Route path={'/create'} element={<CreateGroup/>}/>
 				<Route path={'/group/:groupId'} element={<Group/>}/>
-				<Route path={'*'} element={<GroupsPage/>}/>
+				{/*<Route path={'*'} element={<GroupsPage/>}/>*/}
             </Routes>
         </main>
     );

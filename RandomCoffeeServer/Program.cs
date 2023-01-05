@@ -1,9 +1,13 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RandomCoffeeServer;
 using RandomCoffeeServer.Helpers;
 using RandomCoffeeServer.Jobs;
+using RandomCoffeeServer.Repositories.IdentityStorageProvider;
 using RandomCoffeeServer.Services.YandexCloud.Lockbox;
 
 DotEnv.Load("./.env");
@@ -21,13 +25,17 @@ builder.Services.Configure<JsonOptions>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddIdentity<User, Role>()
+    .AddDefaultTokenProviders();
+
 var lockboxService = new LockboxFactory().Create(builder.Environment); // todo this is bad!!!
-builder.Services.AddAuthentication().AddGoogle(o =>
-{
-    o.ClientId = lockboxService.GetCoffeeLocalOpenIdId().GetAwaiter().GetResult();
-    o.ClientSecret = lockboxService.GetCoffeeLocalOpenIdSecret().GetAwaiter().GetResult();
-    o.SaveTokens = true; // what is this
-});
+builder.Services
+    .AddAuthentication()
+    .AddGoogle(o =>
+    {
+        o.ClientId = lockboxService.GetCoffeeLocalOpenIdId().GetAwaiter().GetResult();
+        o.ClientSecret = lockboxService.GetCoffeeLocalOpenIdSecret().GetAwaiter().GetResult();
+    });
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>((hostBuilder, containerBuilder) =>
@@ -39,7 +47,7 @@ if (!builder.Environment.IsDevelopment())
 {
     if (Environment.GetEnvironmentVariable("PORT") is not { } port)
         throw new Exception("Required PORT environment variable not found");
-    
+
     builder.WebHost.UseUrls($"http://*:{port}");
 }
 else
@@ -67,6 +75,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
