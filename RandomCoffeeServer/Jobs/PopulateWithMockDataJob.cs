@@ -5,10 +5,16 @@ namespace RandomCoffeeServer.Jobs;
 
 public class PopulateWithMockDataJob
 {
-    public PopulateWithMockDataJob(UserService userService, GroupService groupService)
+    public PopulateWithMockDataJob(
+        UserService userService, 
+        GroupService groupService, 
+        RoundService roundService,
+        ScheduleService scheduleService)
     {
         this.userService = userService;
         this.groupService = groupService;
+        this.roundService = roundService;
+        this.scheduleService = scheduleService;
     }
     
     public async Task Fill(CancellationToken cancellationToken)
@@ -21,6 +27,11 @@ public class PopulateWithMockDataJob
         var group2Id = Guid.Parse("9f048120-0000-0000-0000-000000000000");
         var group3Id = Guid.Parse("9f048130-0000-0000-0000-000000000000");
         var group4Id = Guid.Parse("9f048140-0000-0000-0000-000000000000");
+        
+        var round1Id = Guid.Parse("58fe1000-0000-0000-0000-000000000000");
+        var round2Id = Guid.Parse("58fe2000-0000-0000-0000-000000000000");
+        var round3Id = Guid.Parse("58fe3000-0000-0000-0000-000000000000");
+        var round4Id = Guid.Parse("58fe4000-0000-0000-0000-000000000000");
         
         var users = new UserDto[]
         {
@@ -77,9 +88,71 @@ public class PopulateWithMockDataJob
                 AdminUserId = user1Id
             }
         };
+        
+        var rounds = new RoundDto[]
+        {
+            new RoundDto()
+            {
+                RoundId = round1Id,
+                GroupId = group1Id,
+                Date = DateTime.Now,
+                WasNotifiedAbout = true
+            },
+            new RoundDto()
+            {
+                RoundId = round2Id,
+                GroupId = group2Id,
+                Date = DateTime.Now,
+                WasNotifiedAbout = true
+            },
+            new RoundDto()
+            {
+                RoundId = round3Id,
+                GroupId = group3Id,
+                Date = DateTime.Now,
+                WasNotifiedAbout = true
+            },
+            new RoundDto()
+            {
+                RoundId = round4Id,
+                GroupId = group4Id,
+                Date = DateTime.Now,
+                WasNotifiedAbout = true
+            }
+        };
+
+        var schedules = new ScheduleDto[]
+        {
+            new ScheduleDto()
+            {
+                GroupId = group1Id,
+                IntervalDays = 1,
+                NextRoundId = round1Id
+            },
+            new ScheduleDto()
+            {
+                GroupId = group2Id,
+                IntervalDays = 2,
+                NextRoundId = round2Id
+            },
+            new ScheduleDto()
+            {
+                GroupId = group3Id,
+                IntervalDays = 3,
+                NextRoundId = round3Id
+            },
+            new ScheduleDto()
+            {
+                GroupId = group4Id,
+                IntervalDays = 4,
+                NextRoundId = round4Id
+            },
+        };
 
         await Task.WhenAll(users.Select(user => userService.AddUser(user)));
         await Task.WhenAll(groups.Select(group => groupService.AddGroup(group)));
+        await Task.WhenAll(rounds.Select(round => roundService.AddRound(round)));
+        await Task.WhenAll(schedules.Select(schedule => scheduleService.AddSchedule(schedule)));
 
         await Task.WhenAll(new Task[]
         {
@@ -89,4 +162,6 @@ public class PopulateWithMockDataJob
 
     private readonly UserService userService;
     private readonly GroupService groupService;
+    private readonly RoundService roundService;
+    private readonly ScheduleService scheduleService;
 }
