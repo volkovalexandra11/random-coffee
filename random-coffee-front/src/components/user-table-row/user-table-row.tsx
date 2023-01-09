@@ -5,9 +5,10 @@ import {TUser} from "../../types/user";
 
 type Props = {
     user: TUser;
+    isAdmin: boolean;
 }
 
-export const UserTableRow: FC<Props> = ({ user }) => {
+export const UserTableRow: FC<Props> = ({ user, isAdmin}) => {
     return (
         <section className={style.wrapper}>
             <div className={style.NameAvatar}>
@@ -15,7 +16,7 @@ export const UserTableRow: FC<Props> = ({ user }) => {
                 <div className={style.GroupName}>{user.firstName+" "+user.lastName}</div>
             </div>
             <div className={style.information}>
-                <div className={style.params}>Участник</div>
+                <div className={style.params}>{isAdmin ? "Администратор" :"Участник"}</div>
                 <div className={style.params}></div>
             </div>
         </section>

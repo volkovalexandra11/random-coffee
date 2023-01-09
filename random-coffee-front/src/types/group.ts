@@ -5,6 +5,7 @@ export type TGroupShort = {
 	name: string;
 	participantsCount: number;
 	picturePath?: string;
+	nextRoundDate: string;
 }
 
 export type TGroup = {

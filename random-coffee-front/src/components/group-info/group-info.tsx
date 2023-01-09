@@ -10,7 +10,7 @@ type Props = {
 	group: TGroup;
 }
 
-export const GroupInfo : FC<Props> = ({group}) => {
+export const GroupInfo: FC<Props> = ({ group }) => {
 	return (
 		<div className={style.background}>
 			<div className={style.header}>
@@ -25,13 +25,13 @@ export const GroupInfo : FC<Props> = ({group}) => {
 							<AdminInfo user={group.admin}/>
 						</div>
 					</div>
-					<Button use='primary' className={style.button}>Присоединиться</Button>
+					<Button use='primary' className={style.button}>Выйти из группы</Button>
 				</div>
 				<div className={style.users}>
 					<h2>Участники</h2>
 					{group.participants.map((user: TUser) =>
 						<div key={user.id}>
-							<UserTableRow user={user}/>
+							<UserTableRow user={user} isAdmin={group.admin.id === user.id}/>
 						</div>)}
 				</div>
 			</div>
