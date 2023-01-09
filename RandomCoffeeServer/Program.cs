@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RandomCoffeeServer;
+using RandomCoffeeServer.Domain.Dtos;
 using RandomCoffeeServer.Domain.Hosting;
 using RandomCoffeeServer.Domain.Hosting.Jobs;
 using RandomCoffeeServer.Domain.Models;
@@ -25,7 +26,7 @@ builder.Services.Configure<JsonOptions>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddIdentity<User, Role>();
+builder.Services.AddIdentity<IdentityCoffeeUser, IdentityRoleModel>();
 builder.Services.DisableRedirectOnUnauthorized();
 
 var lockboxService = new LockboxFactory().Create(builder.Environment); // todo this is bad!!!

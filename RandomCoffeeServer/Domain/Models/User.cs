@@ -1,18 +1,15 @@
 ﻿using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
 using Ydb.Sdk.Value;
 
-namespace RandomCoffeeServer.Domain.Models;
+namespace RandomCoffeeServer.Domain.Dtos;
 
 public class User
 {
-    public Guid UserId { get; set; }
-    public string Email { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string? ProfilePictureUrl { get; set; }
-
-    public string UserName { get; set; }
-    public string NormalizedUserName { get; set; }
+    public Guid UserId { get; init; }
+    public string Email { get; init; }
+    public string FirstName { get; init; }
+    public string LastName { get; init; }
+    public string? ProfilePictureUrl { get; init; }
 
     public Dictionary<string, YdbValue> ToYdb()
     {
@@ -22,9 +19,7 @@ public class User
             ["email"] = YdbValue.MakeUtf8(Email),
             ["first_name"] = YdbValue.MakeUtf8(FirstName),
             ["last_name"] = YdbValue.MakeUtf8(LastName),
-            ["profile_picture_url"] = YdbValue.MakeUtf8(ProfilePictureUrl ?? ""),
-            ["username"] = YdbValue.MakeUtf8(UserName),
-            ["normalized_username"] = YdbValue.MakeUtf8(NormalizedUserName)
+            ["profile_picture_url"] = YdbValue.MakeUtf8(ProfilePictureUrl ?? "")
         };
     }
 
@@ -36,10 +31,7 @@ public class User
             FirstName = row["first_name"].GetNonNullUtf8(),
             LastName = row["last_name"].GetNonNullUtf8(),
             Email = row["email"].GetNonNullUtf8(),
-            ProfilePictureUrl = row["profile_picture_url"].GetOptionalUtf8(),
-            
-            UserName = row["username"].GetNonNullUtf8(),
-            NormalizedUserName = row["normalized_username"].GetNonNullUtf8()
+            ProfilePictureUrl = row["profile_picture_url"].GetOptionalUtf8()
         };
     }
 }

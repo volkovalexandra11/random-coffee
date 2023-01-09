@@ -1,4 +1,5 @@
 ﻿using RandomCoffeeServer.Domain.Dtos;
+using RandomCoffeeServer.Storage.DbSchema;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
 using Ydb.Sdk.Table;
@@ -8,70 +9,59 @@ namespace RandomCoffeeServer.Storage.Repositories.CoffeeRepositories;
 
 public class GroupUserRepository : RepositoryBase
 {
+    private YdbTable GroupsUsers { get; }
+
     public GroupUserRepository(YdbService ydb)
-        : base(ydb, "groups_users")
+        : base(ydb)
     {
+        GroupsUsers = Schema.GroupsUsers;
     }
 
-    public async Task AddToGroup(GroupUserDto groupUser)
+    public async Task AddToGroup(Guid groupId, Guid userId)
     {
-        var @params = YdbConverter.ToDataParams(groupUser.ToYdb());
-        await Ydb.Execute(
-            $"{DeclareStatement}\n" +
-            $"REPLACE INTO groups_users SELECT * FROM AS_TABLE($data);",
-            @params);
+        await GroupsUsers
+            .Replace(new GroupUserDto
+                {
+                    GroupId = groupId,
+                    UserId = userId
+                }.ToYdb()
+            )
+            .ExecuteNonData(Ydb);
     }
 
     // Guid[] if found some users, null if no users found (<=> group doesn't exist) 
     public async Task<Guid[]?> FindUsersInGroup(Guid groupId)
     {
-        var response = await Ydb.Execute(
-            $"DECLARE $id AS String;\n" +
-            $"SELECT user_id FROM groups_users WHERE group_id = $id;",
-            new Dictionary<string, YdbValue>
-            {
-                ["$id"] = YdbValue.MakeString(groupId.ToByteArray())
-            });
-        response.Status.EnsureSuccess();
-        var queryResponse = (ExecuteDataQueryResponse)response;
-        var resultSet = queryResponse.Result.ResultSets[0];
-        return resultSet.Rows.Count > 0
-            ? resultSet.Rows.Select(row => row["user_id"].GetNonNullGuid()).ToArray()
+        var userIds = await GroupsUsers
+            .Select("user_id")
+            .Where("group_id", YdbValue.MakeString(groupId.ToByteArray()))
+            .ExecuteData(Ydb);
+
+        return userIds.Count > 0
+            ? userIds.Select(row => row["user_id"].GetNonNullGuid()).ToArray()
             : null;
     }
 
     public async Task<Guid[]?> FindGroupsByParticipant(Guid userId)
     {
-        var response = await Ydb.Execute(
-            $"DECLARE $id AS String;\n" +
-            $"SELECT group_id " +
-            $"FROM groups_users VIEW groups_users_by_user_id " +
-            $"WHERE user_id = $id;", new Dictionary<string, YdbValue>
-            {
-                ["$id"] = YdbValue.MakeString(userId.ToByteArray())
-            });
-        response.Status.EnsureSuccess();
-        var queryResponse = (ExecuteDataQueryResponse)response;
-        var resultSet = queryResponse.Result.ResultSets[0];
-        return resultSet.Rows.Count > 0
-            ? resultSet.Rows.Select(row => row["group_id"].GetNonNullGuid()).ToArray()
+        var groupIds = await GroupsUsers
+            .Select("group_id")
+            .ViewByColumn("user_id")
+            .Where("user_id", YdbValue.MakeString(userId.ToByteArray()))
+            .ExecuteData(Ydb);
+
+        return groupIds.Count > 0
+            ? groupIds.Select(row => row["group_id"].GetNonNullGuid()).ToArray()
             : null;
     }
 
     public async Task<int?> GetParticipantsCount(Guid groupId)
     {
-        var response = await Ydb.Execute(
-            $"DECLARE $id AS String;\n" +
-            $"SELECT Count(*) FROM groups_users WHERE group_id = $id;",
-            new Dictionary<string, YdbValue>
-            {
-                ["$id"] = YdbValue.MakeString(groupId.ToByteArray())
-            });
-        response.Status.EnsureSuccess();
-        var queryResponse = (ExecuteDataQueryResponse)response;
-        var resultSet = queryResponse.Result.ResultSets[0];
-        return resultSet.Rows.Count > 0
-            ? (int)resultSet.Rows[0][0].GetUint64()
-            : null;
+        var counts = await GroupsUsers
+            .Select("Count(*)")
+            .Where("group_id", YdbValue.MakeString(groupId.ToByteArray()))
+            .ExecuteData(Ydb);
+
+        return counts.SingleOrDefault(row => (int)row[0].GetUint64());
     }
 }

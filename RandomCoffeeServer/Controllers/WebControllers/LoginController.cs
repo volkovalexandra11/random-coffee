@@ -2,14 +2,16 @@
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using RandomCoffeeServer.Domain.Dtos;
 using RandomCoffeeServer.Domain.Models;
+using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 
 namespace RandomCoffeeServer.Controllers.WebControllers;
 
 [ApiController]
 public class LoginController : ControllerBase
 {
-    public LoginController(SignInManager<User> signInManager, UserManager<User> userManager,
+    public LoginController(SignInManager<IdentityCoffeeUser> signInManager, UserManager<IdentityCoffeeUser> userManager,
         IWebHostEnvironment environment)
     {
         this.environment = environment;
@@ -45,16 +47,16 @@ public class LoginController : ControllerBase
             return Redirect(RedirectUri("/"));
         
         var email = loginInfo.Principal.FindFirst(ClaimTypes.Email)?.Value;
-        var user = new User
+        var user = new IdentityCoffeeUser()
         {
             UserId = Guid.NewGuid(), // todo не тут
             FirstName = loginInfo.Principal.FindFirst(ClaimTypes.GivenName)?.Value,
             LastName = loginInfo.Principal.FindFirst(ClaimTypes.Surname)?.Value,
             Email = email,
             ProfilePictureUrl = loginInfo.Principal.FindFirst("image")?.Value,
-
+            
             UserName = email,
-            NormalizedUserName = email,
+            NormalizedUserName = email.ToUpperInvariant()
         };
 
         var userCreationResult = await userManager.CreateAsync(user);
@@ -84,7 +86,7 @@ public class LoginController : ControllerBase
     }
 
     private readonly IWebHostEnvironment environment;
-    private readonly SignInManager<User> signInManager;
-    private readonly UserManager<User> userManager;
+    private readonly SignInManager<IdentityCoffeeUser> signInManager;
+    private readonly UserManager<IdentityCoffeeUser> userManager;
     private const int DevFrontPort = 3000;
 }

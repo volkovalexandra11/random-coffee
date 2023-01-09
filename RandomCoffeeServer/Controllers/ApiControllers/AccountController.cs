@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using RandomCoffeeServer.Domain.Dtos;
 using RandomCoffeeServer.Domain.Models;
+using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 
 namespace RandomCoffeeServer.Controllers.ApiControllers;
 
@@ -11,7 +13,7 @@ namespace RandomCoffeeServer.Controllers.ApiControllers;
 [Route("api/[controller]")]
 public class AccountController : ControllerBase
 {
-    public AccountController(UserManager<User> userManager)
+    public AccountController(UserManager<IdentityCoffeeUser> userManager)
     {
         this.userManager = userManager;
     }
@@ -23,5 +25,5 @@ public class AccountController : ControllerBase
         return Ok(await userManager.FindByIdAsync(userId));
     }
 
-    private readonly UserManager<User> userManager;
+    private readonly UserManager<IdentityCoffeeUser> userManager;
 }

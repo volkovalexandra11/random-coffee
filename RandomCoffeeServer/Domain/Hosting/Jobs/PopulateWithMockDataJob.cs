@@ -23,9 +23,9 @@ public class PopulateWithMockDataJob
         var group3Id = Guid.Parse("9f048130-0000-0000-0000-000000000000");
         var group4Id = Guid.Parse("9f048140-0000-0000-0000-000000000000");
         
-        var users = new UserDto[]
+        var users = new User[]
         {
-            new UserDto()
+            new User()
             {
                 UserId = user1Id,
                 Email = "vasya.pupkin@mail.ru",
@@ -33,7 +33,7 @@ public class PopulateWithMockDataJob
                 LastName = "Пупкин",
                 ProfilePictureUrl = null
             },
-            new UserDto()
+            new User()
             {
                 UserId = user2Id,
                 Email = "pasya.vutkin@mail.ru",
@@ -41,7 +41,7 @@ public class PopulateWithMockDataJob
                 LastName = "Вуткин",
                 ProfilePictureUrl = "/static/img/avatar.jpg"
             },
-            new UserDto()
+            new User()
             {
                 UserId = user3Id,
                 Email = "user3@yandex.ru",

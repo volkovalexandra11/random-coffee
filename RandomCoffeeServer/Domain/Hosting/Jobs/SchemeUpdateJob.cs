@@ -1,5 +1,6 @@
 ﻿using RandomCoffeeServer.Storage.DbSchema;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb;
+using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
 using Ydb.Sdk;
 
 namespace RandomCoffeeServer.Domain.Hosting.Jobs;

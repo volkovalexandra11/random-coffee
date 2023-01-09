@@ -3,7 +3,7 @@ using Ydb.Sdk.Value;
 
 namespace RandomCoffeeServer.Storage.Repositories.AspIdentityStorages;
 
-public class Role
+public class IdentityRoleModel
 {
     public Guid RoleId { get; set; }
     public string Name { get; set; }
@@ -19,9 +19,9 @@ public class Role
         };
     }
 
-    public static Role FromYdbRow(ResultSet.Row row)
+    public static IdentityRoleModel FromYdbRow(ResultSet.Row row)
     {
-        return new Role
+        return new IdentityRoleModel
         {
             RoleId = row["role_id"].GetNonNullGuid(),
             Name = row["name"].GetNonNullUtf8(),

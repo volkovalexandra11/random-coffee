@@ -21,7 +21,7 @@ public class UsersController : ControllerBase
         var userId = Guid.NewGuid();
 
         await userService.AddUser(
-            new UserDto
+            new User
             {
                 UserId = userId,
                 FirstName = createUserDto.FirstName,

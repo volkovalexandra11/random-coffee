@@ -4,9 +4,6 @@ namespace RandomCoffeeServer.Storage.DbSchema;
 
 public static class Schema
 {
-    // Группы по конст айди юзера 
-    // Юзеры в группе
-    // 
     public static readonly YdbTable[] Tables = new[]
     {
         new YdbTable
@@ -20,7 +17,15 @@ public static class Schema
                 new("last_name", PrimitiveTypeId.Utf8),
                 new("profile_picture_url", PrimitiveTypeId.Utf8)
             },
-            PrimaryKeyColumns = new[] { 0 }
+            PrimaryKeyColumns = new[] { 0 },
+            Indexes = new[]
+            {
+                new YdbIndex
+                {
+                    IndexName = "users_by_email",
+                    IndexColumns = new[] { 1 }
+                }
+            }
         },
         new YdbTable
         {
@@ -54,49 +59,6 @@ public static class Schema
         },
         new YdbTable
         {
-            TableName = "users_asp",
-            Columns = new YdbColumn[]
-            {
-                new("user_id", PrimitiveTypeId.String),
-                new("email", PrimitiveTypeId.Utf8),
-                new("first_name", PrimitiveTypeId.Utf8),
-                new("last_name", PrimitiveTypeId.Utf8),
-                new("profile_picture_url", PrimitiveTypeId.Utf8),
-                
-                new("username", PrimitiveTypeId.Utf8),
-                new("normalized_username", PrimitiveTypeId.Utf8)
-            },
-            PrimaryKeyColumns = new[] { 0 },
-            Indexes = new[]
-            {
-                new YdbIndex()
-                {
-                    IndexName = "users_asp_by_normalized_username",
-                    IndexColumns = new[] { 6 }
-                }
-            }
-        },
-        new YdbTable
-        {
-            TableName = "roles_asp",
-            Columns = new YdbColumn[]
-            {
-                new("role_id", PrimitiveTypeId.String),
-                new("name", PrimitiveTypeId.Utf8),
-                new("normalized_name", PrimitiveTypeId.Utf8),
-            },
-            PrimaryKeyColumns = new[] { 0 },
-            Indexes = new[]
-            {
-                new YdbIndex()
-                {
-                    IndexName = "roles_asp_by_normalized_name",
-                    IndexColumns = new[] { 2 }
-                }
-            }
-        },
-        new YdbTable
-        {
             TableName = "user_logins_asp",
             Columns = new YdbColumn[]
             {
@@ -108,10 +70,29 @@ public static class Schema
             PrimaryKeyColumns = new[] { 0, 1 },
             Indexes = new[]
             {
-                new YdbIndex()
+                new YdbIndex
                 {
                     IndexName = "user_logins_asp_by_user_id",
                     IndexColumns = new[] { 3 }
+                }
+            }
+        },
+        new YdbTable
+        {
+            TableName = "user_infos_asp",
+            Columns = new YdbColumn[]
+            {
+                new("user_id", PrimitiveTypeId.String),
+                new("username", PrimitiveTypeId.Utf8),
+                new("normalized_username", PrimitiveTypeId.Utf8),
+            },
+            PrimaryKeyColumns = new[] { 0 },
+            Indexes = new[]
+            {
+                new YdbIndex()
+                {
+                    IndexName = "user_infos_asp_by_normalized_username",
+                    IndexColumns = new[] { 2 }
                 }
             }
         },
@@ -169,11 +150,11 @@ public static class Schema
 
     public static readonly YdbTable Users = GetTable("users");
     public static readonly YdbTable Groups = GetTable("groups");
-    public static readonly YdbTable GroupsUsers = GetTable("schedules");
+    public static readonly YdbTable GroupsUsers = GetTable("groups_users");
     public static readonly YdbTable Rounds = GetTable("rounds");
     public static readonly YdbTable UserRounds = GetTable("user_rounds");
-    public static readonly YdbTable UsersAsp = GetTable("users_asp");
     public static readonly YdbTable UserLoginsAsp = GetTable("user_logins_asp");
+    public static readonly YdbTable UserInfoAsp = GetTable("user_infos_asp");
 
     private static YdbTable GetTable(string tableName)
     {

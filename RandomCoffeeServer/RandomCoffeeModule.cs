@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Microsoft.AspNetCore.Identity;
+using RandomCoffeeServer.Domain.Dtos;
 using RandomCoffeeServer.Domain.Hosting.Jobs;
 using RandomCoffeeServer.Domain.Models;
 using RandomCoffeeServer.Domain.Services.Coffee;
@@ -34,12 +35,12 @@ public class RandomCoffeeModule : Module
 
     private void RegisterAuth(ContainerBuilder builder)
     {
-        builder.RegisterType<CoffeeUserStore>()
+        builder.RegisterType<IdentityUserInfoStore>()
             .As<IUserStore<User>>()
             .As<IUserLoginStore<User>>()
             .SingleInstance();
         builder.RegisterType<CoffeeRoleStore>()
-            .As<IRoleStore<Role>>()
+            .As<IRoleStore<IdentityRoleModel>>()
             .SingleInstance();
     }
 

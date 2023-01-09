@@ -1,9 +1,11 @@
-﻿using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
+﻿using RandomCoffeeServer.Storage.YandexCloud.Ydb;
+using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
+using Yandex.Cloud.Dataproc.V1;
 using Ydb.Sdk.Value;
 
 namespace RandomCoffeeServer.Storage.Repositories.AspIdentityStorages;
 
-public class UserLoginDto
+public class IdentityUserLogin
 {
     public string LoginProvider { get; set; }
     public string ProviderKey { get; set; }
@@ -21,9 +23,9 @@ public class UserLoginDto
         };
     }
 
-    public static UserLoginDto FromYdbRow(ResultSet.Row row)
+    public static IdentityUserLogin FromYdbRow(ResultSet.Row row)
     {
-        return new UserLoginDto
+        return new IdentityUserLogin
         {
             LoginProvider = row["login_provider"].GetNonNullUtf8(),
             ProviderKey = row["provider_key"].GetNonNullUtf8(),

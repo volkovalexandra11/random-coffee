@@ -1,9 +1,10 @@
-﻿using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
+﻿using RandomCoffeeServer.Domain.Dtos;
+using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
 using Ydb.Sdk.Value;
 
-namespace RandomCoffeeServer.Domain.Dtos;
+namespace RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 
-public class UserDto
+public class IdentityUserModel
 {
     public Guid UserId { get; init; }
     public string Email { get; init; }
@@ -23,9 +24,9 @@ public class UserDto
         };
     }
 
-    public static UserDto FromYdbRow(ResultSet.Row row)
+    public static User FromYdbRow(ResultSet.Row row)
     {
-        return new UserDto
+        return new User
         {
             UserId = row["user_id"].GetNonNullGuid(),
             FirstName = row["first_name"].GetNonNullUtf8(),

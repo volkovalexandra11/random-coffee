@@ -20,7 +20,7 @@ public class GroupService
     public async Task AddGroup(Group group)
     {
         await groupRepository.AddGroup(group);
-        await AddUserToGroup(group.AdminUserId, group.GroupId);
+        await groupUserRepository.AddToGroup(userId: group.AdminUserId, groupId: group.GroupId);
     }
 
     public async Task<Group?> GetGroup(Guid groupId)
@@ -81,7 +81,7 @@ public class GroupService
             .Where(group => group is not null)
             .Select(async group => new ShortFormatGroupDto
             {
-                GroupId = group!.GroupId, 
+                GroupId = group!.GroupId,
                 Name = group.Name,
                 ParticipantsCount = await GetParticipantsCountInGroup(group.GroupId) ?? 0,
                 NextRoundDate = DateTime.Now
@@ -90,11 +90,7 @@ public class GroupService
 
     public async Task AddUserToGroup(Guid userId, Guid groupId)
     {
-        await groupUserRepository.AddToGroup(new GroupUserDto
-        {
-            UserId = userId,
-            GroupId = groupId
-        });
+        await groupUserRepository.AddToGroup(userId: userId, groupId: groupId);
     }
 
     private readonly GroupRepository groupRepository;

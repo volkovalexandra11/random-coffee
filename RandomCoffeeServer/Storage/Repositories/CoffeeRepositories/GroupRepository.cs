@@ -1,4 +1,5 @@
 ﻿using RandomCoffeeServer.Domain.Models;
+using RandomCoffeeServer.Storage.DbSchema;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
 using Ydb.Sdk.Table;
@@ -8,32 +9,28 @@ namespace RandomCoffeeServer.Storage.Repositories.CoffeeRepositories;
 
 public class GroupRepository : RepositoryBase
 {
+    private YdbTable Groups { get; }
+    
     public GroupRepository(YdbService ydb)
-        : base(ydb, "groups")
+        : base(ydb)
     {
+        Groups = Schema.Groups;
     }
 
     public async Task AddGroup(Group group)
     {
-        var @params = YdbConverter.ToDataParams(group.ToYdb());
-        await Ydb.Execute(
-            $"{DeclareStatement}\n" +
-            $"REPLACE INTO groups SELECT * FROM AS_TABLE($data);",
-            @params);
+        await Groups
+            .Replace(group.ToYdb())
+            .ExecuteNonData(Ydb);
     }
 
     public async Task<Group?> FindGroup(Guid groupId)
     {
-        var response = await Ydb.Execute(
-            $"DECLARE $id AS String;\n" +
-            $"SELECT * FROM groups WHERE group_id = $id;",
-            new Dictionary<string, YdbValue>
-            {
-                ["$id"] = YdbValue.MakeString(groupId.ToByteArray())
-            });
-        response.Status.EnsureSuccess();
-        var queryResponse = (ExecuteDataQueryResponse)response;
-        var resultSet = queryResponse.Result.ResultSets[0];
-        return resultSet.Rows.Count == 1 ? Group.FromYdbRow(resultSet.Rows[0]) : null;
+        var groups = await Groups
+            .Select()
+            .Where("group_id", YdbValue.MakeString(groupId.ToByteArray()))
+            .ExecuteData(Ydb);
+        
+        return groups.SingleOrDefault(Group.FromYdbRow);
     }
 }
