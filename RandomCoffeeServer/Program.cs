@@ -1,20 +1,20 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RandomCoffeeServer;
-using RandomCoffeeServer.Helpers;
-using RandomCoffeeServer.Jobs;
-using RandomCoffeeServer.Repositories.IdentityStorageProvider;
-using RandomCoffeeServer.Services.YandexCloud.Lockbox;
+using RandomCoffeeServer.Domain.Hosting;
+using RandomCoffeeServer.Domain.Hosting.Jobs;
+using RandomCoffeeServer.Domain.Models;
+using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages;
+using RandomCoffeeServer.Storage.YandexCloud.Lockbox;
 
 DotEnv.Load("./.env");
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.Configure<JsonOptions>(options =>
@@ -25,16 +25,18 @@ builder.Services.Configure<JsonOptions>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddIdentity<User, Role>()
-    .AddDefaultTokenProviders();
+builder.Services.AddIdentity<User, Role>();
+builder.Services.DisableRedirectOnUnauthorized();
 
 var lockboxService = new LockboxFactory().Create(builder.Environment); // todo this is bad!!!
-builder.Services
-    .AddAuthentication()
+builder.Services.AddAuthentication()
     .AddGoogle(o =>
     {
         o.ClientId = lockboxService.GetCoffeeLocalOpenIdId().GetAwaiter().GetResult();
         o.ClientSecret = lockboxService.GetCoffeeLocalOpenIdSecret().GetAwaiter().GetResult();
+        
+        o.ClaimActions.MapJsonKey("image", "picture");
+        o.CorrelationCookie.SameSite = SameSiteMode.Unspecified;
     });
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());

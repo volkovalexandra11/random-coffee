@@ -20,7 +20,7 @@ export const LoginWithGoogleForm = () => {
 			<Modal.Header>Войдите или зарегистрируйтесь</Modal.Header>
 			<Modal.Footer>
 				<div className={style.center}>
-					<button className={style.googleButton} onClick={() => window.location.href = '/loginin'}>
+					<button className={style.googleButton} onClick={() => window.location.href = '/login/google-login'}>
 						<GoogleSvg/>
 					</button>
 				</div>
