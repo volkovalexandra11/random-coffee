@@ -1,7 +1,7 @@
 ﻿using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
 using Ydb.Sdk.Value;
 
-namespace RandomCoffeeServer.Storage.Repositories.AspIdentityStorages;
+namespace RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 
 public class IdentityRoleModel
 {
@@ -13,9 +13,9 @@ public class IdentityRoleModel
     {
         return new Dictionary<string, YdbValue>
         {
-            ["role_id"] = YdbValue.MakeString(RoleId.ToByteArray()),
-            ["name"] = YdbValue.MakeUtf8(Name),
-            ["normalized_name"] = YdbValue.MakeUtf8(NormalizedName)
+            ["role_id"] = RoleId.ToYdb(),
+            ["name"] = Name.ToYdb(),
+            ["normalized_name"] = NormalizedName.ToYdb()
         };
     }
 

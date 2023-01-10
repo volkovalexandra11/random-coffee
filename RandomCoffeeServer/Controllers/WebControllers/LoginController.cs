@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using RandomCoffeeServer.Domain.Dtos;
-using RandomCoffeeServer.Domain.Models;
 using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 
 namespace RandomCoffeeServer.Controllers.WebControllers;
@@ -18,7 +16,7 @@ public class LoginController : ControllerBase
         this.signInManager = signInManager;
         this.userManager = userManager;
     }
-    
+
     [HttpGet]
     [Route("login/google-login")]
     public async Task<IActionResult> Login()
@@ -45,7 +43,7 @@ public class LoginController : ControllerBase
             isPersistent: false);
         if (result.Succeeded)
             return Redirect(RedirectUri("/"));
-        
+
         var email = loginInfo.Principal.FindFirst(ClaimTypes.Email)?.Value;
         var user = new IdentityCoffeeUser()
         {
@@ -54,7 +52,7 @@ public class LoginController : ControllerBase
             LastName = loginInfo.Principal.FindFirst(ClaimTypes.Surname)?.Value,
             Email = email,
             ProfilePictureUrl = loginInfo.Principal.FindFirst("image")?.Value,
-            
+
             UserName = email,
             NormalizedUserName = email.ToUpperInvariant()
         };

@@ -1,5 +1,4 @@
-﻿using RandomCoffeeServer.Domain.Dtos;
-using RandomCoffeeServer.Storage.Repositories;
+﻿using RandomCoffeeServer.Domain.Models;
 using RandomCoffeeServer.Storage.Repositories.CoffeeRepositories;
 
 namespace RandomCoffeeServer.Domain.Services.Coffee;
@@ -11,10 +10,11 @@ public class UserService
         this.userRepository = userRepository;
     }
 
-    public async Task AddUser(User user)
-    {
-        await userRepository.AddUser(user);
-    }
+    // use UserManager<IdentityCoffeeUser>
+    // public async Task AddUser(User user)
+    // {
+    // await userRepository.AddUser(user);
+    // }
 
     public async Task<User?> GetUser(Guid userId)
     {

@@ -5,7 +5,7 @@ public static class HostBuilderExtensions
     public static void DisableRedirectOnUnauthorized(this IServiceCollection builder)
     {
         const int unauthorized = 401;
-        
+
         builder.ConfigureApplicationCookie(options =>
         {
             options.Events.OnRedirectToLogin = context =>
@@ -14,5 +14,5 @@ public static class HostBuilderExtensions
                 return Task.CompletedTask;
             };
         });
-    } 
+    }
 }

@@ -5,19 +5,17 @@ namespace RandomCoffeeServer.Storage.DbSchema;
 public class YdbColumn
 {
     public string Name { get; }
-    public Type.Types.PrimitiveTypeId Type { get; }
-    // Only for PK columns, makes T instead of Optional<T>
-    // public bool IsNotNull { get; }
 
-    public YdbColumn(string name, Type.Types.PrimitiveTypeId type/*, bool isNotNull = false*/)
+    public Type.Types.PrimitiveTypeId Type { get; }
+
+    public YdbColumn(string name, Type.Types.PrimitiveTypeId type)
     {
         Name = name;
         Type = type;
-        // IsNotNull = IsNotNull;
     }
 
     public string ToDdl()
     {
-        return $"{Name} {Type}"; //{(IsNotNull ? " NOT NULL" : string.Empty)}";
+        return $"{Name} {Type}";
     }
 }

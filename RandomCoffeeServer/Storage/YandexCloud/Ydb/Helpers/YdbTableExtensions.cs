@@ -30,10 +30,24 @@ public static class YdbTableExtensions
 
         return sb.Remove(sb.Length - 2, 2);
     }
-    
+
     public static string ToDelete(this YdbTable table)
     {
         return $"DROP TABLE {table.TableName};";
+    }
+
+    public static string AsTableDeclare(this YdbTable tableSchema, string? paramName = null)
+    {
+        paramName ??= "data";
+        var sb = new StringBuilder($"DECLARE ${paramName} AS List<Struct<\n");
+        foreach (var column in tableSchema.Columns)
+        {
+            sb.Append($"  {column.Name}: {column.Type},\n");
+        }
+
+        sb.Remove(sb.Length - 2, 2);
+        sb.Append(">>;");
+        return sb.ToString();
     }
 
     public static Query Select(this YdbTable table, params string[]? columns)

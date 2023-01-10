@@ -1,6 +1,4 @@
-﻿using RandomCoffeeServer.Storage.DbSchema;
-using RandomCoffeeServer.Storage.YandexCloud.Ydb;
-using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
+﻿using RandomCoffeeServer.Storage.YandexCloud.Ydb;
 
 namespace RandomCoffeeServer.Storage.Repositories;
 

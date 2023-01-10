@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using RandomCoffeeServer.Domain.Dtos;
+using RandomCoffeeServer.Domain.Models;
 using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 using RandomCoffeeServer.Storage.Repositories.CoffeeRepositories;
-using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
-using Ydb.Sdk.Table;
-using Ydb.Sdk.Value;
 
 namespace RandomCoffeeServer.Storage.Repositories.AspIdentityStorages;
 
@@ -27,6 +24,13 @@ public class IdentityUserStore : IUserLoginStore<IdentityCoffeeUser>
     public async Task AddLoginAsync(IdentityCoffeeUser user, UserLoginInfo login, CancellationToken cancellationToken)
     {
         await userLoginsStore.AddLoginAsync(user.UserId, login);
+    }
+
+    [Obsolete("for mock data only")]
+    public async Task ReplaceLoginAsync(IdentityCoffeeUser user, UserLoginInfo login,
+        CancellationToken cancellationToken)
+    {
+        await userLoginsStore.ReplaceLoginAsync(user.UserId, login);
     }
 
     public async Task RemoveLoginAsync(IdentityCoffeeUser user, string loginProvider, string providerKey,
@@ -61,6 +65,22 @@ public class IdentityUserStore : IUserLoginStore<IdentityCoffeeUser>
         {
             await userRepository.AddUser(user.ToModel());
             await userInfoStore.AddUserInfo(user.ToIdentityInfo());
+        }
+        catch (Exception e)
+        {
+            return IdentityResult.Failed();
+        }
+
+        return IdentityResult.Success;
+    }
+
+    [Obsolete("for mock data only")]
+    public async Task<IdentityResult> ReplaceAsync(IdentityCoffeeUser user, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await userRepository.ReplaceUser(user.ToModel());
+            await userInfoStore.ReplaceUserInfo(user.ToIdentityInfo());
         }
         catch (Exception e)
         {
@@ -115,7 +135,7 @@ public class IdentityUserStore : IUserLoginStore<IdentityCoffeeUser>
         var userInfo = await userInfoStore.FindUserInfoByNormalizedUsername(normalizedUserName);
         if (userInfo is null)
             return null;
-        
+
         var user = await userRepository.FindUser(userInfo.UserId);
         if (user is null)
             throw new InvalidProgramException();

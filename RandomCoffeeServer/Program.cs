@@ -1,16 +1,11 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RandomCoffeeServer;
-using RandomCoffeeServer.Domain.Dtos;
 using RandomCoffeeServer.Domain.Hosting;
 using RandomCoffeeServer.Domain.Hosting.Jobs;
-using RandomCoffeeServer.Domain.Models;
-using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages;
+using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 using RandomCoffeeServer.Storage.YandexCloud.Lockbox;
 
 DotEnv.Load("./.env");
@@ -35,7 +30,7 @@ builder.Services.AddAuthentication()
     {
         o.ClientId = lockboxService.GetCoffeeLocalOpenIdId().GetAwaiter().GetResult();
         o.ClientSecret = lockboxService.GetCoffeeLocalOpenIdSecret().GetAwaiter().GetResult();
-        
+
         o.ClaimActions.MapJsonKey("image", "picture");
         o.CorrelationCookie.SameSite = SameSiteMode.Unspecified;
     });

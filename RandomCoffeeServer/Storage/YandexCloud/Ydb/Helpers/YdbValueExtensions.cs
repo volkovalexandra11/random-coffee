@@ -12,7 +12,7 @@ public static class YdbValueExtensions
             throw new InvalidProgramException();
         return new Guid(bytes);
     }
-    
+
     public static bool GetNonNullBool(this YdbValue ydbValue)
     {
         var @bool = ydbValue.GetOptionalInt32();

@@ -2,15 +2,13 @@
 using RandomCoffeeServer.Storage.DbSchema;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
-using Ydb.Sdk.Table;
-using Ydb.Sdk.Value;
 
 namespace RandomCoffeeServer.Storage.Repositories.CoffeeRepositories;
 
 public class GroupRepository : RepositoryBase
 {
     private YdbTable Groups { get; }
-    
+
     public GroupRepository(YdbService ydb)
         : base(ydb)
     {
@@ -28,9 +26,9 @@ public class GroupRepository : RepositoryBase
     {
         var groups = await Groups
             .Select()
-            .Where("group_id", YdbValue.MakeString(groupId.ToByteArray()))
+            .Where("group_id", groupId.ToYdb())
             .ExecuteData(Ydb);
-        
+
         return groups.SingleOrDefault(Group.FromYdbRow);
     }
 }

@@ -1,7 +1,4 @@
-﻿using System.Text;
-using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
-
-namespace RandomCoffeeServer.Storage.DbSchema;
+﻿namespace RandomCoffeeServer.Storage.DbSchema;
 
 public class YdbTable
 {
@@ -14,7 +11,7 @@ public class YdbTable
     {
         if (Indexes is null)
             throw new InvalidProgramException();
-        
+
         return Indexes.Single(index => index.IndexColumns.Length == 1 && Columns[index.IndexColumns[0]].Name == column);
     }
 }

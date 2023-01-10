@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using RandomCoffeeServer.Domain.Dtos;
 using RandomCoffeeServer.Domain.Models;
 using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 
@@ -22,7 +21,18 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> GetLoginInfo()
     {
         var userId = HttpContext.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
-        return Ok(await userManager.FindByIdAsync(userId));
+        var identityUser = await userManager.FindByIdAsync(userId);
+        if (identityUser is null)
+            throw new InvalidProgramException();
+
+        return Ok(new User
+        {
+            UserId = identityUser.UserId,
+            Email = identityUser.Email,
+            FirstName = identityUser.FirstName,
+            LastName = identityUser.LastName,
+            ProfilePictureUrl = identityUser.ProfilePictureUrl
+        });
     }
 
     private readonly UserManager<IdentityCoffeeUser> userManager;

@@ -1,7 +1,7 @@
 ﻿using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
 using Ydb.Sdk.Value;
 
-namespace RandomCoffeeServer.Domain.Dtos;
+namespace RandomCoffeeServer.Domain.Models;
 
 public class User
 {
@@ -15,10 +15,10 @@ public class User
     {
         return new Dictionary<string, YdbValue>
         {
-            ["user_id"] = YdbValue.MakeString(UserId.ToByteArray()),
-            ["email"] = YdbValue.MakeUtf8(Email),
-            ["first_name"] = YdbValue.MakeUtf8(FirstName),
-            ["last_name"] = YdbValue.MakeUtf8(LastName),
+            ["user_id"] = UserId.ToYdb(),
+            ["email"] = Email.ToYdb(),
+            ["first_name"] = FirstName.ToYdb(),
+            ["last_name"] = LastName.ToYdb(),
             ["profile_picture_url"] = YdbValue.MakeUtf8(ProfilePictureUrl ?? "")
         };
     }

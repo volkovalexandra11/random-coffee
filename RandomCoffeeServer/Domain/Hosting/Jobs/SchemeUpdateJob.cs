@@ -39,6 +39,7 @@ public class SchemeUpdateJob
                     return;
                 }
             }
+
             throw;
         }
     }
@@ -50,7 +51,7 @@ public class SchemeUpdateJob
         foreach (var query in queries)
         {
             await ydbService.ExecuteScheme(query);
-            
+
             if (cancellationToken.IsCancellationRequested)
                 throw new TaskCanceledException();
         }

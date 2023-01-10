@@ -1,16 +1,14 @@
-﻿using RandomCoffeeServer.Domain.Dtos;
+﻿using RandomCoffeeServer.Domain.Models;
 using RandomCoffeeServer.Storage.DbSchema;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
-using Ydb.Sdk.Table;
-using Ydb.Sdk.Value;
 
 namespace RandomCoffeeServer.Storage.Repositories.CoffeeRepositories;
 
 public class UserRepository : RepositoryBase
 {
     private YdbTable Users { get; }
-    
+
     public UserRepository(YdbService ydb)
         : base(ydb)
     {
@@ -20,14 +18,22 @@ public class UserRepository : RepositoryBase
     public async Task AddUser(User user)
     {
         await Users
-            .Replace(user.ToYdb()) // todo insert (now mock job would fail)
+            .Insert(user.ToYdb())
             .ExecuteNonData(Ydb);
     }
-    
+
+    [Obsolete("for mock data only")]
+    public async Task ReplaceUser(User user)
+    {
+        await Users
+            .Replace(user.ToYdb())
+            .ExecuteNonData(Ydb);
+    }
+
     public async Task UpdateUser(User user)
     {
         await Users
-            .Replace(user.ToYdb())  // todo if exists
+            .Replace(user.ToYdb()) // todo if exists
             .ExecuteNonData(Ydb);
     }
 
@@ -35,7 +41,7 @@ public class UserRepository : RepositoryBase
     {
         var users = await Users
             .Select()
-            .Where("user_id", YdbValue.MakeString(userId.ToByteArray()))
+            .Where("user_id", userId.ToYdb())
             .ExecuteData(Ydb);
 
         return users.SingleOrDefault(User.FromYdbRow);
@@ -46,7 +52,7 @@ public class UserRepository : RepositoryBase
         var users = await Users
             .Select()
             .ViewByColumn("email")
-            .Where("email", YdbValue.MakeUtf8(email))
+            .Where("email", email.ToYdb())
             .ExecuteData(Ydb);
 
         return users.SingleOrDefault(User.FromYdbRow);
@@ -56,7 +62,7 @@ public class UserRepository : RepositoryBase
     {
         await Users
             .Delete()
-            .Where("user_id", YdbValue.MakeString(userId.ToByteArray()))
+            .Where("user_id", userId.ToYdb())
             .ExecuteNonData(Ydb);
     }
 }

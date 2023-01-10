@@ -1,5 +1,4 @@
-﻿using RandomCoffeeServer.Storage.YandexCloud.Ydb;
-using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
+﻿using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
 using Ydb.Sdk.Value;
 
 namespace RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
@@ -15,9 +14,9 @@ public class IdentityUserInfo
     {
         return new Dictionary<string, YdbValue>
         {
-            ["user_id"] = YdbValue.MakeString(UserId.ToByteArray()),
-            ["username"] = YdbValue.MakeUtf8(UserName),
-            ["normalized_username"] = YdbValue.MakeUtf8(NormalizedUserName)
+            ["user_id"] = UserId.ToYdb(),
+            ["username"] = UserName.ToYdb(),
+            ["normalized_username"] = NormalizedUserName.ToYdb()
         };
     }
 

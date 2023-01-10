@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 
 namespace RandomCoffeeServer.Storage.Repositories.AspIdentityStorages;
 
@@ -43,7 +44,8 @@ public class CoffeeRoleStore : IRoleStore<IdentityRoleModel>
         throw new NotImplementedException();
     }
 
-    public Task SetNormalizedRoleNameAsync(IdentityRoleModel role, string normalizedName, CancellationToken cancellationToken)
+    public Task SetNormalizedRoleNameAsync(IdentityRoleModel role, string normalizedName,
+        CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

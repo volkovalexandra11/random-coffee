@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RandomCoffeeServer.Controllers.ApiControllers.GroupsControllerDtos;
-using RandomCoffeeServer.Domain.Dtos;
 using RandomCoffeeServer.Domain.Models;
 using RandomCoffeeServer.Domain.Services.Coffee;
 

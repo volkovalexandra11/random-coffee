@@ -1,21 +1,19 @@
 ﻿using System.Text;
 using RandomCoffeeServer.Storage.DbSchema;
-using Ydb;
 using Ydb.Sdk.Table;
 using Ydb.Sdk.Value;
-using ResultSet = Ydb.Sdk.Value.ResultSet;
 
 namespace RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
 
 public class Query
 {
     private readonly YdbTable table;
-    
+
     private string method;
     private string[]? columns;
     private YdbIndex? view;
     private Dictionary<string, YdbValue>? dataValue;
-    
+
     private Dictionary<string, YdbValue>? whereParams;
     private Dictionary<string, YdbValue>? setParams;
 
@@ -23,7 +21,7 @@ public class Query
     {
         this.table = table;
     }
-    
+
     public Query Select(params string[] columns)
     {
         method = "SELECT";
@@ -82,7 +80,7 @@ public class Query
         var builder = new StringBuilder();
 
         if (method is "INSERT" or "REPLACE")
-            builder.Append(QueryBuilder.AsTableDeclare(table)).Append('\n');
+            builder.Append(table.AsTableDeclare()).Append('\n');
         if (whereParams != null)
             builder.Append(string.Join("\n", ParamsToDeclares(whereParams, "where"))).Append('\n');
         if (setParams != null)
@@ -96,15 +94,16 @@ public class Query
             else
                 builder.Append(' ').Append('*');
         }
+
         if (method is "SELECT" or "DELETE")
             builder.Append(" FROM");
         else
             builder.Append(" INTO");
 
-        builder.Append(' ').Append(table);
+        builder.Append(' ').Append(table.TableName);
         if (view != null)
             builder.Append(" VIEW ").Append(view.IndexName);
-        
+
         if (setParams != null)
         {
             builder.Append(" SET ");
@@ -133,7 +132,7 @@ public class Query
         }
 
         builder.Append(';');
-        
+
         var query = builder.ToString();
         var allParams = MakeAllParams(dataValue, ("where", whereParams), ("set", setParams));
         return (query, allParams);
@@ -144,8 +143,8 @@ public class Query
         var (query, @params) = ToYdbQuery();
         var response = await ydb.Execute(query, @params);
         response.Status.EnsureSuccess();
-    } 
-        
+    }
+
     public async Task<IReadOnlyList<ResultSet.Row>> ExecuteData(YdbService ydb)
     {
         var (query, @params) = ToYdbQuery();
@@ -153,7 +152,7 @@ public class Query
         response.Status.EnsureSuccess();
         return ((ExecuteDataQueryResponse)response).Result.ResultSets[0].Rows;
     }
-    
+
     private IEnumerable<string> ParamsToDeclares(Dictionary<string, YdbValue> @params, string? paramPrefix = null)
     {
         foreach (var (name, value) in @params)
@@ -170,16 +169,16 @@ public class Query
 
         if (dataParam != null)
         {
-            foreach (var (dataParamName, dataParamValue) in YdbConverter.ToDataParams(dataParam))
+            foreach (var (dataParamName, dataParamValue) in dataParam.ToDataParams())
                 allParams[dataParamName] = dataParamValue;
         }
-        
+
         foreach (var (paramPrefix, @params) in paramGroups
                      .Where(group => group.@params != null))
         {
             foreach (var (paramName, paramValue) in @params!)
             {
-                allParams[$"{paramPrefix}_{paramName}"] = paramValue;
+                allParams[$"${paramPrefix}_{paramName}"] = paramValue;
             }
         }
 

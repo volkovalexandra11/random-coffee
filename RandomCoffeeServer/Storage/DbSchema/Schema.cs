@@ -1,4 +1,4 @@
-﻿using PrimitiveTypeId = Ydb.Type.Types.PrimitiveTypeId;
+﻿using static Ydb.Type.Types;
 
 namespace RandomCoffeeServer.Storage.DbSchema;
 

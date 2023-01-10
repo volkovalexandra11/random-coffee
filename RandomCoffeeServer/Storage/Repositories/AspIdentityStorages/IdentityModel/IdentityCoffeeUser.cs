@@ -1,4 +1,4 @@
-﻿using RandomCoffeeServer.Domain.Dtos;
+﻿using RandomCoffeeServer.Domain.Models;
 
 namespace RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 
@@ -9,7 +9,7 @@ public class IdentityCoffeeUser
     public string FirstName { get; init; }
     public string LastName { get; init; }
     public string? ProfilePictureUrl { get; init; }
-    
+
     public string UserName { get; set; }
     public string NormalizedUserName { get; set; }
 

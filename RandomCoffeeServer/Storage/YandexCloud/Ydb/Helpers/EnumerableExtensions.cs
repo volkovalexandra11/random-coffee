@@ -7,7 +7,7 @@ public static class EnumerableExtensions
         return source.DefaultIfEmpty()
             .Single();
     }
-    
+
     public static TRes? SingleOrDefault<T, TRes>(this IEnumerable<T> source, Func<T, TRes> resultSelector)
     {
         var element = source.SingleOrDefault();

@@ -24,21 +24,18 @@ public class YdbService
             GetQueryInDirectory(query),
             new ExecuteSchemeQuerySettings() { OperationTimeout = TimeSpan.FromMinutes(1) })
         );
-        response.Status.EnsureSuccess();
         return (ExecuteSchemeQueryResponse)response;
     }
 
     public async Task<IResponse> Execute(string query, Dictionary<string, YdbValue> @params)
     {
         using var tableClient = new TableClient(ydbDriver, new TableClientConfig());
-        var response = await tableClient.SessionExec(async session => await session.ExecuteDataQuery(
+        return await tableClient.SessionExec(async session => await session.ExecuteDataQuery(
             GetQueryInDirectory(query),
             TxControl.BeginSerializableRW().Commit(),
             @params,
             new ExecuteDataQuerySettings()
         ));
-        response.Status.EnsureSuccess();
-        return (ExecuteDataQueryResponse)response;
     }
 
     private string GetQueryInDirectory(string query)

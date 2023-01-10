@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RandomCoffeeServer.Controllers.ApiControllers.UsersControllerDtos;
-using RandomCoffeeServer.Domain.Dtos;
 using RandomCoffeeServer.Domain.Services.Coffee;
 
 namespace RandomCoffeeServer.Controllers.ApiControllers;
@@ -15,23 +13,23 @@ public class UsersController : ControllerBase
         this.groupService = groupService;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateUserDto createUserDto)
-    {
-        var userId = Guid.NewGuid();
+    // [HttpPost]
+    // public async Task<IActionResult> Create([FromBody] CreateUserDto createUserDto)
+    // {
+    // var userId = Guid.NewGuid();
 
-        await userService.AddUser(
-            new User
-            {
-                UserId = userId,
-                FirstName = createUserDto.FirstName,
-                LastName = createUserDto.LastName,
-                Email = createUserDto.Email,
-                ProfilePictureUrl = createUserDto.ProfilePictureUrl
-            });
+    // await userService.AddUser(
+    // new User
+    // {
+    // UserId = userId,
+    // FirstName = createUserDto.FirstName,
+    // LastName = createUserDto.LastName,
+    // Email = createUserDto.Email,
+    // ProfilePictureUrl = createUserDto.ProfilePictureUrl
+    // });
 
-        return Ok();
-    }
+    // return Ok();
+    // }
 
     [HttpGet]
     public async Task<IActionResult> Find([FromQuery] Guid groupId)

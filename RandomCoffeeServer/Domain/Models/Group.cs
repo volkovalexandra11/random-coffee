@@ -9,14 +9,14 @@ public class Group
     public Guid AdminUserId { get; init; }
     public string Name { get; init; }
     public bool IsPrivate { get; init; } = true;
-    
+
     public Dictionary<string, YdbValue> ToYdb()
     {
         return new Dictionary<string, YdbValue>
         {
-            ["group_id"] = YdbValue.MakeString(GroupId.ToByteArray()),
-            ["admin_user_id"] = YdbValue.MakeString(AdminUserId.ToByteArray()),
-            ["name"] = YdbValue.MakeUtf8(Name),
+            ["group_id"] = GroupId.ToYdb(),
+            ["admin_user_id"] = AdminUserId.ToYdb(),
+            ["name"] = Name.ToYdb(),
             ["is_private"] = YdbValue.MakeInt32(IsPrivate ? 1 : 0)
         };
     }

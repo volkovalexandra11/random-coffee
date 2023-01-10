@@ -22,7 +22,7 @@ public class LockboxService
         var secret = await GetTextAsync(SecretId.CoffeeLocalSashaOpenIdSecret);
         return secret.Single().Value;
     }
-    
+
     public async Task<string> GetCoffeeLocalOpenIdId()
     {
         var secret = await GetTextAsync(SecretId.CoffeeLocalSashaOpenIdId);
@@ -34,7 +34,7 @@ public class LockboxService
         var secret = await GetAsync(secretId);
         return secret.Entries.ToDictionary(entry => entry.Key, entry => entry.TextValue);
     }
-    
+
     private async Task<Dictionary<string, byte[]>> GetBinaryAsync(SecretId secretId)
     {
         var secret = await GetAsync(secretId);

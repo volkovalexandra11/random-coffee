@@ -24,6 +24,7 @@ public class YdbFactory
             var path = dbDiscoverer.Discover(folderId, ProdDbSuffix).GetAwaiter().GetResult();
             return new YdbService(path, new MetadataProvider(loggerFactory), loggerFactory);
         }
+
         if (environment.IsDevelopment())
         {
             if (Environment.GetEnvironmentVariable("DEV_DB_PATH") is not { } devDbPath)
@@ -36,6 +37,7 @@ public class YdbFactory
             var saKeyPath = GetAndSaveSaKey().GetAwaiter().GetResult();
             return new YdbService(path, new ServiceAccountProvider(saKeyPath), loggerFactory);
         }
+
         throw new InvalidProgramException("Environment is not one of dev or prod");
     }
 

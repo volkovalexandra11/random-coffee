@@ -1,18 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using RandomCoffeeServer.Domain.Dtos;
 using RandomCoffeeServer.Storage.DbSchema;
-using RandomCoffeeServer.Storage.Repositories.CoffeeRepositories;
+using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
-using Ydb.Sdk.Table;
-using Ydb.Sdk.Value;
 
 namespace RandomCoffeeServer.Storage.Repositories.AspIdentityStorages;
 
 public class IdentityUserLoginsOnlyStore : RepositoryBase
 {
     private YdbTable UserLoginsAsp { get; }
-    
+
     public IdentityUserLoginsOnlyStore(YdbService ydb) : base(ydb)
     {
         UserLoginsAsp = Schema.UserLoginsAsp;
@@ -35,12 +32,28 @@ public class IdentityUserLoginsOnlyStore : RepositoryBase
             .ExecuteNonData(Ydb);
     }
 
+    [Obsolete("for mock data only")]
+    public async Task ReplaceLoginAsync(Guid userId, UserLoginInfo login)
+    {
+        var userLoginDto = new IdentityUserLogin()
+        {
+            LoginProvider = login.LoginProvider,
+            ProviderKey = login.ProviderKey,
+            ProviderDisplayName = login.ProviderDisplayName,
+            UserId = userId
+        };
+
+        await UserLoginsAsp
+            .Replace(userLoginDto.ToYdb())
+            .ExecuteNonData(Ydb);
+    }
+
     public async Task RemoveLoginAsync(string loginProvider, string providerKey)
     {
         await UserLoginsAsp
             .Delete()
-            .Where("login_provider", YdbValue.MakeUtf8(loginProvider))
-            .Where("provider_key", YdbValue.MakeUtf8(providerKey))
+            .Where("login_provider", loginProvider.ToYdb())
+            .Where("provider_key", providerKey.ToYdb())
             .ExecuteNonData(Ydb);
     }
 
@@ -49,10 +62,10 @@ public class IdentityUserLoginsOnlyStore : RepositoryBase
         var userLoginInfos = await UserLoginsAsp
             .Select()
             .ViewByColumn("user_login")
-            .Where("user_id", YdbValue.MakeString(userId.ToByteArray()))
+            .Where("user_id", userId.ToYdb())
             .ExecuteData(Ydb);
-        
-        
+
+
         return userLoginInfos.Select(IdentityUserLogin.FromYdbRow)
             .Select(dto => new UserLoginInfo(dto.LoginProvider, dto.ProviderKey, dto.ProviderDisplayName))
             .ToList();
@@ -62,8 +75,8 @@ public class IdentityUserLoginsOnlyStore : RepositoryBase
     {
         var userIds = await UserLoginsAsp
             .Select("user_id")
-            .Where("login_provider", YdbValue.MakeUtf8(loginProvider))
-            .Where("provider_key", YdbValue.MakeUtf8(providerKey))
+            .Where("login_provider", loginProvider.ToYdb())
+            .Where("provider_key", providerKey.ToYdb())
             .ExecuteData(Ydb);
 
         return userIds.SingleOrDefault(row => row["user_id"].GetNonNullGuid());

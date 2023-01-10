@@ -1,9 +1,7 @@
-﻿using RandomCoffeeServer.Storage.YandexCloud.Ydb;
-using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
-using Yandex.Cloud.Dataproc.V1;
+﻿using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
 using Ydb.Sdk.Value;
 
-namespace RandomCoffeeServer.Storage.Repositories.AspIdentityStorages;
+namespace RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 
 public class IdentityUserLogin
 {
@@ -16,10 +14,10 @@ public class IdentityUserLogin
     {
         return new Dictionary<string, YdbValue>
         {
-            ["login_provider"] = YdbValue.MakeUtf8(LoginProvider),
-            ["provider_key"] = YdbValue.MakeUtf8(ProviderKey),
-            ["provider_display_name"] = YdbValue.MakeUtf8(ProviderDisplayName),
-            ["user_id"] = YdbValue.MakeString(UserId.ToByteArray())
+            ["login_provider"] = LoginProvider.ToYdb(),
+            ["provider_key"] = ProviderKey.ToYdb(),
+            ["provider_display_name"] = ProviderDisplayName.ToYdb(),
+            ["user_id"] = UserId.ToYdb()
         };
     }
 

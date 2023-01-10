@@ -10,6 +10,7 @@ public class LockboxFactory
         {
             return new LockboxService(new MetadataCredentialsProvider());
         }
+
         if (environment.IsDevelopment())
         {
             if (Environment.GetEnvironmentVariable("DEV_OAUTH_TOKEN") is not { } devOauthToken)
@@ -17,6 +18,7 @@ public class LockboxFactory
 
             return new LockboxService(new OAuthCredentialsProvider(devOauthToken));
         }
+
         throw new InvalidProgramException("Unsupported environment");
     }
 }

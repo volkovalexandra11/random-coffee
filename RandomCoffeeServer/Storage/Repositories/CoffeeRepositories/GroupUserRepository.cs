@@ -2,8 +2,6 @@
 using RandomCoffeeServer.Storage.DbSchema;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
-using Ydb.Sdk.Table;
-using Ydb.Sdk.Value;
 
 namespace RandomCoffeeServer.Storage.Repositories.CoffeeRepositories;
 
@@ -34,7 +32,7 @@ public class GroupUserRepository : RepositoryBase
     {
         var userIds = await GroupsUsers
             .Select("user_id")
-            .Where("group_id", YdbValue.MakeString(groupId.ToByteArray()))
+            .Where("group_id", groupId.ToYdb())
             .ExecuteData(Ydb);
 
         return userIds.Count > 0
@@ -47,7 +45,7 @@ public class GroupUserRepository : RepositoryBase
         var groupIds = await GroupsUsers
             .Select("group_id")
             .ViewByColumn("user_id")
-            .Where("user_id", YdbValue.MakeString(userId.ToByteArray()))
+            .Where("user_id", userId.ToYdb())
             .ExecuteData(Ydb);
 
         return groupIds.Count > 0
@@ -59,7 +57,7 @@ public class GroupUserRepository : RepositoryBase
     {
         var counts = await GroupsUsers
             .Select("Count(*)")
-            .Where("group_id", YdbValue.MakeString(groupId.ToByteArray()))
+            .Where("group_id", groupId.ToYdb())
             .ExecuteData(Ydb);
 
         return counts.SingleOrDefault(row => (int)row[0].GetUint64());

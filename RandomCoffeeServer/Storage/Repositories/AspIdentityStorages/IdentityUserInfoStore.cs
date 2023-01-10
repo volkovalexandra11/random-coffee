@@ -1,19 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
-using RandomCoffeeServer.Domain.Dtos;
-using RandomCoffeeServer.Domain.Models;
-using RandomCoffeeServer.Storage.DbSchema;
+﻿using RandomCoffeeServer.Storage.DbSchema;
 using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
-using RandomCoffeeServer.Storage.Repositories.CoffeeRepositories;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
-using Ydb.Sdk.Table;
-using Ydb.Sdk.Value;
 
 namespace RandomCoffeeServer.Storage.Repositories.AspIdentityStorages;
 
 public class IdentityUserInfoStore : RepositoryBase
 {
-    private YdbTable UserInfoAsp { get; } 
+    private YdbTable UserInfoAsp { get; }
 
     public IdentityUserInfoStore(YdbService ydb) : base(ydb)
     {
@@ -26,8 +20,16 @@ public class IdentityUserInfoStore : RepositoryBase
             .Insert(identityUserInfo.ToYdb()) // todo if not exists
             .ExecuteNonData(Ydb);
     }
-    
+
     public async Task UpdateUserInfo(IdentityUserInfo identityUserInfo)
+    {
+        await UserInfoAsp
+            .Replace(identityUserInfo.ToYdb()) // todo if exists
+            .ExecuteNonData(Ydb);
+    }
+
+    [Obsolete("for mock data only")]
+    public async Task ReplaceUserInfo(IdentityUserInfo identityUserInfo)
     {
         await UserInfoAsp
             .Replace(identityUserInfo.ToYdb()) // todo if exists
@@ -38,7 +40,7 @@ public class IdentityUserInfoStore : RepositoryBase
     {
         var userInfos = await UserInfoAsp
             .Select()
-            .Where("user_id", YdbValue.MakeString(userId.ToByteArray()))
+            .Where("user_id", userId.ToYdb())
             .ExecuteData(Ydb);
 
         return userInfos.SingleOrDefault(userInfo => IdentityUserInfo.FromYdbRow(userInfo));
@@ -49,7 +51,7 @@ public class IdentityUserInfoStore : RepositoryBase
         var userInfos = await UserInfoAsp
             .Select()
             .ViewByColumn("normalized_username")
-            .Where("normalized_username", YdbValue.MakeUtf8(normalizedUsername))
+            .Where("normalized_username", normalizedUsername.ToYdb())
             .ExecuteData(Ydb);
 
         return userInfos.SingleOrDefault(IdentityUserInfo.FromYdbRow);
@@ -59,7 +61,7 @@ public class IdentityUserInfoStore : RepositoryBase
     {
         await UserInfoAsp
             .Delete()
-            .Where("user_id", YdbValue.MakeString(userId.ToByteArray()))
+            .Where("user_id", userId.ToYdb())
             .ExecuteNonData(Ydb);
     }
 }

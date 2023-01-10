@@ -1,6 +1,5 @@
 ﻿using RandomCoffeeServer.Domain.Dtos;
 using RandomCoffeeServer.Domain.Models;
-using RandomCoffeeServer.Storage.Repositories;
 using RandomCoffeeServer.Storage.Repositories.CoffeeRepositories;
 
 namespace RandomCoffeeServer.Domain.Services.Coffee;
