@@ -45,6 +45,17 @@ public class PopulateWithMockDataJob
                 cancellationToken),
             AddUser(new User
                 {
+                    UserId = Guid.Parse("f8b97237-2b08-4062-a916-77b7285e93c4"),
+                    Email = "s.aidar7894@gmail.com",
+                    FirstName = "Айдар",
+                    LastName = "Шайхуллин",
+                    ProfilePictureUrl =
+                        "https://lh3.googleusercontent.com/a/AEdFTp5_ugZpUdNHfVxXwwFAQ4m7xRlQTuutXRP7TkU=s96-c"
+                },
+                "102332852533522884466",
+                cancellationToken),
+            AddUser(new User
+                {
                     UserId = vasyaPupkinId,
                     Email = "vasya.pupkin@mail.fake",
                     FirstName = "Вася",
