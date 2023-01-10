@@ -43,7 +43,7 @@ public class IdentityUserInfoStore : RepositoryBase
             .Where("user_id", userId.ToYdb())
             .ExecuteData(Ydb);
 
-        return userInfos.SingleOrDefault(userInfo => IdentityUserInfo.FromYdbRow(userInfo));
+        return userInfos.SingleOrNull(userInfo => IdentityUserInfo.FromYdbRow(userInfo));
     }
 
     public async Task<IdentityUserInfo?> FindUserInfoByNormalizedUsername(string normalizedUsername)
@@ -54,7 +54,7 @@ public class IdentityUserInfoStore : RepositoryBase
             .Where("normalized_username", normalizedUsername.ToYdb())
             .ExecuteData(Ydb);
 
-        return userInfos.SingleOrDefault(IdentityUserInfo.FromYdbRow);
+        return userInfos.SingleOrNull(IdentityUserInfo.FromYdbRow);
     }
 
     public async Task DeleteUserInfo(Guid userId)

@@ -79,6 +79,6 @@ public class IdentityUserLoginsOnlyStore : RepositoryBase
             .Where("provider_key", providerKey.ToYdb())
             .ExecuteData(Ydb);
 
-        return userIds.SingleOrDefault(row => row["user_id"].GetNonNullGuid());
+        return userIds.SingleOrNoValue(row => row["user_id"].GetNonNullGuid());
     }
 }

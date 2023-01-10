@@ -44,7 +44,7 @@ public class UserRepository : RepositoryBase
             .Where("user_id", userId.ToYdb())
             .ExecuteData(Ydb);
 
-        return users.SingleOrDefault(User.FromYdbRow);
+        return users.SingleOrNull(User.FromYdbRow);
     }
 
     public async Task<User?> FindUserByEmail(string email)
@@ -55,7 +55,7 @@ public class UserRepository : RepositoryBase
             .Where("email", email.ToYdb())
             .ExecuteData(Ydb);
 
-        return users.SingleOrDefault(User.FromYdbRow);
+        return users.SingleOrNull(User.FromYdbRow);
     }
 
     public async Task DeleteUser(Guid userId)

@@ -29,6 +29,6 @@ public class GroupRepository : RepositoryBase
             .Where("group_id", groupId.ToYdb())
             .ExecuteData(Ydb);
 
-        return groups.SingleOrDefault(Group.FromYdbRow);
+        return groups.SingleOrNull(Group.FromYdbRow);
     }
 }

@@ -60,6 +60,6 @@ public class GroupUserRepository : RepositoryBase
             .Where("group_id", groupId.ToYdb())
             .ExecuteData(Ydb);
 
-        return counts.SingleOrDefault(row => (int)row[0].GetUint64());
+        return counts.SingleOrNoValue(row => (int)row[0].GetUint64());
     }
 }
