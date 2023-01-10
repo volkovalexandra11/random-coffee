@@ -18,6 +18,7 @@ public class PopulateWithMockDataJob
     {
         var sashaId = Guid.Parse("6b8d5161-3bce-4e03-9d83-68344a2d8567");
         var serezhaId = Guid.Parse("2bf09eff-d886-4ffc-8c66-11f3b818c2ee");
+        var aidarId = Guid.Parse("f8b97237-2b08-4062-a916-77b7285e93c4");
         var vasyaPupkinId = Guid.Parse("43ef1000-0000-0000-0000-000000000000");
         var addUsers = new Task[]
         {
@@ -110,6 +111,10 @@ public class PopulateWithMockDataJob
             groupService.AddUserToGroup(serezhaId, group1Id),
             groupService.AddUserToGroup(serezhaId, group2Id),
             groupService.AddUserToGroup(serezhaId, group3Id),
+            
+            groupService.AddUserToGroup(aidarId, group1Id),
+            groupService.AddUserToGroup(aidarId, group2Id),
+            groupService.AddUserToGroup(aidarId, group3Id),
 
             groupService.AddUserToGroup(vasyaPupkinId, group1Id)
         };
