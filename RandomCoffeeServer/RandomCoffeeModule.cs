@@ -1,9 +1,12 @@
 ﻿using Autofac;
-using RandomCoffeeServer.Jobs;
-using RandomCoffeeServer.Repositories;
-using RandomCoffeeServer.Services.Coffee;
-using RandomCoffeeServer.Services.YandexCloud.Lockbox;
-using RandomCoffeeServer.Services.YandexCloud.Ydb.YdbFactory;
+using Microsoft.AspNetCore.Identity;
+using RandomCoffeeServer.Domain.Hosting.Jobs;
+using RandomCoffeeServer.Domain.Services.Coffee;
+using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages;
+using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
+using RandomCoffeeServer.Storage.Repositories.CoffeeRepositories;
+using RandomCoffeeServer.Storage.YandexCloud.Lockbox;
+using RandomCoffeeServer.Storage.YandexCloud.Ydb.YdbFactory;
 
 namespace RandomCoffeeServer;
 
@@ -17,6 +20,7 @@ public class RandomCoffeeModule : Module
     protected override void Load(ContainerBuilder builder)
     {
         RegisterJobs(builder);
+        RegisterAuth(builder);
         RegisterServices(builder);
         RegisterRepositories(builder);
     }
@@ -25,6 +29,21 @@ public class RandomCoffeeModule : Module
     {
         builder.RegisterType<SchemeUpdateJob>().SingleInstance();
         builder.RegisterType<PopulateWithMockDataJob>().SingleInstance();
+    }
+
+    private void RegisterAuth(ContainerBuilder builder)
+    {
+        builder.RegisterType<IdentityUserInfoStore>().AsSelf().SingleInstance();
+        builder.RegisterType<IdentityUserLoginsOnlyStore>().AsSelf().SingleInstance();
+
+        builder.RegisterType<IdentityUserStore>()
+            .AsSelf()
+            .As<IUserStore<IdentityCoffeeUser>>()
+            .As<IUserLoginStore<IdentityCoffeeUser>>()
+            .SingleInstance();
+        builder.RegisterType<CoffeeRoleStore>()
+            .As<IRoleStore<IdentityRoleModel>>()
+            .SingleInstance();
     }
 
     private void RegisterServices(ContainerBuilder builder)
