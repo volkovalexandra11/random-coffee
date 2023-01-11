@@ -23,4 +23,8 @@
         <Folder Include="Storage" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Include=".env" CopyToPublishDirectory="Always" />
+    </ItemGroup>
+
 </Project>

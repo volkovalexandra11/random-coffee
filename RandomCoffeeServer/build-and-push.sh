@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 
 # Install Yandex.Cloud CLI
 # https://cloud.yandex.ru/docs/cli/quickstart
@@ -17,7 +17,13 @@ if [[ -z $1 ]]; then
   exit 1
 fi;
 
-CONTAINER="${YC_REGISTRY}/${REGISTRY_REPO}:$1"
+IMAGE="${YC_REGISTRY}/${REGISTRY_REPO}:$1"
 
-docker build . -t "${CONTAINER}"
-docker push "${CONTAINER}"
+docker build . -t "${IMAGE}"
+docker push "${IMAGE}"
+
+yc serverless container revision deploy --container-name coffee \
+  --execution-timeout 10s \
+  --service-account-id ajetcgg74r7dannaebvk \
+  --min-instances 1 \
+  --image "${IMAGE}"
