@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,14 @@ public class LoginController : ControllerBase
     [Route("login/google-response")]
     public async Task<IActionResult> GoogleResponse()
     {
+        var builder = new StringBuilder(Environment.NewLine);
+        foreach (var header in Request.Headers)
+        {
+            builder.AppendLine($"{header.Key}: {header.Value}");
+        }
+        var headersDump = builder.ToString();
+        Console.WriteLine(headersDump);
+    
         var loginInfo = await signInManager.GetExternalLoginInfoAsync();
         if (loginInfo == null)
             return Redirect(RedirectUri("/login"));
@@ -42,7 +51,7 @@ public class LoginController : ControllerBase
             loginInfo.ProviderKey,
             isPersistent: false);
         if (result.Succeeded)
-            return Redirect(RedirectUri("/"));
+            return Redirect(RedirectUri("/api/account"));
 
         var email = loginInfo.Principal.FindFirst(ClaimTypes.Email)?.Value;
         var user = new IdentityCoffeeUser()
@@ -66,7 +75,7 @@ public class LoginController : ControllerBase
             return Unauthorized();
 
         await signInManager.SignInAsync(user, false);
-        return Redirect(RedirectUri("/"));
+        return Redirect(RedirectUri("/api/account"));
     }
 
     [HttpGet("logout")]
