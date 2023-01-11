@@ -3,25 +3,26 @@ import './App.scss';
 import { GroupsPage } from "./pages/groups-page";
 import { Route, Routes } from 'react-router-dom';
 
-import { TGroupShort } from './types/group';
 import { NavBar } from "./components/nav-bar/nav-bar";
 import { CreateGroup } from "./pages/create-group";
 import { LoginWithGoogle } from './pages/login-with-google';
 import { Group } from "./pages/group-page";
+import { useAppSelector } from './hooks';
 
 function App() {
-    return (
+	const { user } = useAppSelector((state) => state);
+	return (
 		<main>
-			<NavBar/>
+			{user && <NavBar/>}
 			<Routes>
 				<Route path={'/'} element={<GroupsPage/>}/>
 				<Route path={'/login'} element={<LoginWithGoogle/>}/>
 				<Route path={'/create'} element={<CreateGroup/>}/>
 				<Route path={'/group/:groupId'} element={<Group/>}/>
 				{/*<Route path={'*'} element={<GroupsPage/>}/>*/}
-            </Routes>
-        </main>
-    );
+			</Routes>
+		</main>
+	);
 }
 
 export default App;

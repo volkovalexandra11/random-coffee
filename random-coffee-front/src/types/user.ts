@@ -1,5 +1,5 @@
 export type TUser = {
-	id: number;
+	id: string;
 	firstName: string;
 	lastName: string;
 	avatarPath?: string;
