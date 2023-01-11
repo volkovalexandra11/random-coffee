@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 
 # Install Yandex.Cloud CLI
 # https://cloud.yandex.ru/docs/cli/quickstart
@@ -6,10 +6,10 @@
 
 set -e # exit on error
 
-pushd $0 # go to script dir
+pushd "$(dirname "$0")" # go to script dir
 trap popd EXIT # go back on exit
 
-YC_REGISTRY=cr.yandex/crpsr3s2k1f4hijq8aua
+YC_REGISTRY=cr.yandex/crpo6ja0bdtjh62k0k5q
 REGISTRY_REPO=coffee
 
 if [[ -z $1 ]]; then
