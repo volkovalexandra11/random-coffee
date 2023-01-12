@@ -8,6 +8,7 @@ import { CreateGroup } from "./pages/create-group";
 import { LoginWithGoogle } from './pages/login-with-google';
 import { Group } from "./pages/group-page";
 import { useAppSelector } from './hooks';
+import { Mock } from './pages/mock';
 
 function App() {
 	const { user } = useAppSelector((state) => state);
@@ -19,6 +20,7 @@ function App() {
 				<Route path={'/login'} element={<LoginWithGoogle/>}/>
 				<Route path={'/create'} element={<CreateGroup/>}/>
 				<Route path={'/group/:groupId'} element={<Group/>}/>
+				<Route path={'/mock'} element={<Mock/>}/>
 				{/*<Route path={'*'} element={<GroupsPage/>}/>*/}
 			</Routes>
 		</main>

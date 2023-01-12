@@ -9,6 +9,7 @@ import { store } from '../../store';
 export const LoginWithGoogleForm = () => {
 	// const dispatch = useAppDispatch();
 	const { authStatus } = useAppSelector((state) => state);
+	console.log('google');
 
 	const handleClick = () => {
 		console.log(authStatus);
