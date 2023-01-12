@@ -1,45 +1,67 @@
-import { FC, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Loader } from '@skbkontur/react-ui';
-import { useAppSelector } from "../hooks";
-import { StubGroupTable } from '../components/stub/stub-group-table/stub-group-table';
-import { GroupTable } from '../components/group-table/group-table';
-import { AuthStatus } from '../types/authStatus';
-import { store } from '../store';
-import { fetchGroupsAction, fetchUserAction } from '../store/api-action';
+import {FC, useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {Loader} from '@skbkontur/react-ui';
+import {useAppSelector} from "../hooks";
+import {StubGroupTable} from '../components/stub/stub-group-table/stub-group-table';
+import {GroupTable} from '../components/group-table/group-table';
+import {AuthStatus} from '../types/authStatus';
+import {store} from '../store';
+import {fetchGroupsAction, fetchUserAction} from '../store/api-action';
+import {changeAuthStatus} from "../store/action";
 
 export const GroupsPage: FC = () => {
 	const navigate = useNavigate();
-
 	const { groups } = useAppSelector((state) => state);
 	const { isGroupsLoaded } = useAppSelector((state) => state);
 	const { user } = useAppSelector((state) => state);
 	const { authStatus } = useAppSelector((state) => state);
 
+	const [isFatched, setIsFatched] = useState(false);
 	const [isAuthorized, setIsAuthorized] = useState(authStatus === AuthStatus.Logged);
+	// useEffect(()=>{
+	// 	checkAuth();
+	// 	if (!isAuthorized) {
+	// 		console.log('login');
+	// 		(() => navigate('/login'))();
+	// 	} else {
+	// 		console.log('fetch');
+	// 		fetchData().finally();
+	// 		// store.dispatch(fetchUserAction());
+	// 		// console.log(user);
+	// 		// // @ts-ignore
+	// 		// store.dispatch(fetchGroupsAction(user["userId"]))
+	// 	}
+	// }, [isAuthorized]);
 
 	const checkAuth = () => {
 		async function getAuthStatus() {
 			const resp = await fetch('/api/account');
 			const respStatusCode = resp.status;
 			setIsAuthorized(respStatusCode === 200);
+			console.log(isAuthorized);
 		}
 
 		getAuthStatus();
 	}
 
+	const fetchData = async () => {
+		await store.dispatch(fetchUserAction());
+		console.log(user)
+		// @ts-ignore
+		store.dispatch(fetchGroupsAction(user["userId"]))
+	}
 
 	checkAuth();
-	console.log(isAuthorized);
-	console.log('useEffect');
-
 	if (!isAuthorized) {
 		console.log('login');
-		navigate('/login');
-	} else {
-		console.log('fetch');
-		store.dispatch(fetchUserAction());
-		store.dispatch(fetchGroupsAction(user?.id))
+		(() => navigate('/login'))();
+	} else if (!isFatched){
+			console.log('fetch');
+			fetchData().finally(()=>setIsFatched(true));
+			// store.dispatch(fetchUserAction());
+			// console.log(user);
+			// // @ts-ignore
+			// store.dispatch(fetchGroupsAction(user["userId"]))
 	}
 
 
