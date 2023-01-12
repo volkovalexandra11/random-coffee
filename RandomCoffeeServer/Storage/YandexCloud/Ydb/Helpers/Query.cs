@@ -150,7 +150,10 @@ public class Query
         var (query, @params) = ToYdbQuery();
         var response = await ydb.Execute(query, @params);
         response.Status.EnsureSuccess();
-        return ((ExecuteDataQueryResponse)response).Result.ResultSets[0].Rows;
+        var result = ((ExecuteDataQueryResponse)response).Result;
+        return result.ResultSets.Count > 0
+            ? result.ResultSets[0].Rows
+            : new List<ResultSet.Row>();
     }
 
     private IEnumerable<string> ParamsToDeclares(Dictionary<string, YdbValue> @params, string? paramPrefix = null)
