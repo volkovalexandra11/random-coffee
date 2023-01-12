@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader } from '@skbkontur/react-ui';
 import { useAppSelector } from "../hooks";
@@ -7,7 +7,6 @@ import { GroupTable } from '../components/group-table/group-table';
 import { AuthStatus } from '../types/authStatus';
 import { store } from '../store';
 import { fetchGroupsAction, fetchUserAction } from '../store/api-action';
-import { changeAuthStatus } from "../store/action";
 
 export const GroupsPage: FC = () => {
 	const navigate = useNavigate();
@@ -15,9 +14,6 @@ export const GroupsPage: FC = () => {
 	const { isGroupsLoaded } = useAppSelector((state) => state);
 	const { user } = useAppSelector((state) => state);
 	const { authStatus } = useAppSelector((state) => state);
-
-	const [isFetched, setIsFetched] = useState(false);
-	const [isAuthorized, setIsAuthorized] = useState(authStatus === AuthStatus.Logged);
 	// useEffect(()=>{
 	// 	checkAuth();
 	// 	if (!isAuthorized) {
@@ -33,42 +29,32 @@ export const GroupsPage: FC = () => {
 	// 	}
 	// }, [isAuthorized]);
 
-	const checkAuth = () => {
+	useEffect(() => {
 		async function getAuthStatus() {
 			const resp = await fetch('/api/account');
 			const respStatusCode = resp.status;
-			setIsAuthorized(respStatusCode === 200);
-			console.log(isAuthorized, respStatusCode);
+			if (respStatusCode === 401) {
+				navigate('/login');
+			} else {
+				store.dispatch(fetchUserAction());
+
+				// const resp = await fetch('/api/account');
+				// const json = await resp.json();
+				// console.log(json);
+			}
 		}
-
-		console.log('check status');
 		getAuthStatus();
-	}
+	}, []);
 
-	const fetchData = async () => {
-		console.log('fetch');
-		await store.dispatch(fetchUserAction());
-		console.log(user)
+	useEffect(() => {
 		// @ts-ignore
-		store.dispatch(fetchGroupsAction(user["userId"]))
-	}
-
-	checkAuth();
-
-	if (!isAuthorized) {
-		console.log('login');
-		navigate('/login');
-
-	} else if (!isFetched) {
-		console.log('fetch');
-		fetchData().finally(() => setIsFetched(true));
-	}
+		store.dispatch(fetchGroupsAction(user?.userId));
+	}, [user])
 
 
-	console.log(groups);
 	return (
 		<Loader active={!isGroupsLoaded}>
-			{isGroupsLoaded && isAuthorized ? <GroupTable groups={groups}/> : <StubGroupTable/>}
+			{isGroupsLoaded && (authStatus === AuthStatus.Logged) ? <GroupTable groups={groups}/> : <StubGroupTable/>}
 		</Loader>
 	);
 };

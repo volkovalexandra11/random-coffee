@@ -17,7 +17,8 @@ export const ImageWithPlaceholder : FC<Props> = ({showPlaceholder, picturePath})
 		return getPlaceholder();
 	} else {
 		return (
-			<img src={String(picturePath)} alt='picture'/>
+			// eslint-disable-next-line jsx-a11y/img-redundant-alt
+			<img src={picturePath} alt='picture'/>
 		);
 	}
 };

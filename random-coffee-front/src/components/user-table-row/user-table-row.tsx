@@ -12,7 +12,7 @@ export const UserTableRow: FC<Props> = ({ user, isAdmin}) => {
     return (
         <section className={style.wrapper}>
             <div className={style.NameAvatar}>
-                <ImageWithPlaceholder showPlaceholder={user.avatarPath === undefined} picturePath={user.avatarPath}/>
+                <ImageWithPlaceholder showPlaceholder={user.profilePicUrl === undefined} picturePath={user.profilePicUrl}/>
                 <div className={style.GroupName}>{user.firstName+" "+user.lastName}</div>
             </div>
             <div className={style.information}>

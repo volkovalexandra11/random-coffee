@@ -3,9 +3,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { AppDispatch, State } from '../types/store';
 import { TGroup, TGroupShort } from '../types/group';
-import { setCurrentGroup, setGroups, setIsGroupsLoaded, setUser } from './action';
+import { changeAuthStatus, setCurrentGroup, setGroups, setIsGroupsLoaded, setUser } from './action';
 import { TUser } from "../types/user";
-import { store } from './index';
+import { AuthStatus } from '../types/authStatus';
 
 export const fetchGroupsAction = createAsyncThunk<void, string | undefined, {
 	dispatch: AppDispatch,
@@ -43,9 +43,9 @@ export const fetchUserAction = createAsyncThunk<void, undefined, {
 }>(
 	'/user/info',
 	async (_args, { dispatch, extra: api }) => {
-		dispatch(setIsGroupsLoaded(false));
+		dispatch(changeAuthStatus({authStatus: AuthStatus.NotLogged}));
 		const { data } = await api.get<TUser>(`/api/account`);
 		dispatch(setUser({ user: data }));
-		dispatch(setIsGroupsLoaded(true));
+		dispatch(changeAuthStatus({authStatus: AuthStatus.Logged}));
 	}
 )
