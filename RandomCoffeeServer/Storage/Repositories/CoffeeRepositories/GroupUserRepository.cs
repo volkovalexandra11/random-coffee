@@ -40,7 +40,7 @@ public class GroupUserRepository : RepositoryBase
             : null;
     }
 
-    public async Task<Guid[]?> FindGroupsByParticipant(Guid userId)
+    public async Task<Guid[]> FindGroupsByParticipant(Guid userId)
     {
         var groupIds = await GroupsUsers
             .Select("group_id")
@@ -48,9 +48,7 @@ public class GroupUserRepository : RepositoryBase
             .Where("user_id", userId.ToYdb())
             .ExecuteData(Ydb);
 
-        return groupIds.Count > 0
-            ? groupIds.Select(row => row["group_id"].GetNonNullGuid()).ToArray()
-            : null;
+        return groupIds.Select(row => row["group_id"].GetNonNullGuid()).ToArray();
     }
 
     public async Task<int?> GetParticipantsCount(Guid groupId)
