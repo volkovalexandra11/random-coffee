@@ -5,14 +5,26 @@ using Ydb.Sdk;
 
 namespace RandomCoffeeServer.Domain.Hosting.Jobs;
 
-public class SchemeUpdateJob
+public class SchemeUpdateJob : IHostedService
 {
-    public SchemeUpdateJob(YdbService ydbService)
+    public SchemeUpdateJob(YdbService ydbService, ILogger<SchemeUpdateJob> log)
     {
         this.ydbService = ydbService;
+        this.log = log;
     }
 
-    public async Task UpdateScheme(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
+    {
+        log.LogInformation("Starting scheme update");
+        await UpdateScheme(cancellationToken);
+    }
+
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
+    }
+
+    private async Task UpdateScheme(CancellationToken cancellationToken)
     {
         var tables = Schema.Tables;
         var queries = tables.Select(table => table.ToDdl());
@@ -58,5 +70,6 @@ public class SchemeUpdateJob
     }
 
     private readonly YdbService ydbService;
+    private readonly ILogger<SchemeUpdateJob> log;
     private const int TypeAnnotationIssueCode = 1030;
 }

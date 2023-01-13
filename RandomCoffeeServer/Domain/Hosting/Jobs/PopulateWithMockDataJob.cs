@@ -6,15 +6,31 @@ using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 
 namespace RandomCoffeeServer.Domain.Hosting.Jobs;
 
-public class PopulateWithMockDataJob
+public class PopulateWithMockDataJob : IHostedService
 {
-    public PopulateWithMockDataJob(IdentityUserStore userStore, GroupService groupService)
+    public PopulateWithMockDataJob(
+        IdentityUserStore userStore,
+        GroupService groupService,
+        ILogger<PopulateWithMockDataJob> log)
     {
         this.userStore = userStore;
         this.groupService = groupService;
+        this.log = log;
     }
 
-    public async Task Fill(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
+    {
+        log.LogInformation("Starting filling db with mock data");
+        await Fill(cancellationToken);
+        log.LogInformation("Successfully filled db with with mock data");
+    }
+
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
+    }
+
+    private async Task Fill(CancellationToken cancellationToken)
     {
         var sashaId = Guid.Parse("6b8d5161-3bce-4e03-9d83-68344a2d8567");
         var serezhaId = Guid.Parse("2bf09eff-d886-4ffc-8c66-11f3b818c2ee");
@@ -111,7 +127,7 @@ public class PopulateWithMockDataJob
             groupService.AddUserToGroup(serezhaId, group1Id),
             groupService.AddUserToGroup(serezhaId, group2Id),
             groupService.AddUserToGroup(serezhaId, group3Id),
-            
+
             groupService.AddUserToGroup(aidarId, group1Id),
             groupService.AddUserToGroup(aidarId, group2Id),
             groupService.AddUserToGroup(aidarId, group3Id),
@@ -143,5 +159,6 @@ public class PopulateWithMockDataJob
     }
 
     private readonly GroupService groupService;
+    private readonly ILogger<PopulateWithMockDataJob> log;
     private readonly IdentityUserStore userStore;
 }
