@@ -20,19 +20,11 @@ public class AccountController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetLoginInfo()
     {
-        var userId = HttpContext.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
-        var identityUser = await userManager.FindByIdAsync(userId);
-        if (identityUser is null)
+        var user = await HttpContext.GetUserAsync(userManager);
+        if (user is null)
             throw new InvalidProgramException();
-
-        return Ok(new User
-        {
-            UserId = identityUser.UserId,
-            Email = identityUser.Email,
-            FirstName = identityUser.FirstName,
-            LastName = identityUser.LastName,
-            ProfilePictureUrl = identityUser.ProfilePictureUrl
-        });
+        
+        return Ok(user);
     }
 
     private readonly UserManager<IdentityCoffeeUser> userManager;

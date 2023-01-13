@@ -12,25 +12,7 @@ public class UsersController : ControllerBase
         this.userService = userService;
         this.groupService = groupService;
     }
-
-    // [HttpPost]
-    // public async Task<IActionResult> Create([FromBody] CreateUserDto createUserDto)
-    // {
-    // var userId = Guid.NewGuid();
-
-    // await userService.AddUser(
-    // new User
-    // {
-    // UserId = userId,
-    // FirstName = createUserDto.FirstName,
-    // LastName = createUserDto.LastName,
-    // Email = createUserDto.Email,
-    // ProfilePictureUrl = createUserDto.ProfilePictureUrl
-    // });
-
-    // return Ok();
-    // }
-
+    
     [HttpGet]
     public async Task<IActionResult> Find([FromQuery] Guid groupId)
     {
