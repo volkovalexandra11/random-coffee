@@ -1,5 +1,5 @@
 export enum AuthStatus {
-	Logged,
-	NotLogged,
-	Unknown
+	Logged = 'logged',
+	NotLogged = 'not logged',
+	Unknown = 'unknown'
 }

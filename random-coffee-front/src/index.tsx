@@ -16,15 +16,15 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const user: TUser| null = {
-    id: 1,
-    firstName: "Самсонов",
-    lastName: "Иван",
-    avatarPath: ""
-}
+// const user: TUser| null = {
+//     id: 1,
+//     firstName: "Самсонов",
+//     lastName: "Иван",
+//     avatarPath: ""
+// }
 // AppStore.dispatch(setGroups({groups: groupList}));
-store.dispatch(fetchGroupsAction());
-store.dispatch(setUser({user: user}))
+// store.dispatch(fetchGroupsAction());
+// store.dispatch(setUser({user: user}))
 
 
 
