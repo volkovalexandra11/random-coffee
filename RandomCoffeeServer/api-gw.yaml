@@ -1,0 +1,102 @@
+﻿openapi: 3.0.0
+info:
+  title: Random Coffee
+  version: 1.0.0
+servers:
+  - url: https://d5dm2ehv92gucpeh2eef.apigw.yandexcloud.net
+paths:
+  /api/{path+}:
+    x-yc-apigateway-any-method:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bba3rjuagu8p2232b8fg
+      operationId: api call
+      summary: Api Call
+      tags:
+        - example
+      parameters:
+        - explode: false
+          in: path
+          name: path
+          required: true
+          schema:
+            type: string
+          style: simple
+  /signin-google:
+    x-yc-apigateway-any-method:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bba3rjuagu8p2232b8fg
+      operationId: signin-google call
+      summary: Api Call
+  /login/google-login:
+    x-yc-apigateway-any-method:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bba3rjuagu8p2232b8fg
+      operationId: google login call
+      summary: Api Call
+  /login/google-response:
+    x-yc-apigateway-any-method:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bba3rjuagu8p2232b8fg
+      operationId: google redirect for login call
+      summary: Api Call
+  /logout:
+    x-yc-apigateway-any-method:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bba3rjuagu8p2232b8fg
+      operationId: logout call
+      summary: Api Call
+  /hello:
+    get:
+      x-yc-apigateway-integration:
+        type: dummy
+        http_code: 200
+        http_headers:
+          Content-Type: text/plain
+        content:
+          text/plain: |
+            I'm coffee, {user}!
+      operationId: hello
+      parameters:
+        - description: User name to appear in greetings
+          explode: true
+          in: query
+          name: user
+          required: false
+          schema:
+            default: world
+            type: string
+          style: form
+      responses:
+        '200':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Greeting
+      summary: Say hello
+  /{path+}:
+    get:
+      x-yc-apigateway-integration:
+        type: object_storage
+        bucket: p372-coffee
+        object: '{path}'
+        error_object: index.html
+      operationId: front call
+      parameters:
+        - explode: false
+          in: path
+          name: path
+          required: true
+          schema:
+            type: string
+          style: simple
+      summary: Front Call
+      tags:
+        - example
+x-yc-apigateway:
+  service_account: ajeg05832ogqhq9hkg9f
