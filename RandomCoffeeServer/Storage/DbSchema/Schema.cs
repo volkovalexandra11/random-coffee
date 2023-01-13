@@ -98,6 +98,17 @@ public static class Schema
         },
         new YdbTable
         {
+            TableName = "data_protection_keys_asp",
+            Columns = new YdbColumn[]
+            {
+                new("element_id", PrimitiveTypeId.String),
+                new("friendly_name", PrimitiveTypeId.Utf8),
+                new("xml", PrimitiveTypeId.Utf8)
+            },
+            PrimaryKeyColumns = new[] { 0 }
+        },
+        new YdbTable
+        {
             TableName = "schedules",
             Columns = new YdbColumn[]
             {
@@ -155,6 +166,7 @@ public static class Schema
     public static readonly YdbTable UserRounds = GetTable("user_rounds");
     public static readonly YdbTable UserLoginsAsp = GetTable("user_logins_asp");
     public static readonly YdbTable UserInfoAsp = GetTable("user_infos_asp");
+    public static readonly YdbTable DataProtectionKeysAsp = GetTable("data_protection_keys_asp");
 
     private static YdbTable GetTable(string tableName)
     {

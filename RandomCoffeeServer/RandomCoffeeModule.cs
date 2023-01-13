@@ -44,6 +44,10 @@ public class RandomCoffeeModule : Module
         builder.RegisterType<CoffeeRoleStore>()
             .As<IRoleStore<IdentityRoleModel>>()
             .SingleInstance();
+
+        builder.RegisterType<DataProtectionKeysUnprotectedRepository>()
+            .As<IXmlRepository>()
+            .SingleInstance();
     }
 
     private void RegisterServices(ContainerBuilder builder)

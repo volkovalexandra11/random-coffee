@@ -41,6 +41,8 @@ builder.Host.ConfigureContainer<ContainerBuilder>((hostBuilder, containerBuilder
     containerBuilder.RegisterModule(new RandomCoffeeModule(hostBuilder));
 });
 
+builder.Services.AddDataProtection().PersistKeysToYdb(); // тут должен быть еще ProtectKeys...
+
 if (!builder.Environment.IsDevelopment())
 {
     if (Environment.GetEnvironmentVariable("PORT") is not { } port)

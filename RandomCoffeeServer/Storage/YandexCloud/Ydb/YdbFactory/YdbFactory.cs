@@ -20,7 +20,7 @@ public class YdbFactory
 
         if (environment.IsProduction())
         {
-            var dbDiscoverer = new YdbDiscoverer(new MetadataCredentialsProvider());
+            var dbDiscoverer = new YdbDiscoverer(new MetadataCredentialsProvider(loggerFactory));
             var path = dbDiscoverer.Discover(folderId, dbWithPath: ProdDb).GetAwaiter().GetResult();
             return new YdbService(path, new MetadataProvider(loggerFactory), loggerFactory);
         }
