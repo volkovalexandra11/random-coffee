@@ -9,10 +9,11 @@ type Props = {
 }
 
 export const UserTableRow: FC<Props> = ({ user, isAdmin}) => {
+  console.log(user);
     return (
         <section className={style.wrapper}>
             <div className={style.NameAvatar}>
-                <ImageWithPlaceholder showPlaceholder={user.avatarPath === undefined} picturePath={user.avatarPath}/>
+                <ImageWithPlaceholder showPlaceholder={user.profilePictureUrl === undefined} picturePath={user.profilePictureUrl}/>
                 <div className={style.GroupName}>{user.firstName+" "+user.lastName}</div>
             </div>
             <div className={style.information}>

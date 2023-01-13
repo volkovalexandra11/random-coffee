@@ -30,8 +30,8 @@ export const GroupInfo: FC<Props> = ({ group }) => {
 				<div className={style.users}>
 					<h2>Участники</h2>
 					{group.participants.map((user: TUser) =>
-						<div key={user.id}>
-							<UserTableRow user={user} isAdmin={group.admin.id === user.id}/>
+						<div key={user.userId}>
+							<UserTableRow user={user} isAdmin={group.admin.userId === user.userId}/>
 						</div>)}
 				</div>
 			</div>

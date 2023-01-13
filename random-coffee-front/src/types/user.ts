@@ -1,6 +1,6 @@
 export type TUser = {
-	id: number;
+	userId: string;
 	firstName: string;
 	lastName: string;
-	avatarPath?: string;
+	profilePictureUrl?: string;
 }
