@@ -6,7 +6,7 @@ using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 
 namespace RandomCoffeeServer.Domain.Hosting.Jobs;
 
-public class PopulateWithMockDataJob : IHostedService
+public class PopulateWithMockDataJob
 {
     public PopulateWithMockDataJob(
         IdentityUserStore userStore,
@@ -18,20 +18,10 @@ public class PopulateWithMockDataJob : IHostedService
         this.log = log;
     }
 
-    public async Task StartAsync(CancellationToken cancellationToken)
+    public async Task Fill(CancellationToken cancellationToken)
     {
         log.LogInformation("Starting filling db with mock data");
-        await Fill(cancellationToken);
-        log.LogInformation("Successfully filled db with with mock data");
-    }
 
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
-        return Task.CompletedTask;
-    }
-
-    private async Task Fill(CancellationToken cancellationToken)
-    {
         var sashaId = Guid.Parse("6b8d5161-3bce-4e03-9d83-68344a2d8567");
         var serezhaId = Guid.Parse("2bf09eff-d886-4ffc-8c66-11f3b818c2ee");
         var aidarId = Guid.Parse("f8b97237-2b08-4062-a916-77b7285e93c4");
@@ -136,6 +126,8 @@ public class PopulateWithMockDataJob : IHostedService
         };
 
         await Task.WhenAll(addUsers.Concat(addGroups).Concat(addUsersToGroups));
+
+        log.LogInformation("Successfully filled db with with mock data");
     }
 
     private async Task AddUser(User user, string googleKey, CancellationToken cancellationToken)

@@ -43,8 +43,8 @@ function build_and_push {
 }
 
 build_and_push $REGISTRY_REPO_API $1 "ApiServer"
-build_and_push $REGISTRY_REPO_DB $1 "DatabaseUpdateJob"
-build_and_push $REGISTRY_REPO_ROUNDS $1 "RoundsMakerJob"
+build_and_push $REGISTRY_REPO_DB $1 "DbUpdaterOnRequest"
+build_and_push $REGISTRY_REPO_ROUNDS $1 "RoundsMakerOnRequest"
 
 token=$(yc iam create-token)
 

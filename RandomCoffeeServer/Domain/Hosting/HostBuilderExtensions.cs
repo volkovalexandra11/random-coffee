@@ -35,17 +35,12 @@ public static class HostBuilderExtensions
         return builder;
     }
 
-    public static void AddCoffeeHostedServices(this IServiceCollection services, ApplicationMode applicationModes)
+    public static async Task RunDatabaseJobs(this WebApplication app)
     {
-        if (applicationModes.HasFlag(ApplicationMode.DatabaseUpdateHostedService))
-        {
-            services.AddHostedService<JobStarter<SchemeUpdateJob>>();
-            services.AddHostedService<JobStarter<PopulateWithMockDataJob>>();
-        }
+        var schemeUpdateJob = app.Services.GetRequiredService<SchemeUpdateJob>();
+        var populateWithMockDataJob = app.Services.GetRequiredService<PopulateWithMockDataJob>();
 
-        if (applicationModes.HasFlag(ApplicationMode.RoundsMakerHostedService))
-        {
-            services.AddHostedService<RoundsMakerBackgroundService>();
-        }
+        await schemeUpdateJob.UpdateScheme(app.Lifetime.ApplicationStopping);
+        await populateWithMockDataJob.Fill(app.Lifetime.ApplicationStopping);
     }
 }

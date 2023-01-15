@@ -16,7 +16,7 @@
       "applicationUrl": "http://localhost:5678",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "APPLICATION_MODES": "ApiServer,DatabaseUpdateJob,RoundsMakerJob,DatabaseUpdateHostedService,RoundsMakerHostedService"
+        "APPLICATION_MODES": "ApiServer,DbUpdaterOnRequest,RoundsMakerOnRequest,DbUpdateOnStartup,RoundsMakerHostedService"
       }
     },
     "IIS Express": {

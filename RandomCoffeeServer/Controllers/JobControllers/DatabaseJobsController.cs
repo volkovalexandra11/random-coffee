@@ -16,11 +16,8 @@ public class DatabaseJobsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> UpdateDb()
     {
-        await schemeUpdateJob.StartAsync(HttpContext.RequestAborted);
-        await schemeUpdateJob.StopAsync(HttpContext.RequestAborted);
-
-        await mockDataJob.StartAsync(HttpContext.RequestAborted);
-        await mockDataJob.StopAsync(HttpContext.RequestAborted);
+        await schemeUpdateJob.UpdateScheme(HttpContext.RequestAborted);
+        await mockDataJob.Fill(HttpContext.RequestAborted);
 
         return Ok();
     }

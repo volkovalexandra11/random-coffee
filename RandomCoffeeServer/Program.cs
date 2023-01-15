@@ -29,17 +29,18 @@ builder.Services.AddControllers().ConfigureApplicationPartManager(manager =>
         }));
     }
 
-    if (modes.HasFlag(ApplicationMode.RoundsMakerJob))
+    if (modes.HasFlag(ApplicationMode.RoundsMakerOnRequest))
     {
-        manager.ApplicationParts.Add(new ControllersApplicationPart(ApplicationMode.RoundsMakerJob.ToString(), new[]
-        {
-            typeof(RoundMakerJobController)
-        }));
+        manager.ApplicationParts.Add(new ControllersApplicationPart(ApplicationMode.RoundsMakerOnRequest.ToString(),
+            new[]
+            {
+                typeof(RoundMakerJobController)
+            }));
     }
 
-    if (modes.HasFlag(ApplicationMode.DatabaseUpdateJob))
+    if (modes.HasFlag(ApplicationMode.DbUpdaterOnRequest))
     {
-        manager.ApplicationParts.Add(new ControllersApplicationPart(ApplicationMode.DatabaseUpdateJob.ToString(), new[]
+        manager.ApplicationParts.Add(new ControllersApplicationPart(ApplicationMode.DbUpdaterOnRequest.ToString(), new[]
         {
             typeof(DatabaseJobsController)
         }));
@@ -52,7 +53,10 @@ builder.Services.Configure<JsonOptions>(options =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+});
 
 builder.Services.AddIdentity<IdentityCoffeeUser, IdentityRoleModel>();
 builder.Services.DisableRedirectOnUnauthorized();
@@ -70,8 +74,10 @@ builder.Services.AddAuthentication()
         o.SaveTokens = true;
     });
 
-
-builder.Services.AddCoffeeHostedServices(modes);
+if (modes.HasFlag(ApplicationMode.RoundsMakerHostedService))
+{
+    builder.Services.AddHostedService<RoundsMakerBackgroundService>();
+}
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>((hostBuilder, containerBuilder) =>
@@ -96,12 +102,9 @@ else
 
 builder.Services.AddLogging();
 
+
 var app = builder.Build();
 
-// await app.Services.GetRequiredService<SchemeUpdateJob>().UpdateScheme(app.Lifetime.ApplicationStopping);
-// await app.Services.GetRequiredService<PopulateWithMockDataJob>().Fill(app.Lifetime.ApplicationStopping);
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -112,5 +115,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+if (modes.HasFlag(ApplicationMode.DbUpdateOnStartup))
+    await app.RunDatabaseJobs();
 
 await app.RunAsync();
