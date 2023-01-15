@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using RandomCoffeeServer.Domain.Services.Coffee;
 using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 
 namespace RandomCoffeeServer.Controllers.WebControllers;
@@ -12,6 +13,7 @@ public class LoginController : ControllerBase
     public LoginController(
         SignInManager<IdentityCoffeeUser> signInManager,
         UserManager<IdentityCoffeeUser> userManager,
+        GroupService groupService,
         IWebHostEnvironment environment,
         ILogger<LoginController> log)
     {
@@ -19,6 +21,7 @@ public class LoginController : ControllerBase
         this.log = log;
         this.signInManager = signInManager;
         this.userManager = userManager;
+        this.groupService = groupService;
     }
 
     [HttpGet]
@@ -81,6 +84,10 @@ public class LoginController : ControllerBase
         }
 
         await signInManager.SignInAsync(user, false);
+        
+        // todo temp for vanya domashnikh to test project
+        await groupService.AddUserToGroup(user.UserId, Guid.Parse("9f048110-0000-0000-0000-000000000000"));
+        
         log.LogInformation($"Successfully created new user with email=${user.Email} and signed in");
         return Redirect(RedirectUri("/"));
     }
@@ -104,5 +111,6 @@ public class LoginController : ControllerBase
     private readonly ILogger<LoginController> log;
     private readonly SignInManager<IdentityCoffeeUser> signInManager;
     private readonly UserManager<IdentityCoffeeUser> userManager;
+    private readonly GroupService groupService;
     private const int DevFrontPort = 3000;
 }
