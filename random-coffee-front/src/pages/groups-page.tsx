@@ -27,13 +27,15 @@ export const GroupsPage: FC = () => {
 				store.dispatch(fetchUserAction());
 			}
 		}
+
 		getAuthStatus();
-	}, []);
+	}, [navigate]);
 
 	useEffect(() => {
-		// @ts-ignore
-		store.dispatch(fetchGroupsAction(user?.userId));
-	}, [user])
+		if (authStatus === AuthStatus.Logged) {
+			store.dispatch(fetchGroupsAction(user?.userId));
+		}
+	}, [authStatus, user])
 
 
 	return (
