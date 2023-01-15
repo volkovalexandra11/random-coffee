@@ -1,14 +1,11 @@
 import { FC } from "react";
 import { Button, Gapped, Modal } from "@skbkontur/react-ui";
 import style from './logout-modal.module.scss'
-import { useNavigate } from 'react-router-dom';
-
 
 type Props = {
 	opened: boolean;
 	close: () => void;
 }
-
 
 export const ExitModal: FC<Props> = ({ opened, close }) => {
 	const handleClick = () => {
