@@ -4,12 +4,11 @@ import {User} from '@skbkontur/react-icons';
 import style from './nav-bar.module.scss'
 import {Button} from '@skbkontur/react-ui';
 import {useNavigate, useLocation} from "react-router-dom";
-import {useSelector} from "react-redux";
 import {ExitModal} from "../logout-modal/logout-modal";
+import {useAppSelector} from "../../hooks";
 
 export const NavBar: FC = () => {
-	// @ts-ignore
-	const user = useSelector(state => state.user);
+	const { user } = useAppSelector((state) => state);
 	const [opened, setOpened] = useState(false);
 
 	const openModal = () => {
@@ -32,9 +31,9 @@ export const NavBar: FC = () => {
 					<Button className={style.buttons} borderless>
 						<br/><NotificationBellIcon/>
 					</Button>
-					<a className={style.buttons} href={''}>
-						<span className={style.text}><User/>{user.firstName + " " + user.lastName}</span>
-					</a>
+					<Button className={style.buttons} onClick={()=>navigate('/user')} borderless>
+						<span className={style.text}><User/>{user?.firstName + " " + user?.lastName}</span>
+					</Button>
 					<ExitModal opened={opened} close={closeModal}/>
 					<span className={style.line}/>
 					<Button className={style.buttons} onClick={openModal} borderless>

@@ -1,0 +1,51 @@
+.label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 14px;
+  justify-content: space-between;
+  width: 95%;
+  //border: 1px solid black;
+}
+
+#description{
+  display: flex;
+  align-items: flex-start;
+}
+
+.name{
+  display: flex;
+  justify-content: end;
+  width: 20%;
+  //border: 1px solid crimson;
+}
+
+.input{
+  width: 75%;
+  //border: 1px solid blue;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  justify-self: center;
+}
+
+.gapped{
+  width: 95%;
+  height: 95%;
+  //border: 1px solid blue;
+}
+
+.test{
+  display: flex;
+  justify-content: end;
+}
+
+.form{
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
