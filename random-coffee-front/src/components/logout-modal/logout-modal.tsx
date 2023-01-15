@@ -1,30 +1,33 @@
-import {FC} from "react";
-import {Button, Modal} from "@skbkontur/react-ui";
+import { FC } from "react";
+import { Button, Gapped, Modal } from "@skbkontur/react-ui";
 import style from './logout-modal.module.scss'
+import { useNavigate } from 'react-router-dom';
 
 
 type Props = {
-    opened: boolean;
-    close: () => void;
+	opened: boolean;
+	close: () => void;
 }
 
 
-export const ExitModal: FC<Props> = ({opened, close}) => {
-    return (<>
-            {opened && <Modal width={"120%"} onClose={close}>
-                <Modal.Header>Хотите выйти?</Modal.Header>
-                <Modal.Body>
-                </Modal.Body>
-                <Modal.Footer>
-                    <div className={style.modalButtons}>
-                        <Button className={style.button} use="danger" onClick={() => {
-                            alert('Logout');
-                            close()
-                        }}>Да</Button>
-                        <Button className={style.button} onClick={close}>Отменить</Button>
-                    </div>
-                </Modal.Footer>
-            </Modal>}
-        </>
-    )
+export const ExitModal: FC<Props> = ({ opened, close }) => {
+	const handleClick = () => {
+		close();
+		window.location.href = '/logout';
+	};
+
+	return (<>
+			{opened && <Modal width={"120%"} onClose={close}>
+        <Modal.Header>Хотите выйти?</Modal.Header>
+        <Modal.Body>
+        </Modal.Body>
+        <Modal.Footer>
+          <Gapped>
+            <Button className={style.button} use="danger" onClick={handleClick}>Да</Button>
+            <Button className={style.button} onClick={close}>Отменить</Button>
+          </Gapped>
+        </Modal.Footer>
+      </Modal>}
+		</>
+	)
 }
