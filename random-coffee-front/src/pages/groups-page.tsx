@@ -7,6 +7,7 @@ import { GroupTable } from '../components/group-table/group-table';
 import { AuthStatus } from '../types/authStatus';
 import { store } from '../store';
 import { fetchGroupsAction, fetchUserAction } from '../store/api-action';
+import {EmptyGroupList} from "../components/empty-group-list/empty-group-list";
 
 export const GroupsPage: FC = () => {
 	const navigate = useNavigate();
@@ -40,7 +41,8 @@ export const GroupsPage: FC = () => {
 
 	return (
 		<Loader active={!isGroupsLoaded}>
-			{isGroupsLoaded && (authStatus === AuthStatus.Logged) ? <GroupTable groups={groups}/> : <StubGroupTable/>}
+			{isGroupsLoaded && (authStatus === AuthStatus.Logged) ? groups.length !== 0 ?
+				<GroupTable groups={groups}/> : <EmptyGroupList/> : <StubGroupTable/>}
 		</Loader>
 	);
 };
