@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.AspNetCore.Identity;
 using RandomCoffeeServer.Domain.Hosting.Jobs;
 using RandomCoffeeServer.Domain.Services.Coffee;
@@ -12,9 +13,10 @@ namespace RandomCoffeeServer;
 
 public class RandomCoffeeModule : Module
 {
-    public RandomCoffeeModule(HostBuilderContext hostCtx)
+    public RandomCoffeeModule(IHostEnvironment hostEnvironment, IConfiguration configuration)
     {
-        this.hostCtx = hostCtx;
+        this.hostEnvironment = hostEnvironment;
+        this.configuration = configuration;
     }
 
     protected override void Load(ContainerBuilder builder)
@@ -28,7 +30,10 @@ public class RandomCoffeeModule : Module
     private void RegisterJobs(ContainerBuilder builder)
     {
         builder.RegisterType<SchemeUpdateJob>().SingleInstance();
-        builder.RegisterType<PopulateWithMockDataJob>().SingleInstance();
+        builder.RegisterType<PopulateWithMockDataJob>()
+            .SingleInstance();
+        builder.RegisterType<RoundsMakerJob>()
+            .SingleInstance();
     }
 
     private void RegisterAuth(ContainerBuilder builder)
@@ -44,22 +49,37 @@ public class RandomCoffeeModule : Module
         builder.RegisterType<CoffeeRoleStore>()
             .As<IRoleStore<IdentityRoleModel>>()
             .SingleInstance();
+
+        builder.RegisterType<DataProtectionKeysUnprotectedRepository>()
+            .As<IXmlRepository>()
+            .SingleInstance();
     }
 
     private void RegisterServices(ContainerBuilder builder)
     {
         builder.RegisterType<LockboxFactory>().SingleInstance();
         builder.Register(
-                ctx => ctx.Resolve<LockboxFactory>().Create(hostCtx.HostingEnvironment))
+                ctx => ctx.Resolve<LockboxFactory>().Create(hostEnvironment))
             .SingleInstance();
 
         builder.RegisterType<YdbFactory>().SingleInstance();
         builder.Register(ctx =>
-                ctx.Resolve<YdbFactory>().Create(hostCtx.HostingEnvironment, ctx.Resolve<ILoggerFactory>()))
+                ctx.Resolve<YdbFactory>().Create(hostEnvironment, ctx.Resolve<ILoggerFactory>()))
             .SingleInstance();
 
         builder.RegisterType<GroupService>().SingleInstance(); // <=> .AsSelf()
         builder.RegisterType<UserService>().SingleInstance();
+
+        builder.RegisterType<SingleRoundMakerService>().SingleInstance();
+
+        if (hostEnvironment.IsDevelopment())
+        {
+            if (configuration[CheckPeriodConfigurationName] is not { } checkPeriodSeconds)
+                throw new ArgumentException($"Expected {CheckPeriodConfigurationName} configuration");
+            builder.RegisterType<MockRoundsService>()
+                .WithParameter("checkPeriod", TimeSpan.FromSeconds(int.Parse(checkPeriodSeconds)))
+                .SingleInstance();
+        }
     }
 
     private void RegisterRepositories(ContainerBuilder builder)
@@ -69,5 +89,7 @@ public class RandomCoffeeModule : Module
         builder.RegisterType<UserRepository>().SingleInstance();
     }
 
-    private readonly HostBuilderContext hostCtx;
+    private readonly IHostEnvironment hostEnvironment;
+    private readonly IConfiguration configuration;
+    private const string CheckPeriodConfigurationName = "RoundsSettings:CheckEverySeconds";
 }

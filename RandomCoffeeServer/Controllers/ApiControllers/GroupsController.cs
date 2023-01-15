@@ -17,8 +17,8 @@ public class GroupsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateGroupDto createGroupDto)
     {
-        // var userId = authTokenToUserService.Find(Http.Cookies.MyCoolAuthToken); or something like that....
-        var userId = Guid.Empty; //tmp
+        if (HttpContext.GetUserId() is not { } userId)
+            throw new InvalidProgramException();
 
         var groupId = Guid.NewGuid();
 
@@ -63,7 +63,8 @@ public class GroupsController : ControllerBase
         if (groupId == Guid.Empty)
             return BadRequest();
 
-        var userId = Guid.Empty; // todo
+        if (HttpContext.GetUserId() is not { } userId)
+            throw new InvalidProgramException();
 
         await groupService.AddUserToGroup(userId, groupId);
         return Ok();

@@ -17,4 +17,7 @@ RUN dotnet publish "RandomCoffeeServer.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+ARG APPLICATION_MODES
+ENV APPLICATION_MODES=$APPLICATION_MODES
 ENTRYPOINT ["dotnet", "RandomCoffeeServer.dll"]

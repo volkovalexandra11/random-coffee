@@ -9,10 +9,14 @@ namespace RandomCoffeeServer.Controllers.WebControllers;
 [ApiController]
 public class LoginController : ControllerBase
 {
-    public LoginController(SignInManager<IdentityCoffeeUser> signInManager, UserManager<IdentityCoffeeUser> userManager,
-        IWebHostEnvironment environment)
+    public LoginController(
+        SignInManager<IdentityCoffeeUser> signInManager,
+        UserManager<IdentityCoffeeUser> userManager,
+        IWebHostEnvironment environment,
+        ILogger<LoginController> log)
     {
         this.environment = environment;
+        this.log = log;
         this.signInManager = signInManager;
         this.userManager = userManager;
     }
@@ -21,6 +25,7 @@ public class LoginController : ControllerBase
     [Route("login/google-login")]
     public async Task<IActionResult> Login()
     {
+        log.LogInformation("User is trying to login with Google");
         var redirectUri = RedirectUri("/login/google-response");
 
         var properties = signInManager.ConfigureExternalAuthenticationProperties(
@@ -33,7 +38,9 @@ public class LoginController : ControllerBase
     [Route("login/google-response")]
     public async Task<IActionResult> GoogleResponse()
     {
+        log.LogInformation("Got response from user to Google login");
         var loginInfo = await signInManager.GetExternalLoginInfoAsync();
+        var email = loginInfo?.Principal.FindFirst(ClaimTypes.Email)?.Value;
         if (loginInfo == null)
             return Redirect(RedirectUri("/login"));
 
@@ -42,9 +49,11 @@ public class LoginController : ControllerBase
             loginInfo.ProviderKey,
             isPersistent: false);
         if (result.Succeeded)
+        {
+            log.LogInformation($"Successfully logged to existing account {email ?? "without email claim"}");
             return Redirect(RedirectUri("/"));
+        }
 
-        var email = loginInfo.Principal.FindFirst(ClaimTypes.Email)?.Value;
         var user = new IdentityCoffeeUser()
         {
             UserId = Guid.NewGuid(), // todo не тут
@@ -59,19 +68,27 @@ public class LoginController : ControllerBase
 
         var userCreationResult = await userManager.CreateAsync(user);
         if (!userCreationResult.Succeeded)
+        {
+            log.LogError($"Error creating new user with email={user.Email}");
             return Unauthorized();
+        }
 
         var loginCreationResult = await userManager.AddLoginAsync(user, loginInfo);
         if (!loginCreationResult.Succeeded)
+        {
+            log.LogError($"Error adding google credentials for new user with email={user.Email}");
             return Unauthorized();
+        }
 
         await signInManager.SignInAsync(user, false);
+        log.LogInformation($"Successfully created new user with email=${user.Email} and signed in");
         return Redirect(RedirectUri("/"));
     }
 
     [HttpGet("logout")]
     public async Task<IActionResult> Logout()
     {
+        log.LogInformation($"Logging out user with ${HttpContext.GetUserId()}");
         await signInManager.SignOutAsync();
         return Redirect(RedirectUri("/"));
     }
@@ -84,6 +101,7 @@ public class LoginController : ControllerBase
     }
 
     private readonly IWebHostEnvironment environment;
+    private readonly ILogger<LoginController> log;
     private readonly SignInManager<IdentityCoffeeUser> signInManager;
     private readonly UserManager<IdentityCoffeeUser> userManager;
     private const int DevFrontPort = 3000;

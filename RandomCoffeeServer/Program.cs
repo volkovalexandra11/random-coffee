@@ -3,21 +3,54 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using RandomCoffeeServer;
+using RandomCoffeeServer.Controllers.ApiControllers;
+using RandomCoffeeServer.Controllers.JobControllers;
+using RandomCoffeeServer.Controllers.WebControllers;
 using RandomCoffeeServer.Domain.Hosting;
-using RandomCoffeeServer.Domain.Hosting.Jobs;
 using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 using RandomCoffeeServer.Storage.YandexCloud.Lockbox;
 
 DotEnv.Load("./.env");
 
 var builder = WebApplication.CreateBuilder(args);
+var modes = ArgsParser.GetApplicationModes();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().ConfigureApplicationPartManager(manager =>
+{
+    manager.ApplicationParts.Clear();
+    if (modes.HasFlag(ApplicationMode.ApiServer))
+    {
+        manager.ApplicationParts.Add(new ControllersApplicationPart(ApplicationMode.ApiServer.ToString(), new[]
+        {
+            typeof(AccountController),
+            typeof(GroupsController),
+            typeof(UsersController),
+            typeof(LoginController)
+        }));
+    }
+
+    if (modes.HasFlag(ApplicationMode.RoundsMakerJob))
+    {
+        manager.ApplicationParts.Add(new ControllersApplicationPart(ApplicationMode.RoundsMakerJob.ToString(), new[]
+        {
+            typeof(RoundMakerJobController)
+        }));
+    }
+
+    if (modes.HasFlag(ApplicationMode.DatabaseUpdateJob))
+    {
+        manager.ApplicationParts.Add(new ControllersApplicationPart(ApplicationMode.DatabaseUpdateJob.ToString(), new[]
+        {
+            typeof(DatabaseJobsController)
+        }));
+    }
+});
+
 builder.Services.Configure<JsonOptions>(options =>
 {
     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
 });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -33,13 +66,21 @@ builder.Services.AddAuthentication()
 
         o.ClaimActions.MapJsonKey("image", "picture");
         o.CorrelationCookie.SameSite = SameSiteMode.Unspecified;
+
+        o.SaveTokens = true;
     });
+
+
+builder.Services.AddCoffeeHostedServices(modes);
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>((hostBuilder, containerBuilder) =>
 {
-    containerBuilder.RegisterModule(new RandomCoffeeModule(hostBuilder));
+    containerBuilder.RegisterModule(
+        new RandomCoffeeModule(hostBuilder.HostingEnvironment, hostBuilder.Configuration));
 });
+
+builder.Services.AddDataProtection().PersistKeysToYdb(); // тут должен быть еще ProtectKeys...
 
 if (!builder.Environment.IsDevelopment())
 {
@@ -57,10 +98,8 @@ builder.Services.AddLogging();
 
 var app = builder.Build();
 
-await app.Services.GetRequiredService<SchemeUpdateJob>().UpdateScheme(app.Lifetime.ApplicationStopping);
-await app.Services.GetRequiredService<PopulateWithMockDataJob>().Fill(app.Lifetime.ApplicationStopping);
-
-// app.UseHttpsRedirection();
+// await app.Services.GetRequiredService<SchemeUpdateJob>().UpdateScheme(app.Lifetime.ApplicationStopping);
+// await app.Services.GetRequiredService<PopulateWithMockDataJob>().Fill(app.Lifetime.ApplicationStopping);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -69,11 +108,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();

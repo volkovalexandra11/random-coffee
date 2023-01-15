@@ -13,11 +13,11 @@ public class YdbService
     public YdbService(YdbPath ydbPath, ICredentialsProvider credentialsProvider, ILoggerFactory loggerFactory)
     {
         this.ydbPath = ydbPath;
-        
+
         var config = new DriverConfig(ydbPath.Endpoint, ydbPath.Database, credentialsProvider);
         ydbDriver = new Driver(config, loggerFactory);
         ydbDriver.Initialize().ConfigureAwait(false).GetAwaiter().GetResult();
-        
+
         tableClientConfig = new TableClientConfig(GetSessionPoolConfig());
     }
 
@@ -50,7 +50,7 @@ public class YdbService
     private SessionPoolConfig GetSessionPoolConfig()
     {
         var sessionConfig = new SessionPoolConfig();
-        
+
         // lol this is bad but default timeout of 1s is laughable and causes huge problems to devs 
         typeof(SessionPoolConfig)
             .GetField("<CreateSessionTimeout>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)!
