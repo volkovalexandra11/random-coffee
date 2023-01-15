@@ -19,7 +19,7 @@ public class GroupsController : ControllerBase
     {
         if (HttpContext.GetUserId() is not { } userId)
             throw new InvalidProgramException();
-        
+
         var groupId = Guid.NewGuid();
 
         await groupService.AddGroup(

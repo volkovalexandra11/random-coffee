@@ -76,7 +76,8 @@ builder.Services.AddCoffeeHostedServices(modes);
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>((hostBuilder, containerBuilder) =>
 {
-    containerBuilder.RegisterModule(new RandomCoffeeModule(hostBuilder.HostingEnvironment, hostBuilder.Configuration));
+    containerBuilder.RegisterModule(
+        new RandomCoffeeModule(hostBuilder.HostingEnvironment, hostBuilder.Configuration));
 });
 
 builder.Services.AddDataProtection().PersistKeysToYdb(); // тут должен быть еще ProtectKeys...

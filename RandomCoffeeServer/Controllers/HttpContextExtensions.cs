@@ -2,7 +2,6 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using RandomCoffeeServer.Domain.Models;
 using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
-using Ydb;
 
 namespace RandomCoffeeServer.Controllers;
 
@@ -21,7 +20,9 @@ public static class HttpContextExtensions
         return userId;
     }
 
-    public static async Task<User?> GetUserAsync(this HttpContext httpContext, UserManager<IdentityCoffeeUser> userManager)
+    public static async Task<User?> GetUserAsync(
+        this HttpContext httpContext,
+        UserManager<IdentityCoffeeUser> userManager)
     {
         var userId = httpContext.GetUserId();
         if (userId is null)

@@ -12,7 +12,7 @@ public class UsersController : ControllerBase
         this.userService = userService;
         this.groupService = groupService;
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> Find([FromQuery] Guid groupId)
     {
