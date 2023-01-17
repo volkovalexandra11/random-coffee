@@ -8,11 +8,13 @@ import { StubGroupInfo } from '../components/stub/stub-group-info/stub-group-inf
 export const Group: FC = () => {
 	const { currentGroup } = useAppSelector((state) => state);
 	const { isGroupsLoaded } = useAppSelector((state) => state);
-	console.log(" asdasd " + currentGroup);
+	const { user } = useAppSelector((state) => state);
 
 	return (
 		<Loader active={!isGroupsLoaded}>
-			{isGroupsLoaded && currentGroup !== null ? <GroupInfo group={currentGroup}/> : <StubGroupInfo/>}
+			{isGroupsLoaded && currentGroup !== null ?
+				<GroupInfo group={currentGroup} adminView={user?.userId === currentGroup.admin.userId}/> :
+				<StubGroupInfo/>}
 		</Loader>
 
 	);

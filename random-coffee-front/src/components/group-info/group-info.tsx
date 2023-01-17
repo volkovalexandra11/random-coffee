@@ -8,9 +8,10 @@ import { AdminInfo } from '../admin-info/admin-user';
 
 type Props = {
 	group: TGroup;
+	adminView: boolean;
 }
 
-export const GroupInfo: FC<Props> = ({ group }) => {
+export const GroupInfo: FC<Props> = ({ group, adminView }) => {
 	return (
 		<div className={style.background}>
 			<div className={style.header}>
@@ -25,13 +26,19 @@ export const GroupInfo: FC<Props> = ({ group }) => {
 							<AdminInfo user={group.admin}/>
 						</div>
 					</div>
-					<Button use='primary' className={style.button}>Выйти из группы</Button>
+					<div className={style.buttons}>
+						{adminView && <Button use='primary' width={"200px"} className={style.button}>Редактировать</Button>}
+						{adminView && <Button use='primary' width={"200px"} className={style.button}
+											  onClick={() => alert("раунд проведён")}>Начать случайный кофе</Button>}
+						{!adminView && <Button use='primary' width={"200px"} className={style.button}>Покинуть</Button>}
+					</div>
 				</div>
 				<div className={style.users}>
 					<h2>Участники</h2>
 					{group.participants.map((user: TUser) =>
 						<div key={user.userId}>
-							<UserTableRow user={user} isAdmin={group.admin.userId === user.userId}/>
+							<UserTableRow user={user} isAdmin={group.admin.userId === user.userId}
+										  adminView={adminView}/>
 						</div>)}
 				</div>
 			</div>

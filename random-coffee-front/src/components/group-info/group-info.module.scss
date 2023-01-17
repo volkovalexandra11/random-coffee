@@ -34,6 +34,7 @@ $div-width: 95%;
 .button{
   border-radius: 10px;
   overflow: hidden;
+  margin-bottom: 10px;
 }
 
 .information{
@@ -60,8 +61,11 @@ $div-width: 95%;
 
 .admin{
   height: auto;
-  width: 100%;
 }
 
+.buttons{
+  display: flex;
+  flex-direction: column;
+}
 
 
