@@ -3,6 +3,8 @@ using RandomCoffeeServer.Domain.Models;
 using RandomCoffeeServer.Domain.Services.Coffee;
 using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages;
 using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
+using Yandex.Cloud.Mdb.Mongodb.V1;
+using User = RandomCoffeeServer.Domain.Models.User;
 
 namespace RandomCoffeeServer.Domain.Hosting.Jobs;
 
@@ -25,6 +27,7 @@ public class PopulateWithMockDataJob
         var sashaId = Guid.Parse("6b8d5161-3bce-4e03-9d83-68344a2d8567");
         var serezhaId = Guid.Parse("2bf09eff-d886-4ffc-8c66-11f3b818c2ee");
         var aidarId = Guid.Parse("f8b97237-2b08-4062-a916-77b7285e93c4");
+        var vanyaId = Guid.Parse("98998fff-1b58-4364-9aa3-b0e23babb074");
         var vasyaPupkinId = Guid.Parse("43ef1000-0000-0000-0000-000000000000");
         var addUsers = new Task[]
         {
@@ -50,6 +53,8 @@ public class PopulateWithMockDataJob
                 },
                 "113028660294942278861",
                 cancellationToken),
+
+
             AddUser(new User
                 {
                     UserId = Guid.Parse("f8b97237-2b08-4062-a916-77b7285e93c4"),
@@ -63,6 +68,17 @@ public class PopulateWithMockDataJob
                 cancellationToken),
             AddUser(new User
                 {
+                    UserId = vanyaId,
+                    Email = "ivan.s2002.mail@gmail.com",
+                    FirstName = "Иван",
+                    LastName = "Самсонов",
+                    ProfilePictureUrl =
+                        "https://lh3.googleusercontent.com/a/AEdFTp5MyMVvEThjNJQTChvWopavzuESIiHLzv3ep307bQ=s96-c",
+                },
+                "101315306617911739546",
+                cancellationToken),
+            AddUser(new User
+                {
                     UserId = vasyaPupkinId,
                     Email = "vasya.pupkin@mail.fake",
                     FirstName = "Вася",
@@ -71,7 +87,7 @@ public class PopulateWithMockDataJob
                         "https://avatars.dzeninfra.ru/get-zen_doc/1337093/pub_5eceb0ed6079e31d4ed971c4_5eceb18c92e0f61ff3249dc6/scale_1200"
                 },
                 "im-fake-google-key",
-                cancellationToken)
+                cancellationToken),
         };
 
         var group1Id = Guid.Parse("9f048110-0000-0000-0000-000000000000");
@@ -96,8 +112,8 @@ public class PopulateWithMockDataJob
             new()
             {
                 GroupId = group3Id,
-                Name = "Sunshine group",
-                AdminUserId = vasyaPupkinId
+                Name = "Группа Вани",
+                AdminUserId = vanyaId
             },
             new()
             {
@@ -121,6 +137,10 @@ public class PopulateWithMockDataJob
             groupService.AddUserToGroup(aidarId, group1Id),
             groupService.AddUserToGroup(aidarId, group2Id),
             groupService.AddUserToGroup(aidarId, group3Id),
+            
+            groupService.AddUserToGroup(vanyaId, group1Id),
+            groupService.AddUserToGroup(vanyaId, group2Id),
+            groupService.AddUserToGroup(vanyaId, group3Id),
 
             groupService.AddUserToGroup(vasyaPupkinId, group1Id)
         };
