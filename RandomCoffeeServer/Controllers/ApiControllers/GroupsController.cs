@@ -69,6 +69,27 @@ public class GroupsController : ControllerBase
         await groupService.AddUserToGroup(userId, groupId);
         return Ok();
     }
+    
+    [HttpPost("{groupId:guid}/start")]
+    public async Task<IActionResult> Start(Guid groupId)
+    {
+        if (groupId == Guid.Empty)
+            return BadRequest();
+
+        var group = await groupService.GetGroup(groupId);
+        
+        if (group is null)
+            return NotFound();
+        
+        var userId = HttpContext.GetUserId();
+        if (userId != group.AdminUserId)
+        {
+            return Unauthorized(); 
+        }
+
+        await groupService.StartRound(groupId);
+        return Ok();
+    }
 
     private readonly GroupService groupService;
 }

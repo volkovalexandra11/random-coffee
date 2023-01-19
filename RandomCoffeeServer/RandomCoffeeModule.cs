@@ -69,6 +69,7 @@ public class RandomCoffeeModule : Module
 
         builder.RegisterType<GroupService>().SingleInstance(); // <=> .AsSelf()
         builder.RegisterType<UserService>().SingleInstance();
+        builder.RegisterType<EmailService>().SingleInstance();
 
         builder.RegisterType<SingleRoundMakerService>().SingleInstance();
 
