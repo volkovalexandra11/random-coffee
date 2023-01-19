@@ -3,8 +3,6 @@ using RandomCoffeeServer.Domain.Models;
 using RandomCoffeeServer.Domain.Services.Coffee;
 using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages;
 using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
-using Yandex.Cloud.Mdb.Mongodb.V1;
-using User = RandomCoffeeServer.Domain.Models.User;
 
 namespace RandomCoffeeServer.Domain.Hosting.Jobs;
 
@@ -137,7 +135,7 @@ public class PopulateWithMockDataJob
             groupService.AddUserToGroup(aidarId, group1Id),
             groupService.AddUserToGroup(aidarId, group2Id),
             groupService.AddUserToGroup(aidarId, group3Id),
-            
+
             groupService.AddUserToGroup(vanyaId, group1Id),
             groupService.AddUserToGroup(vanyaId, group2Id),
             groupService.AddUserToGroup(vanyaId, group3Id),

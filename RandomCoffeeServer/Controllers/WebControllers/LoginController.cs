@@ -84,10 +84,10 @@ public class LoginController : ControllerBase
         }
 
         await signInManager.SignInAsync(user, false);
-        
+
         // todo temp for vanya domashnikh to test project
         await groupService.AddUserToGroup(user.UserId, Guid.Parse("9f048110-0000-0000-0000-000000000000"));
-        
+
         log.LogInformation($"Successfully created new user with email=${user.Email} and signed in");
         return Redirect(RedirectUri("/"));
     }

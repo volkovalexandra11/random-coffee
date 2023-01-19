@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.AspNetCore.Identity;
 using RandomCoffeeServer.Domain.Hosting.Jobs;
 using RandomCoffeeServer.Domain.Services.Coffee;
+using RandomCoffeeServer.Domain.Services.Coffee.Email;
+using RandomCoffeeServer.Domain.Services.Coffee.Rounds;
+using RandomCoffeeServer.Domain.Services.Coffee.UserMatching;
 using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages;
 using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 using RandomCoffeeServer.Storage.Repositories.CoffeeRepositories;
@@ -69,17 +72,24 @@ public class RandomCoffeeModule : Module
 
         builder.RegisterType<GroupService>().SingleInstance(); // <=> .AsSelf()
         builder.RegisterType<UserService>().SingleInstance();
-        builder.RegisterType<EmailService>().SingleInstance();
 
-        builder.RegisterType<SingleRoundMakerService>().SingleInstance();
+        RegisterConfiguration<EmailSettings>(builder);
+        builder.RegisterType<RandomUserMatcher>().As<IUserMatcher>();
+        builder.RegisterType<EmailMatchNotifier>().As<IMatchNotifier>();
+        builder.RegisterType<MailMessageProvider>().SingleInstance();
+        builder.RegisterType<SmtpClientFactory>().SingleInstance();
+        builder.Register(ctx =>
+                ctx.Resolve<SmtpClientFactory>().Create().GetAwaiter().GetResult())
+            .SingleInstance();
+        builder.RegisterType<EmailSender>().SingleInstance();
+
+        builder.RegisterType<ScheduledRoundsMakerService>().SingleInstance();
+        builder.RegisterType<GroupRoundMakerService>().SingleInstance();
 
         if (hostEnvironment.IsDevelopment())
         {
-            if (configuration[CheckPeriodConfigurationName] is not { } checkPeriodSeconds)
-                throw new ArgumentException($"Expected {CheckPeriodConfigurationName} configuration");
-            builder.RegisterType<MockRoundsService>()
-                .WithParameter("checkPeriod", TimeSpan.FromSeconds(int.Parse(checkPeriodSeconds)))
-                .SingleInstance();
+            RegisterConfiguration<DevelopmentPeriodicRoundsSettings>(builder);
+            builder.RegisterType<MockRoundsService>().SingleInstance();
         }
     }
 
@@ -90,7 +100,15 @@ public class RandomCoffeeModule : Module
         builder.RegisterType<UserRepository>().SingleInstance();
     }
 
+    private void RegisterConfiguration<TSettings>(ContainerBuilder builder)
+        where TSettings : class, new()
+    {
+        var settings = new TSettings();
+        configuration.GetSection(typeof(TSettings).Name).Bind(settings);
+
+        builder.RegisterInstance(settings);
+    }
+
     private readonly IHostEnvironment hostEnvironment;
     private readonly IConfiguration configuration;
-    private const string CheckPeriodConfigurationName = "RoundsSettings:CheckEverySeconds";
 }

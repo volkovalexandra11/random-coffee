@@ -10,7 +10,7 @@ public class User
     public string FirstName { get; init; }
     public string LastName { get; init; }
     public string? ProfilePictureUrl { get; init; }
-    
+
     public string FullName => $"{FirstName} {LastName}";
 
     public Dictionary<string, YdbValue> ToYdb()

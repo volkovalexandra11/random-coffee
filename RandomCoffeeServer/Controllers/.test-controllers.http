@@ -25,7 +25,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:5678/api/Groups/9f048110-0000-0000-0000-000000000000/start
+POST http://localhost:5678/api/Groups/9f048110-0000-0000-0000-000000000000/make-round
 Content-Type: application/json
 
 ###

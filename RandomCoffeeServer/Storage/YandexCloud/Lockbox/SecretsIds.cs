@@ -14,7 +14,10 @@ public enum SecretId
     CoffeeLocalSashaOpenIdSecret,
 
     [SecretId("e6qnidor1t8v4qh3ud4d")]
-    CoffeeLocalSashaOpenIdId
+    CoffeeLocalSashaOpenIdId,
+
+    [SecretId("e6qoat37e8bpdm3kvj6l")]
+    CoffeeEmailPassword
 }
 
 public static class SecretIdExtensions
