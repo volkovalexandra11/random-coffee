@@ -5,7 +5,7 @@ import { useAppSelector } from "../hooks";
 import { StubGroupTable } from '../components/stub/stub-group-table/stub-group-table';
 import { GroupTable } from '../components/group-table/group-table';
 import { AuthStatus } from '../types/authStatus';
-import { store } from '../store';
+import store from '../store';
 import { fetchGroupsAction, fetchUserAction } from '../store/api-action';
 import {EmptyGroupList} from "../components/empty-group-list/empty-group-list";
 

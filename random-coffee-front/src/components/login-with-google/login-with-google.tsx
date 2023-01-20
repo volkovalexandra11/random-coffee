@@ -4,7 +4,7 @@ import { GoogleSvg } from './google-svg';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AuthStatus } from '../../types/authStatus';
 import { changeAuthStatus } from '../../store/action';
-import { store } from '../../store';
+import store from '../../store';
 
 export const LoginWithGoogleForm = () => {
 	// const dispatch = useAppDispatch();

@@ -1,7 +1,7 @@
 import { TUser } from './user';
 import { TGroupShort, TGroup } from './group';
 import { AuthStatus } from './authStatus';
-import { store } from '../store';
+import store from '../store';
 
 export type AppState = {
 	user: TUser | null,

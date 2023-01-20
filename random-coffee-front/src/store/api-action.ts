@@ -49,3 +49,15 @@ export const fetchUserAction = createAsyncThunk<void, undefined, {
 		dispatch(changeAuthStatus({authStatus: AuthStatus.Logged}));
 	}
 )
+
+export const PostGroupsAction = createAsyncThunk<void, TGroup, {
+	dispatch: AppDispatch,
+	state: State,
+	extra: AxiosInstance
+}>(
+	'/data/groups',
+	async (data: TGroup, { dispatch, extra: api }) => {
+		await api.post<TGroup>(`/api/groups`, data);
+
+	}
+)

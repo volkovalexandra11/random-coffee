@@ -4,7 +4,7 @@ import { GroupTableRow } from '../group-table-row/group-table-row';
 import style from './group-table.module.scss'
 import { Button } from '@skbkontur/react-ui';
 import { Link, useNavigate } from "react-router-dom";
-import { store } from "../../store";
+import store from "../../store";
 import { fetchGroupByIdAction } from "../../store/api-action";
 
 type Props = {
