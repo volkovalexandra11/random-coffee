@@ -108,15 +108,47 @@ public class GroupsController : ControllerBase
         if (HttpContext.GetUserId() is not { } userId)
             throw new InvalidProgramException();
 
-        var deletionResult = await groupService.TryDeleteParticipantFromGroup(userId, groupId);
+        var deletionResult = await groupService.TryLeaveFromGroup(userId, groupId);
         switch (deletionResult)
         {
             case GroupService.DeleteParticipantResult.Success:
                 return Ok();
             case GroupService.DeleteParticipantResult.NoGroupError:
                 return NotFound();
-            case GroupService.DeleteParticipantResult.ParticipantIsAdminError:
+            case GroupService.DeleteParticipantResult.DeletedParticipantIsGroupAdminError:
                 return Conflict("Can't leave your own group");
+            default:
+                throw new InvalidProgramException();
+        }
+    }
+
+    [Authorize]
+    [HttpPost("{groupId:guid}/kick")]
+    public async Task<IActionResult> Kick(Guid groupId, [FromBody] KickUserFromGroupDto? kickUserFromGroupDto)
+    {
+        if (groupId == Guid.Empty)
+            return BadRequest("Bad path");
+        if (kickUserFromGroupDto is null || kickUserFromGroupDto.UserId == Guid.Empty)
+            return BadRequest("Bad body");
+
+        if (HttpContext.GetUserId() is not { } kickingUserId)
+            throw new InvalidProgramException();
+
+        var deletionResult = await groupService.TryKickFromGroup(
+            kickedUserId: kickUserFromGroupDto.UserId,
+            kickingUserId,
+            groupId
+        );
+        switch (deletionResult)
+        {
+            case GroupService.DeleteParticipantResult.Success:
+                return Ok();
+            case GroupService.DeleteParticipantResult.NoGroupError:
+                return NotFound();
+            case GroupService.DeleteParticipantResult.DeletedParticipantIsGroupAdminError:
+                return Conflict("Can't leave your own group");
+            case GroupService.DeleteParticipantResult.Forbidden:
+                return Forbid();
             default:
                 throw new InvalidProgramException();
         }

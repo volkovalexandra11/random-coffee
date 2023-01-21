@@ -35,6 +35,14 @@ Content-Type: application/json
 
 ###
 
+POST {{url}}/api/Groups/9f048120-0000-0000-0000-000000000000/kick
+Content-Type: application/json
+
+{
+  "userId": "6b8d5161-3bce-4e03-9d83-68344a2d8567"
+}
+###
+
 POST {{url}}/api/Users
 Content-Type: application/json
 

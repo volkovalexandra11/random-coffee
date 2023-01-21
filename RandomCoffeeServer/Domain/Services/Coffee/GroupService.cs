@@ -76,15 +76,29 @@ public class GroupService
         await groupUserRepository.AddToGroup(userId: userId, groupId: groupId);
     }
     
-    public async Task<DeleteParticipantResult> TryDeleteParticipantFromGroup(Guid userId, Guid groupId)
+    public async Task<DeleteParticipantResult> TryLeaveFromGroup(Guid userId, Guid groupId)
     {
         var group = await groupRepository.FindGroup(groupId);
         if (group is null)
             return DeleteParticipantResult.NoGroupError;
         if (group.AdminUserId == userId)
-            return DeleteParticipantResult.ParticipantIsAdminError;
+            return DeleteParticipantResult.DeletedParticipantIsGroupAdminError;
         
         await groupUserRepository.DeleteFromGroup(userId: userId, groupId: groupId);
+        return DeleteParticipantResult.Success;
+    }
+
+    public async Task<DeleteParticipantResult> TryKickFromGroup(Guid kickedUserId, Guid kickingUserId, Guid groupId)
+    {
+        var group = await groupRepository.FindGroup(groupId);
+        if (group is null)
+            return DeleteParticipantResult.NoGroupError;
+        if (group.AdminUserId != kickingUserId)
+            return DeleteParticipantResult.Forbidden;
+        if (group.AdminUserId == kickedUserId)
+            return DeleteParticipantResult.DeletedParticipantIsGroupAdminError;
+        
+        await groupUserRepository.DeleteFromGroup(userId: kickedUserId, groupId: groupId);
         return DeleteParticipantResult.Success;
     }
 
@@ -95,7 +109,8 @@ public class GroupService
     public enum DeleteParticipantResult
     {
         Success,
+        Forbidden,
         NoGroupError,
-        ParticipantIsAdminError
+        DeletedParticipantIsGroupAdminError
     }
 }
