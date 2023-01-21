@@ -124,23 +124,23 @@ public class PopulateWithMockDataJob
 
         var addUsersToGroups = new Task[]
         {
-            groupService.AddUserToGroup(sashaId, group1Id),
-            groupService.AddUserToGroup(sashaId, group2Id),
-            groupService.AddUserToGroup(sashaId, group3Id),
+            groupService.AddParticipantToGroup(sashaId, group1Id),
+            groupService.AddParticipantToGroup(sashaId, group2Id),
+            groupService.AddParticipantToGroup(sashaId, group3Id),
 
-            groupService.AddUserToGroup(serezhaId, group1Id),
-            groupService.AddUserToGroup(serezhaId, group2Id),
-            groupService.AddUserToGroup(serezhaId, group3Id),
+            groupService.AddParticipantToGroup(serezhaId, group1Id),
+            groupService.AddParticipantToGroup(serezhaId, group2Id),
+            groupService.AddParticipantToGroup(serezhaId, group3Id),
 
-            groupService.AddUserToGroup(aidarId, group1Id),
-            groupService.AddUserToGroup(aidarId, group2Id),
-            groupService.AddUserToGroup(aidarId, group3Id),
+            groupService.AddParticipantToGroup(aidarId, group1Id),
+            groupService.AddParticipantToGroup(aidarId, group2Id),
+            groupService.AddParticipantToGroup(aidarId, group3Id),
 
-            groupService.AddUserToGroup(vanyaId, group1Id),
-            groupService.AddUserToGroup(vanyaId, group2Id),
-            groupService.AddUserToGroup(vanyaId, group3Id),
+            groupService.AddParticipantToGroup(vanyaId, group1Id),
+            groupService.AddParticipantToGroup(vanyaId, group2Id),
+            groupService.AddParticipantToGroup(vanyaId, group3Id),
 
-            groupService.AddUserToGroup(vasyaPupkinId, group1Id)
+            groupService.AddParticipantToGroup(vasyaPupkinId, group1Id)
         };
 
         await Task.WhenAll(addUsers.Concat(addGroups).Concat(addUsersToGroups));
