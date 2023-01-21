@@ -84,6 +84,7 @@ public class GroupsController : ControllerBase
         return Ok(groupWithParticipants);
     }
 
+    [Authorize]
     [HttpPost("{groupId:guid}/join")]
     public async Task<IActionResult> Join(Guid groupId)
     {
@@ -93,8 +94,32 @@ public class GroupsController : ControllerBase
         if (HttpContext.GetUserId() is not { } userId)
             throw new InvalidProgramException();
 
-        await groupService.AddUserToGroup(userId, groupId);
+        await groupService.AddParticipantToGroup(userId, groupId);
         return Ok();
+    }
+
+    [Authorize]
+    [HttpPost("{groupId:guid}/leave")]
+    public async Task<IActionResult> Leave(Guid groupId)
+    {
+        if (groupId == Guid.Empty)
+            return BadRequest();
+
+        if (HttpContext.GetUserId() is not { } userId)
+            throw new InvalidProgramException();
+
+        var deletionResult = await groupService.TryDeleteParticipantFromGroup(userId, groupId);
+        switch (deletionResult)
+        {
+            case GroupService.DeleteParticipantResult.Success:
+                return Ok();
+            case GroupService.DeleteParticipantResult.NoGroupError:
+                return NotFound();
+            case GroupService.DeleteParticipantResult.ParticipantIsAdminError:
+                return Conflict("Can't leave your own group");
+            default:
+                throw new InvalidProgramException();
+        }
     }
 
     [Authorize]

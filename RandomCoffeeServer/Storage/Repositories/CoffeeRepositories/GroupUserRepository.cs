@@ -26,6 +26,15 @@ public class GroupUserRepository : RepositoryBase
             )
             .ExecuteNonData(Ydb);
     }
+    
+    public async Task DeleteFromGroup(Guid groupId, Guid userId)
+    {
+        await GroupsUsers
+            .Delete()
+            .Where("group_id", groupId.ToYdb())
+            .Where("user_id", userId.ToYdb())
+            .ExecuteNonData(Ydb);
+    }
 
     // Guid[] if found some users, null if no users found (<=> group doesn't exist) 
     public async Task<Guid[]?> FindUsersInGroup(Guid groupId)

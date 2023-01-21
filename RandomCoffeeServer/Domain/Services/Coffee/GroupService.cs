@@ -71,12 +71,31 @@ public class GroupService
             }));
     }
 
-    public async Task AddUserToGroup(Guid userId, Guid groupId)
+    public async Task AddParticipantToGroup(Guid userId, Guid groupId)
     {
         await groupUserRepository.AddToGroup(userId: userId, groupId: groupId);
+    }
+    
+    public async Task<DeleteParticipantResult> TryDeleteParticipantFromGroup(Guid userId, Guid groupId)
+    {
+        var group = await groupRepository.FindGroup(groupId);
+        if (group is null)
+            return DeleteParticipantResult.NoGroupError;
+        if (group.AdminUserId == userId)
+            return DeleteParticipantResult.ParticipantIsAdminError;
+        
+        await groupUserRepository.DeleteFromGroup(userId: userId, groupId: groupId);
+        return DeleteParticipantResult.Success;
     }
 
     private readonly GroupRepository groupRepository;
     private readonly UserRepository userRepository;
     private readonly GroupUserRepository groupUserRepository;
+
+    public enum DeleteParticipantResult
+    {
+        Success,
+        NoGroupError,
+        ParticipantIsAdminError
+    }
 }

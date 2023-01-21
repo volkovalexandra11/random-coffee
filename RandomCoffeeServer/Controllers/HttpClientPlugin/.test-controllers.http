@@ -1,0 +1,55 @@
+﻿POST {{url}}/api/groups
+Content-Type: application/json
+
+{
+  "name": "jp[1",
+  "isPrivate": false,
+  "nextRoundDate": "2022-10-11",
+  "intervalDays": 10
+}
+
+###
+
+GET {{url}}/api/Groups?userId=43ef1000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+###
+
+GET {{url}}/api/Groups/9f048110-0000-0000-0000-000000000000
+Content-Type: application/json
+
+###
+
+POST {{url}}/api/Groups/9f048110-0000-0000-0000-000000000000/join
+Content-Type: application/json
+
+###
+
+POST {{url}}/api/Groups/9f048150-0000-0000-0000-000000000000/make-round
+Content-Type: application/json
+
+###
+
+POST {{url}}/api/Groups/9f048110-0000-0000-0000-000000000000/leave
+Content-Type: application/json
+
+###
+
+POST {{url}}/api/Users
+Content-Type: application/json
+
+{
+  "firstName": "FirstName",
+  "lastName": "LastNameovich",
+  "email": "test@mail.ru"
+}
+
+###
+
+GET {{url}}/api/Users?groupId=9f048110-0000-0000-0000-000000000000
+Content-Type: application/json
+
+###
+
+GET {{url}}/api/Users/43ef1000-0000-0000-0000-000000000000
+Content-Type: application/json
