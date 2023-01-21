@@ -27,38 +27,22 @@ public class GroupService
         return await groupRepository.FindGroup(groupId);
     }
 
-    public async Task<GroupWithParticipantsDto?> GetGroupWithParticipants(Guid groupId)
+    public async Task<(Group? group, User[]? participants)> GetGroupWithParticipantModels(Guid groupId)
     {
         var group = await GetGroup(groupId);
         if (group is null)
-            return null;
+            return (null, null);
 
         var participantsIds = await groupUserRepository.FindUsersInGroup(groupId);
 
         if (participantsIds is null)
-            return null;
+            throw new InvalidProgramException($"No users found in group {group.Name} ({groupId})");
 
         var participants = await Task.WhenAll(participantsIds.Select(userId => userRepository.FindUser(userId)));
-        var participantsAsDto = participants
-            .Where(user => user is not null)
-            .Select(user => new ParticipantDto
-            {
-                UserId = user.UserId,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                ProfilePictureUrl = user.ProfilePictureUrl
-            })
-            .ToList();
+        if (participants.Any(user => user is null))
+            throw new InvalidProgramException($"Couldn't find some users in group");
 
-        return new GroupWithParticipantsDto
-        {
-            GroupId = group.GroupId,
-            Admin = participantsAsDto.First(participant => participant.UserId == group.AdminUserId),
-            Name = group.Name,
-            IsPrivate = group.IsPrivate,
-            Participants = participantsAsDto,
-            NextRoundDate = DateTime.Now
-        };
+        return (group, participants)!;
     }
 
     public async Task<Guid[]?> GetParticipantsInGroup(Guid groupId)

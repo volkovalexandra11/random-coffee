@@ -1,4 +1,6 @@
-﻿namespace RandomCoffeeServer.Domain.Dtos;
+﻿using RandomCoffeeServer.Domain.Dtos;
+
+namespace RandomCoffeeServer.Controllers.ApiControllers.GroupsControllerDtos;
 
 public class GroupWithParticipantsDto
 {

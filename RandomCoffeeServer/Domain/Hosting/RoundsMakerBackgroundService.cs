@@ -1,4 +1,4 @@
-﻿using RandomCoffeeServer.Domain.Services.Coffee;
+﻿using RandomCoffeeServer.Domain.Services.Coffee.Rounds;
 
 namespace RandomCoffeeServer.Domain.Hosting;
 

@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RandomCoffeeServer.Controllers.ApiControllers.GroupsControllerDtos;
+using RandomCoffeeServer.Domain.Dtos;
 using RandomCoffeeServer.Domain.Models;
 using RandomCoffeeServer.Domain.Services.Coffee;
+using RandomCoffeeServer.Domain.Services.Coffee.Rounds;
 
 namespace RandomCoffeeServer.Controllers.ApiControllers;
 
@@ -9,9 +12,12 @@ namespace RandomCoffeeServer.Controllers.ApiControllers;
 [Route("api/[controller]")]
 public class GroupsController : ControllerBase
 {
-    public GroupsController(GroupService groupRepository1)
+    public GroupsController(
+        GroupService groupRepository,
+        GroupRoundMakerService roundMakerService)
     {
-        this.groupService = groupRepository1;
+        this.groupService = groupRepository;
+        this.roundMakerService = roundMakerService;
     }
 
     [HttpPost]
@@ -50,11 +56,32 @@ public class GroupsController : ControllerBase
         if (groupId == Guid.Empty)
             return BadRequest();
 
-        var group = await groupService.GetGroupWithParticipants(groupId);
+        var (group, participants) = await groupService.GetGroupWithParticipantModels(groupId);
         if (group is null)
             return NotFound();
 
-        return Ok(group);
+        var participantsAsDto = participants!.Select(
+                user => new ParticipantDto
+                {
+                    UserId = user.UserId,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    ProfilePictureUrl = user.ProfilePictureUrl
+                })
+            .ToList();
+
+        var groupWithParticipants = new GroupWithParticipantsDto
+        {
+            GroupId = group.GroupId,
+            Admin = participantsAsDto.First(participant => participant.UserId == group.AdminUserId),
+            Name = group.Name,
+            IsPrivate = group.IsPrivate,
+            Participants = participantsAsDto,
+            NextRoundDate = DateTime.Now
+        };
+
+
+        return Ok(groupWithParticipants);
     }
 
     [HttpPost("{groupId:guid}/join")]
@@ -70,5 +97,28 @@ public class GroupsController : ControllerBase
         return Ok();
     }
 
+    [Authorize]
+    [HttpPost("{groupId:guid}/make-round")]
+    public async Task<IActionResult> Start(Guid groupId)
+    {
+        if (groupId == Guid.Empty)
+            return BadRequest();
+
+        var group = await groupService.GetGroup(groupId);
+
+        if (group is null)
+            return NotFound();
+
+        var userId = HttpContext.GetUserId();
+        if (userId != group.AdminUserId)
+        {
+            return Unauthorized();
+        }
+
+        await roundMakerService.MakeRound(groupId);
+        return Ok();
+    }
+
     private readonly GroupService groupService;
+    private readonly GroupRoundMakerService roundMakerService;
 }

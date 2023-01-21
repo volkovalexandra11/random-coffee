@@ -29,6 +29,12 @@ public class LockboxService
         return secret.Single().Value;
     }
 
+    public async Task<string> GetCoffeeEmailPassword()
+    {
+        var secret = await GetTextAsync(SecretId.CoffeeEmailPassword);
+        return secret.Single().Value;
+    }
+
     private async Task<Dictionary<string, string>> GetTextAsync(SecretId secretId)
     {
         var secret = await GetAsync(secretId);
