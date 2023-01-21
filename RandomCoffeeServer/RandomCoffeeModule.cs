@@ -77,7 +77,7 @@ public class RandomCoffeeModule : Module
         builder.RegisterType<RandomUserMatcher>().As<IUserMatcher>();
         builder.RegisterType<EmailMatchNotifier>().As<IMatchNotifier>();
         builder.RegisterType<MailMessageProvider>().SingleInstance();
-        builder.RegisterType<SmtpClientFactory>().SingleInstance();
+        builder.RegisterType<SmtpClientFactory>();
         builder.Register(ctx =>
                 ctx.Resolve<SmtpClientFactory>().Create().GetAwaiter().GetResult())
             .SingleInstance();
