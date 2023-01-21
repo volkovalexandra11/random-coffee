@@ -26,10 +26,10 @@ public class LoginController : ControllerBase
 
     [HttpGet]
     [Route("login/google-login")]
-    public async Task<IActionResult> Login()
+    public async Task<IActionResult> Login([FromQuery] string? fromUrl)
     {
         log.LogInformation("User is trying to login with Google");
-        var redirectUri = RedirectUri("/login/google-response");
+        var redirectUri = RedirectUri($"/login/google-response?{nameof(fromUrl)}={fromUrl ?? "/"}");
 
         var properties = signInManager.ConfigureExternalAuthenticationProperties(
             GoogleDefaults.AuthenticationScheme, redirectUri);
@@ -39,13 +39,16 @@ public class LoginController : ControllerBase
 
     [HttpGet]
     [Route("login/google-response")]
-    public async Task<IActionResult> GoogleResponse()
+    public async Task<IActionResult> GoogleResponse([FromQuery] string? fromUrl)
     {
         log.LogInformation("Got response from user to Google login");
+        
+        fromUrl ??= "/";
+        
         var loginInfo = await signInManager.GetExternalLoginInfoAsync();
         var email = loginInfo?.Principal.FindFirst(ClaimTypes.Email)?.Value;
         if (loginInfo == null)
-            return Redirect(RedirectUri("/login"));
+            return Redirect(RedirectUri($"/login?{nameof(fromUrl)}={fromUrl}"));
 
         var result = await signInManager.ExternalLoginSignInAsync(
             loginInfo.LoginProvider,
@@ -54,7 +57,7 @@ public class LoginController : ControllerBase
         if (result.Succeeded)
         {
             log.LogInformation($"Successfully logged to existing account {email ?? "without email claim"}");
-            return Redirect(RedirectUri("/"));
+            return Redirect(RedirectUri(fromUrl));
         }
 
         var user = new IdentityCoffeeUser()
@@ -89,7 +92,7 @@ public class LoginController : ControllerBase
         await groupService.AddParticipantToGroup(user.UserId, Guid.Parse("9f048110-0000-0000-0000-000000000000"));
 
         log.LogInformation($"Successfully created new user with email=${user.Email} and signed in");
-        return Redirect(RedirectUri("/"));
+        return Redirect(RedirectUri(fromUrl));
     }
 
     [HttpGet("logout")]
