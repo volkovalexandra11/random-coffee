@@ -1,47 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import store, {persistor} from "./store";
-import {Provider} from "react-redux";
-import {setGroups, setUser} from "./store/action";
-import {TUser} from "./types/user";
-import {fetchGroupByIdAction, fetchGroupsAction} from './store/api-action';
-
+import store, { persistor } from './store';
 import { PersistGate } from 'redux-persist/integration/react';
 
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
-
-// const user: TUser| null = {
-//     id: 1,
-//     firstName: "Самсонов",
-//     lastName: "Иван",
-//     avatarPath: ""
-// }
-// AppStore.dispatch(setGroups({groups: groupList}));
-// store.dispatch(fetchGroupsAction());
-// store.dispatch(setUser({user: user}))
-
 
 
 root.render(
     <BrowserRouter>
         <Provider store={store}>
             <PersistGate persistor={persistor}>
-                <App />
+                <App/>
             </PersistGate>
         </Provider>
     </BrowserRouter>
 );
 
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

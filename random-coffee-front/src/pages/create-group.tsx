@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import style from "../styles/create-group.module.scss";
-import {GroupCreateForm} from "../components/group-create-form/group-create-form";
+import style from '../styles/create-group.module.scss';
+import { GroupCreateForm } from '../components/group-create-form/group-create-form';
 
 
 export const CreateGroup: FC = () => {

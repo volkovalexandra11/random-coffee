@@ -18,7 +18,7 @@ export const ImageWithPlaceholder : FC<Props> = ({showPlaceholder, picturePath})
 	} else {
 		return (
 			// eslint-disable-next-line jsx-a11y/img-redundant-alt
-			<img src={picturePath} referrerPolicy="no-referrer" alt='picture'/>
+			<img src={picturePath} referrerPolicy='no-referrer' alt='picture'/>
 		);
 	}
 };
