@@ -93,7 +93,7 @@ public class PopulateWithMockDataJob
         var group3Id = Guid.Parse("9f048130-0000-0000-0000-000000000000");
         var group4Id = Guid.Parse("9f048140-0000-0000-0000-000000000000");
 
-        var groups = new Group[]
+        var groups = new GroupService.CreateGroupDto[]
         {
             new()
             {

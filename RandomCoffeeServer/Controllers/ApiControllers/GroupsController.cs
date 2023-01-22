@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RandomCoffeeServer.Controllers.ApiControllers.GroupsControllerDtos;
 using RandomCoffeeServer.Domain.Dtos;
-using RandomCoffeeServer.Domain.Models;
 using RandomCoffeeServer.Domain.Services.Coffee;
 using RandomCoffeeServer.Domain.Services.Coffee.Rounds;
+using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
 
 namespace RandomCoffeeServer.Controllers.ApiControllers;
 
@@ -14,30 +15,46 @@ public class GroupsController : ControllerBase
 {
     public GroupsController(
         GroupService groupRepository,
-        GroupRoundMakerService roundMakerService)
+        GroupRoundMakerService roundMakerService,
+        UserManager<IdentityCoffeeUser> userManager)
     {
         this.groupService = groupRepository;
         this.roundMakerService = roundMakerService;
+        this.userManager = userManager;
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateGroupDto createGroupDto)
     {
-        if (HttpContext.GetUserId() is not { } userId)
+        if (await HttpContext.GetUserAsync(userManager) is not { } groupAdmin)
             throw new InvalidProgramException();
 
-        var groupId = Guid.NewGuid();
+        var group = await groupService.AddGroup(new GroupService.CreateGroupDto
+        {
+            Name = createGroupDto.Name,
+            AdminUserId = groupAdmin.UserId,
+            IsPrivate = createGroupDto.IsPrivate,
+            NextRoundDate = createGroupDto.NextRoundDate,
+            IntervalDays = createGroupDto.IntervalDays
+        });
 
-        await groupService.AddGroup(
-            new Group
-            {
-                Name = createGroupDto.Name,
-                GroupId = groupId,
-                IsPrivate = createGroupDto.IsPrivate,
-                AdminUserId = userId
-            });
-
-        return Ok();
+        var adminDto = new ParticipantDto
+        {
+            UserId = groupAdmin.UserId,
+            FirstName = groupAdmin.FirstName,
+            LastName = groupAdmin.LastName,
+            ProfilePictureUrl = groupAdmin.ProfilePictureUrl
+        };
+        var groupWithParticipant = new GroupWithParticipantsDto()
+        {
+            GroupId = group.GroupId,
+            Name = group.Name,
+            Admin = adminDto,
+            Participants = new List<ParticipantDto> { adminDto },
+            IsPrivate = group.IsPrivate,
+            NextRoundDate = DateTime.Now
+        };
+        return CreatedAtAction(nameof(Get), new { groupId = group.GroupId }, groupWithParticipant);
     }
 
     [HttpGet]
@@ -139,19 +156,15 @@ public class GroupsController : ControllerBase
             kickingUserId,
             groupId
         );
-        switch (deletionResult)
+        return deletionResult switch
         {
-            case GroupService.DeleteParticipantResult.Success:
-                return Ok();
-            case GroupService.DeleteParticipantResult.NoGroupError:
-                return NotFound();
-            case GroupService.DeleteParticipantResult.DeletedParticipantIsGroupAdminError:
-                return Conflict("Can't leave your own group");
-            case GroupService.DeleteParticipantResult.Forbidden:
-                return Forbid();
-            default:
-                throw new InvalidProgramException();
-        }
+            GroupService.DeleteParticipantResult.Success => Ok(),
+            GroupService.DeleteParticipantResult.NoGroupError => NotFound(),
+            GroupService.DeleteParticipantResult.DeletedParticipantIsGroupAdminError => Conflict(
+                "Can't leave your own group"),
+            GroupService.DeleteParticipantResult.Forbidden => Forbid(),
+            _ => throw new InvalidProgramException()
+        };
     }
 
     [Authorize]
@@ -178,4 +191,5 @@ public class GroupsController : ControllerBase
 
     private readonly GroupService groupService;
     private readonly GroupRoundMakerService roundMakerService;
+    private readonly UserManager<IdentityCoffeeUser> userManager;
 }

@@ -10,6 +10,8 @@ export const Group: FC = () => {
 	const { isGroupsLoaded } = useAppSelector((state) => state);
 	const { user } = useAppSelector((state) => state);
 
+	console.log(currentGroup);
+
 	return (
 		<Loader active={!isGroupsLoaded}>
 			{isGroupsLoaded && currentGroup !== null ?

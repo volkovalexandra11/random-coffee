@@ -6,7 +6,6 @@ import { CreateGroup } from './pages/create-group';
 import { LoginWithGoogle } from './pages/login-with-google';
 import { Group } from './pages/group-page';
 import { useAppDispatch, useAppSelector } from './hooks';
-import { Mock } from './pages/mock';
 import { UserPage } from './pages/user-page';
 import { useEffect } from 'react';
 import { AuthStatus } from './types/authStatus';
@@ -43,7 +42,6 @@ function App() {
                 <Route path={'/login'} element={<LoginWithGoogle/>}/>
                 <Route path={'/create'} element={<CreateGroup/>}/>
                 <Route path={'/group/:groupId'} element={<Group/>}/>
-                <Route path={'/mock'} element={<Mock/>}/>
                 <Route path={'/user'} element={<UserPage/>}/>
                 {/*<Route path={'*'} element={<GroupsPage/>}/>*/}
             </Routes>

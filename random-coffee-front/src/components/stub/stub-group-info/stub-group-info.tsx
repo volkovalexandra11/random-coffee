@@ -15,7 +15,7 @@ export const StubGroupInfo = () => {
 							<div className={style.description}/>
 						</div>
 					</div>
-					<Button use='primary' className={style.button}>Выйти из группы</Button>
+					<Button use='primary' className={style.button}>Покинуть</Button>
 				</div>
 				<div className={style.users}>
 					<h2>Участники</h2>
