@@ -8,3 +8,4 @@ export const setUser = createAction<{user: TUser }>('setUser');
 export const setGroups = createAction<{groups: Array<TGroupShort>}>('setGroups');
 export const setIsGroupsLoaded = createAction<boolean>('setIsGroupsLoaded');
 export const setCurrentGroup = createAction<{currentGroup: TGroup | null}>('setCurrentGroup');
+export const userLogout = createAction('userLogout');

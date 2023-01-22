@@ -1,6 +1,9 @@
 import { FC } from "react";
 import { Button, Gapped, Modal } from "@skbkontur/react-ui";
 import style from './logout-modal.module.scss'
+import store from "../../store";
+import {userLogout} from "../../store/action";
+import {useAppDispatch} from "../../hooks";
 
 type Props = {
 	opened: boolean;
@@ -8,8 +11,11 @@ type Props = {
 }
 
 export const ExitModal: FC<Props> = ({ opened, close }) => {
+	const dispatch = useAppDispatch();
 	const handleClick = () => {
 		close();
+		dispatch(userLogout());
+		console.log(store.getState());
 		window.location.href = '/logout';
 	};
 

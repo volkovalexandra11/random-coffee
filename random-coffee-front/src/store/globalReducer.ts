@@ -1,7 +1,7 @@
 import { AuthStatus } from '../types/authStatus';
 import { AppState } from '../types/store';
 import { createReducer } from '@reduxjs/toolkit';
-import {changeAuthStatus, setCurrentGroup, setGroups, setIsGroupsLoaded, setUser} from './action';
+import {changeAuthStatus, setCurrentGroup, setGroups, setIsGroupsLoaded, setUser, userLogout} from './action';
 import { TGroupShort } from '../types/group';
 
 export const INITIAL_STATE: AppState = {
@@ -28,6 +28,12 @@ export const globalReducer = createReducer(INITIAL_STATE, (builder) => {
 		})
 		.addCase(setCurrentGroup, (state, action) => {
 			state.currentGroup = action.payload.currentGroup
+		})
+		.addCase(userLogout, (state) => {
+			state.authStatus = INITIAL_STATE.authStatus;
+			state.user = INITIAL_STATE.user;
+			state.groups = INITIAL_STATE.groups;
+			state.currentGroup = INITIAL_STATE.currentGroup;
 		})
 });
 

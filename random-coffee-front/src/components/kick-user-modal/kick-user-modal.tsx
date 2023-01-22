@@ -2,6 +2,9 @@ import { FC } from "react";
 import { Button, Gapped, Modal } from "@skbkontur/react-ui";
 import style from './kick-user-modal.module.scss'
 import {TUser} from "../../types/user";
+import store from "../../store";
+import {KickUserFromGroup} from "../../store/api-action";
+import {useAppSelector} from "../../hooks";
 
 type Props = {
     user: TUser;
@@ -10,9 +13,11 @@ type Props = {
 }
 
 export const KickModal: FC<Props> = ({ user, opened, close }) => {
+    const { currentGroup } = useAppSelector((state) => state);
     const handleClick = () => {
+        // @ts-ignore
+        store.dispatch(KickUserFromGroup({groupId: currentGroup.groupId, userId: user.userId}))
         close();
-        //TODO
     };
 
     return (<>

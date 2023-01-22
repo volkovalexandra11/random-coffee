@@ -28,7 +28,6 @@ export const GroupsPage: FC = () => {
 				dispatch(fetchUserAction());
 			}
 		}
-
 		getAuthStatus();
 	}, [authStatus, dispatch, navigate]);
 

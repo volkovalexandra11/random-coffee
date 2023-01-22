@@ -58,6 +58,40 @@ export const PostGroupsAction = createAsyncThunk<void, TGroup, {
 	'/data/groups',
 	async (data: TGroup, { dispatch, extra: api }) => {
 		await api.post<TGroup>(`/api/groups`, data);
+	}
+)
 
+export const KickUserFromGroup = createAsyncThunk<void, {groupId: string | undefined, userId :string}, {
+	dispatch: AppDispatch,
+	state: State,
+	extra: AxiosInstance
+}>(
+	'/data/groups',
+	async (data, { dispatch, extra: api }) => {
+		await api.post<TGroup>(`/api/groups/${data.groupId}/kick`, {
+			"userId": data.userId
+		});
+	}
+)
+
+export const JoinAGroup = createAsyncThunk<void, string | undefined, {
+	dispatch: AppDispatch,
+	state: State,
+	extra: AxiosInstance
+}>(
+	'/data/groups',
+	async (groupId: string | undefined, { dispatch, extra: api }) => {
+		await api.post<TGroup>(`/api/groups/${groupId}/join`);
+	}
+)
+
+export const LeaveFromGroup = createAsyncThunk<void, string | undefined, {
+	dispatch: AppDispatch,
+	state: State,
+	extra: AxiosInstance
+}>(
+	'/data/groups',
+	async (groupId: string | undefined, { dispatch, extra: api }) => {
+		await api.post<TGroup>(`/api/groups/${groupId}/leave`);
 	}
 )
