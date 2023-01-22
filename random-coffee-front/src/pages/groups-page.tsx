@@ -1,16 +1,16 @@
 import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader } from '@skbkontur/react-ui';
-import { useAppSelector } from "../hooks";
+import { useAppDispatch, useAppSelector } from "../hooks";
 import { StubGroupTable } from '../components/stub/stub-group-table/stub-group-table';
 import { GroupTable } from '../components/group-table/group-table';
 import { AuthStatus } from '../types/authStatus';
-import store from '../store';
 import { fetchGroupsAction, fetchUserAction } from '../store/api-action';
-import {EmptyGroupList} from "../components/empty-group-list/empty-group-list";
+import { EmptyGroupList } from "../components/empty-group-list/empty-group-list";
 
 export const GroupsPage: FC = () => {
 	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
 
 	const { groups } = useAppSelector((state) => state);
 	const { isGroupsLoaded } = useAppSelector((state) => state);
@@ -24,19 +24,19 @@ export const GroupsPage: FC = () => {
 			const respStatusCode = resp.status;
 			if (respStatusCode === 401) {
 				navigate('/login');
-			} else {
-				store.dispatch(fetchUserAction());
+			} else if (authStatus === AuthStatus.Logged) {
+				dispatch(fetchUserAction());
 			}
 		}
 
 		getAuthStatus();
-	}, [navigate]);
+	}, [authStatus, dispatch, navigate]);
 
 	useEffect(() => {
 		if (authStatus === AuthStatus.Logged) {
-			store.dispatch(fetchGroupsAction(user?.userId));
+			dispatch(fetchGroupsAction(user?.userId));
 		}
-	}, [authStatus, user])
+	}, [authStatus, dispatch, user])
 
 
 	return (
