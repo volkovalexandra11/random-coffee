@@ -1,9 +1,8 @@
-import {FC, useState} from 'react';
-import style from './user-table-row.module.scss';
+import { FC, useState } from 'react';
 import { ImageWithPlaceholder } from '../image-with-placeholder/image-with-placeholder';
-import {TUser} from "../../types/user";
-import {ExitModal} from "../logout-modal/logout-modal";
-import {KickModal} from "../kick-user-modal/kick-user-modal";
+import { TUser } from '../../types/user';
+import { KickModal } from '../kick-user-modal/kick-user-modal';
+import style from './user-table-row.module.scss';
 
 type Props = {
     user: TUser;
@@ -11,7 +10,7 @@ type Props = {
     adminView: boolean;
 }
 
-export const UserTableRow: FC<Props> = ({ user, isAdmin, adminView}) => {
+export const UserTableRow: FC<Props> = ({ user, isAdmin, adminView }) => {
     const [opened, setOpened] = useState(false);
 
     const openModal = () => {
@@ -25,12 +24,14 @@ export const UserTableRow: FC<Props> = ({ user, isAdmin, adminView}) => {
         <section className={style.wrapper}>
             <KickModal user={user} opened={opened} close={closeModal}/>
             <div className={style.NameAvatar}>
-                <ImageWithPlaceholder showPlaceholder={user.profilePictureUrl === undefined} picturePath={user.profilePictureUrl}/>
-                <div className={style.GroupName}>{user.firstName+" "+user.lastName}</div>
+                <ImageWithPlaceholder showPlaceholder={user.profilePictureUrl === undefined}
+                                      picturePath={user.profilePictureUrl}/>
+                <div className={style.GroupName}>{user.firstName + ' ' + user.lastName}</div>
             </div>
             <div className={style.information}>
-                <div className={style.params}>{isAdmin ? "Администратор" :"Участник"}</div>
-                <div className={style.params}>{(adminView && !isAdmin) && <div className={style.kick} onClick={openModal}>&#10006;</div>}</div>
+                <div className={style.params}>{isAdmin ? 'Администратор' : 'Участник'}</div>
+                <div className={style.params}>{(adminView && !isAdmin) &&
+                    <div className={style.kick} onClick={openModal}>&#10006;</div>}</div>
             </div>
         </section>
     );

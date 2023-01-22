@@ -1,8 +1,9 @@
 import { AuthStatus } from '../types/authStatus';
 import { AppState } from '../types/store';
 import { createReducer } from '@reduxjs/toolkit';
-import {changeAuthStatus, setCurrentGroup, setGroups, setIsGroupsLoaded, setUser, userLogout} from './action';
+import { changeAuthStatus, setCurrentGroup, setGroups, setIsGroupsLoaded, setUser } from './action';
 import { TGroupShort } from '../types/group';
+import { fetchUserAction } from './api-action';
 
 export const INITIAL_STATE: AppState = {
 	user: null,
@@ -29,11 +30,11 @@ export const globalReducer = createReducer(INITIAL_STATE, (builder) => {
 		.addCase(setCurrentGroup, (state, action) => {
 			state.currentGroup = action.payload.currentGroup
 		})
-		.addCase(userLogout, (state) => {
-			state.authStatus = INITIAL_STATE.authStatus;
-			state.user = INITIAL_STATE.user;
-			state.groups = INITIAL_STATE.groups;
-			state.currentGroup = INITIAL_STATE.currentGroup;
+		.addCase(fetchUserAction.fulfilled, (state, action) => {
+			state.user = action.payload;
+		})
+		.addCase(fetchUserAction.rejected, (state) => {
+			state.authStatus = AuthStatus.NotLogged;
 		})
 });
 

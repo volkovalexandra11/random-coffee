@@ -10,7 +10,7 @@ export const StubGroupTable = () => {
 				<Button className={style.button} use='primary' disabled>+ Создать группу</Button>
 			</div>
 			<div className={style.wrapper}>
-				{[1, 2, 3].map((_) => <StubGroupTableRow/>)}
+				{[1, 2, 3].map((i) => <StubGroupTableRow key={i}/>)}
 			</div>
 		</div>
 	);
