@@ -1,1 +1,4 @@
-export const welcomeText: string = 'Привет! На данный момент у нас существует только авторизация через Google. Не важно зарегистрированы вы или нет - авторизуйтесь через Google и сможете увидеть свой аккаунт. Приятного случайного кофе!'
+export const IS_PRIVATE_CONST = 'private';
+export const ONCE_A_WEAK_CONST = 'Раз в неделю';
+export const ONCE_A_MONTH_CONST = 'Раз в месяц';
+export const SET_MANUALLY_CONST = 'Настраивать вручную';

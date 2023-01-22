@@ -16,10 +16,21 @@ public class GroupService
         this.userRepository = userRepository;
     }
 
-    public async Task AddGroup(Group group)
+    public async Task<Group> AddGroup(CreateGroupDto createGroupDto)
     {
+        var groupId = createGroupDto.GroupId ?? Guid.NewGuid();
+        var group = new Group
+        {
+            GroupId = groupId,
+            Name = createGroupDto.Name,
+            IsPrivate = createGroupDto.IsPrivate,
+            AdminUserId = createGroupDto.AdminUserId
+        };
+
         await groupRepository.AddGroup(group);
         await groupUserRepository.AddToGroup(userId: group.AdminUserId, groupId: group.GroupId);
+
+        return group;
     }
 
     public async Task<Group?> GetGroup(Guid groupId)
@@ -75,7 +86,7 @@ public class GroupService
     {
         await groupUserRepository.AddToGroup(userId: userId, groupId: groupId);
     }
-    
+
     public async Task<DeleteParticipantResult> TryLeaveFromGroup(Guid userId, Guid groupId)
     {
         var group = await groupRepository.FindGroup(groupId);
@@ -83,7 +94,7 @@ public class GroupService
             return DeleteParticipantResult.NoGroupError;
         if (group.AdminUserId == userId)
             return DeleteParticipantResult.DeletedParticipantIsGroupAdminError;
-        
+
         await groupUserRepository.DeleteFromGroup(userId: userId, groupId: groupId);
         return DeleteParticipantResult.Success;
     }
@@ -97,7 +108,7 @@ public class GroupService
             return DeleteParticipantResult.Forbidden;
         if (group.AdminUserId == kickedUserId)
             return DeleteParticipantResult.DeletedParticipantIsGroupAdminError;
-        
+
         await groupUserRepository.DeleteFromGroup(userId: kickedUserId, groupId: groupId);
         return DeleteParticipantResult.Success;
     }
@@ -105,6 +116,16 @@ public class GroupService
     private readonly GroupRepository groupRepository;
     private readonly UserRepository userRepository;
     private readonly GroupUserRepository groupUserRepository;
+
+    public class CreateGroupDto
+    {
+        public Guid? GroupId { get; init; }
+        public string Name { get; init; }
+        public Guid AdminUserId { get; init; }
+        public bool IsPrivate { get; init; }
+        public DateTime NextRoundDate { get; init; }
+        public int IntervalDays { get; init; }
+    }
 
     public enum DeleteParticipantResult
     {
