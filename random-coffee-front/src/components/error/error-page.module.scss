@@ -1,0 +1,30 @@
+.wrapper{
+  height: 90%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(242, 242, 242);
+  position: absolute;
+}
+
+.form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  div{
+    color: rgb(133,133,133);
+  }
+}
+
+.errorCode{
+  height: 10%;
+  font-size: 6vw;
+}
+
+.message{
+  font-size: 1.5vw;
+  width: 40%;
+}
+

@@ -26,7 +26,7 @@ export const GroupCreateForm: FC = () => {
 		groupName: '',
 		description: '',
 		users: '',
-		groupType: '',
+		groupType: 'public',
 		repeatMeetings: 'Выберите частоту встреч',
 		meetingDate: ''
 	});
@@ -65,7 +65,8 @@ export const GroupCreateForm: FC = () => {
 		if (!isHasError()) {
 			const groupDto = getGroupDto(data);
 			// @ts-ignore
-			dispatch(postGroupAction(groupDto)).then(() => navigate(`/group/${currentGroup.groupId}`));
+			dispatch(postGroupAction(groupDto));
+			navigate(`/group/${currentGroup?.groupId}`);
 		}
 	};
 
@@ -113,21 +114,21 @@ export const GroupCreateForm: FC = () => {
 						/>
 					</div>
 				</label>
-				<label className={style.label}>
-					<p className={style.name}>Тип</p>
-					<div className={style.input}>
-						<RadioGroup width={'50%'} onValueChange={value => {
-							setData({ ...data, groupType: String(value) });
-							setHasError({ ...hasError, type: false })
-						}} error={hasError.type}
-						>
-							<Gapped gap={15}>
-								<Radio value={'private'}>Приватная</Radio>
-								<Radio value={'public'}>Публичная</Radio>
-							</Gapped>
-						</RadioGroup>
-					</div>
-				</label>
+				{/*<label className={style.label}>*/}
+				{/*	<p className={style.name}>Тип</p>*/}
+				{/*	<div className={style.input}>*/}
+				{/*		<RadioGroup width={'50%'} onValueChange={value => {*/}
+				{/*			setData({ ...data, groupType: String(value) });*/}
+				{/*			setHasError({ ...hasError, type: false })*/}
+				{/*		}} error={hasError.type}*/}
+				{/*		>*/}
+				{/*			<Gapped gap={15}>*/}
+				{/*				<Radio value={'private'}>Приватная</Radio>*/}
+				{/*				<Radio value={'public'}>Публичная</Radio>*/}
+				{/*			</Gapped>*/}
+				{/*		</RadioGroup>*/}
+				{/*	</div>*/}
+				{/*</label>*/}
 				<div className={style.button}>
 					<Button use={'primary'} className={style.input} style={{ borderRadius: '10px', overflow: 'hidden' }}
 									size='medium' onClick={sendData}

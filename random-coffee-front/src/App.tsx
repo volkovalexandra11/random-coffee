@@ -12,6 +12,7 @@ import { AuthStatus } from './types/authStatus';
 import { fetchUserAction } from './store/api-action';
 import './App.scss';
 import {changeAuthStatus} from "./store/action";
+import {EditGroup} from "./pages/edit-group-page";
 
 function App() {
     const navigate = useNavigate();
@@ -38,6 +39,7 @@ function App() {
                 <Route path={'/create'} element={<CreateGroup/>}/>
                 <Route path={'/group/:groupId'} element={<Group/>}/>
                 <Route path={'/user'} element={<UserPage/>}/>
+                <Route path={'/group/:groupId/edit'} element={<EditGroup/>}/>
                 {/*<Route path={'*'} element={<GroupsPage/>}/>*/}
             </Routes>
         </main>

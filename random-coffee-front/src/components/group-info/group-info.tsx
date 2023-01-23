@@ -10,6 +10,7 @@ import { deleteGroupFromUser } from '../../store/action';
 import {joinAGroup, leaveGroupAction, makeRoundAction} from '../../store/api-action';
 import { useNavigate } from 'react-router-dom';
 import { RoundMadeModal } from '../round-made-modal/round-made-modal';
+import {InviteLink} from "../invite-link/invite-link";
 
 type Props = {
 	group: TGroup;
@@ -20,7 +21,6 @@ export const GroupInfo: FC<Props> = ({ group, adminView }) => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
-	console.log(group);
 
 	const [openModal, setOpenModal] = useState(false);
 	let { user } = useAppSelector((state) => state);
@@ -70,12 +70,13 @@ export const GroupInfo: FC<Props> = ({ group, adminView }) => {
 							{!userInGroup && <Button use='primary' width={"200px"} className={style.button}
 													 onClick={handleJoinButtonClick}>Присоединится</Button>}
 							{adminView && userInGroup &&
-								<Button use='primary' width={"200px"} className={style.button}>Редактировать</Button>}
+								<Button use='primary' width={"200px"} className={style.button} onClick={()=>navigate(`/group/${group.groupId}/edit`)}>Редактировать</Button>}
 							{adminView && userInGroup && <Button use='primary' width={"200px"} className={style.button}
 																 onClick={handleMakeRoundClick}>Начать случайный
 								кофе</Button>}
 							{!adminView && userInGroup && <Button use='primary' width={"200px"} className={style.button}
 																  onClick={handleLeaveButtonClick}>Покинуть</Button>}
+							<InviteLink linkToCopy={`group/${group.groupId}`}/>
 					</div>
 				</div>
 				<div className={style.users}>

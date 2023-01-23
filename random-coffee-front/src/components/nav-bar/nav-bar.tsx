@@ -30,9 +30,6 @@ export const NavBar: FC = () => {
                     <div><h2>Cлучайный кофе</h2></div>
                 </div>
                 <div className={style.userPanel}>
-                    <Button className={style.buttons} borderless>
-                        <br/><NotificationBellIcon/>
-                    </Button>
                     <Button className={style.buttons} onClick={() => navigate('/user')} borderless>
                         <span className={style.text}><User/>{user?.firstName + ' ' + user?.lastName}</span>
                     </Button>
