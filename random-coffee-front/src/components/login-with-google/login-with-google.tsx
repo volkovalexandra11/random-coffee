@@ -13,7 +13,7 @@ export const LoginWithGoogleForm = () => {
 
 	const handleClick = () => {
 		console.log(authStatus);
-		store.dispatch(changeAuthStatus({ authStatus: AuthStatus.Logged }));
+		store.dispatch(changeAuthStatus({ authStatus: AuthStatus.Unknown }));
 		console.log(authStatus);
 		window.location.href = '/login/google-login';
 	}

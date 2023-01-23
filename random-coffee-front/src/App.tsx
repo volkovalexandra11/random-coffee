@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import { AuthStatus } from './types/authStatus';
 import { fetchGroupsAction, fetchUserAction } from './store/api-action';
 import './App.scss';
+import {changeAuthStatus} from "./store/action";
 
 function App() {
     const navigate = useNavigate();
@@ -22,6 +23,7 @@ function App() {
     useEffect(() => {
         if (authStatus === AuthStatus.Unknown) {
             dispatch(fetchUserAction());
+            dispatch(changeAuthStatus({ authStatus: AuthStatus.Logged }));
         }
         if (authStatus === AuthStatus.NotLogged) {
             navigate('/login');
