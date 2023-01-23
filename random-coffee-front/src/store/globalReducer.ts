@@ -1,7 +1,15 @@
 import { AuthStatus } from '../types/authStatus';
 import { AppState } from '../types/store';
 import { createReducer } from '@reduxjs/toolkit';
-import { changeAuthStatus, setCurrentGroup, setGroups, setIsGroupsLoaded, setUser } from './action';
+import {
+	changeAuthStatus,
+	deleteGroupFromUser,
+	deleteUserFromGroup,
+	setCurrentGroup,
+	setGroups,
+	setIsGroupsLoaded,
+	setUser
+} from './action';
 import { TGroupShort } from '../types/group';
 import { fetchUserAction } from './api-action';
 
@@ -35,6 +43,14 @@ export const globalReducer = createReducer(INITIAL_STATE, (builder) => {
 		})
 		.addCase(fetchUserAction.rejected, (state) => {
 			state.authStatus = AuthStatus.NotLogged;
+		})
+		.addCase(deleteUserFromGroup, (state, action) => {
+			// @ts-ignore
+			state.currentGroup.participants = state.currentGroup.participants.filter(user => user.userId !== action.payload.userToDelete.userId);
+		})
+		.addCase(deleteGroupFromUser, (state) => {
+			// @ts-ignore
+			state.groups = state.groups.filter(group => group.groupId !== state.currentGroup.groupId);
 		})
 });
 

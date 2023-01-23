@@ -61,7 +61,18 @@ export const leaveGroupAction = createAsyncThunk<void, string, {
     async (groupId, { extra: api }) => {
         await api.post(`/api/groups/${groupId}/leave`);
     }
-)
+);
+
+export const makeRoundAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'group/makeround',
+  async (groupId, { extra: api }) => {
+    await api.post(`/api/groups/${groupId}/make-round`);
+  }
+);
 
 export const fetchUserAction = createAsyncThunk<TUser | null, undefined, {
     dispatch: AppDispatch,
