@@ -5,9 +5,9 @@ import { TGroup } from '../../types/group';
 import { TUser } from '../../types/user';
 import { UserTableRow } from '../user-table-row/user-table-row';
 import { AdminInfo } from '../admin-info/admin-user';
-import { useAppDispatch } from '../../hooks';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 import { deleteGroupFromUser } from '../../store/action';
-import { leaveGroupAction, makeRoundAction } from '../../store/api-action';
+import {joinAGroup, leaveGroupAction, makeRoundAction} from '../../store/api-action';
 import { useNavigate } from 'react-router-dom';
 import { RoundMadeModal } from '../round-made-modal/round-made-modal';
 
@@ -21,7 +21,15 @@ export const GroupInfo: FC<Props> = ({ group, adminView }) => {
 	const navigate = useNavigate();
 
 	const [openModal, setOpenModal] = useState(false);
-
+	let { user } = useAppSelector((state) => state);
+	user = user as TUser;
+	let userInGroup = false;
+	for (let i = 0; i < group.participants.length; i++) {
+		if (user.userId === group.participants[i].userId) {
+			userInGroup = true
+			break;
+		}
+	}
 	const handleLeaveButtonClick = (_: MouseEvent<HTMLButtonElement>) => {
 		// @ts-ignore
 		dispatch(deleteGroupFromUser());
@@ -33,6 +41,10 @@ export const GroupInfo: FC<Props> = ({ group, adminView }) => {
 	const handleMakeRoundClick = () => {
 		dispatch(makeRoundAction(group.groupId));
 		setOpenModal(true);
+	}
+
+	const handleJoinButtonClick = () => {
+		dispatch(joinAGroup(group.groupId))
 	}
 
 	return (
@@ -51,13 +63,15 @@ export const GroupInfo: FC<Props> = ({ group, adminView }) => {
 						</div>
 					</div>
 					<div className={style.buttons}>
-						{adminView && <Button use='primary' width={'200px'} className={style.button}>Редактировать</Button>}
-						{adminView && <Button use='primary' width={'200px'} className={style.button}
-                                  onClick={handleMakeRoundClick}
-            >Начать случайный кофе</Button>}
-						{!adminView && <Button use='primary' width={'200px'} className={style.button}
-                                   onClick={handleLeaveButtonClick}
-            >Покинуть</Button>}
+							{!userInGroup && <Button use='primary' width={"200px"} className={style.button}
+													 onClick={handleJoinButtonClick}>Присоединится</Button>}
+							{adminView && userInGroup &&
+								<Button use='primary' width={"200px"} className={style.button}>Редактировать</Button>}
+							{adminView && userInGroup && <Button use='primary' width={"200px"} className={style.button}
+																 onClick={handleMakeRoundClick}>Начать случайный
+								кофе</Button>}
+							{!adminView && userInGroup && <Button use='primary' width={"200px"} className={style.button}
+																  onClick={handleLeaveButtonClick}>Покинуть</Button>}
 					</div>
 				</div>
 				<div className={style.users}>

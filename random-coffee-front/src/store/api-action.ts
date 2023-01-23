@@ -99,3 +99,14 @@ export const postGroupAction = createAsyncThunk<void, TGroupDto, {
         dispatch(setCurrentGroup({ currentGroup: data }));
     }
 )
+
+export const joinAGroup = createAsyncThunk<void, string | undefined, {
+    dispatch: AppDispatch,
+    state: State,
+    extra: AxiosInstance
+}>(
+    '/data/groups',
+    async (groupId: string | undefined, { dispatch, extra: api }) => {
+        await api.post<TGroup>(`/api/groups/${groupId}/join`);
+    }
+)
