@@ -5,12 +5,9 @@ import { User } from '@skbkontur/react-icons';
 import style from './nav-bar.module.scss'
 import { useNavigate } from 'react-router-dom';
 import { ExitModal } from '../logout-modal/logout-modal';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchGroupsAction } from '../../store/api-action';
+import { useAppSelector } from '../../hooks';
 
 export const NavBar: FC = () => {
-    const dispatch = useAppDispatch();
-
     const { user } = useAppSelector((state) => state);
     const [opened, setOpened] = useState(false);
 
@@ -28,8 +25,6 @@ export const NavBar: FC = () => {
         <>
             <div className={style.navBar}>
                 <div className={style.logo} onClick={() => {
-                    // @ts-ignore
-                    dispatch(fetchGroupsAction(user.userId));
                     navigate('')
                 }}>
                     <div><h2>Cлучайный кофе</h2></div>

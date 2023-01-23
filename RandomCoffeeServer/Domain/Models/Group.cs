@@ -9,6 +9,7 @@ public class Group
     public Guid AdminUserId { get; init; }
     public string Name { get; init; }
     public bool IsPrivate { get; init; } = true;
+    public string? GroupPictureUrl { get; init; }
 
     public Dictionary<string, YdbValue> ToYdb()
     {
@@ -17,7 +18,8 @@ public class Group
             ["group_id"] = GroupId.ToYdb(),
             ["admin_user_id"] = AdminUserId.ToYdb(),
             ["name"] = Name.ToYdb(),
-            ["is_private"] = YdbValue.MakeInt32(IsPrivate ? 1 : 0)
+            ["is_private"] = YdbValue.MakeInt32(IsPrivate ? 1 : 0),
+            ["group_picture_url"] = YdbValue.MakeUtf8(GroupPictureUrl ?? "")
         };
     }
 
@@ -29,6 +31,7 @@ public class Group
             AdminUserId = row["admin_user_id"].GetNonNullGuid(),
             Name = row["name"].GetNonNullUtf8(),
             IsPrivate = row["is_private"].GetNonNullBool(),
+            GroupPictureUrl = row["group_picture_url"].GetOptionalUtf8()
         };
     }
 }

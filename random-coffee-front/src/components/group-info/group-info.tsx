@@ -20,6 +20,8 @@ export const GroupInfo: FC<Props> = ({ group, adminView }) => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
+	console.log(group);
+
 	const [openModal, setOpenModal] = useState(false);
 	let { user } = useAppSelector((state) => state);
 	user = user as TUser;
@@ -56,7 +58,9 @@ export const GroupInfo: FC<Props> = ({ group, adminView }) => {
 			<div className={style.wrapper}>
 				<div className={style.information}>
 					<div className={style.about}>
-						<div className={style.avatar}/>
+						<div className={style.avatar}>
+							{group.groupPictureUrl && <img className={style.avatar} src={group.groupPictureUrl} referrerPolicy='no-referrer'/>}
+						</div>
 						<div>
 							<div className={style.description}>{group.description}</div>
 							<AdminInfo user={group.admin}/>

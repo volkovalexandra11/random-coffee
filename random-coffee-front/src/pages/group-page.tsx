@@ -14,6 +14,7 @@ export const Group: FC = () => {
 
 	useEffect(() => {
 		dispatch(fetchGroupByIdAction(groupId));
+		console.log(currentGroup);
 	}, []);
 
 	const { currentGroup } = useAppSelector((state) => state);

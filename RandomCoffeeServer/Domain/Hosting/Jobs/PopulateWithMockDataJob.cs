@@ -99,25 +99,29 @@ public class PopulateWithMockDataJob
             {
                 GroupId = group1Id,
                 Name = "Test group",
-                AdminUserId = sashaId
+                AdminUserId = sashaId,
+                GroupPictureUrl = "/img/picture1.jpg"
             },
             new()
             {
                 GroupId = group2Id,
                 Name = "Moon group",
-                AdminUserId = serezhaId
+                AdminUserId = serezhaId,
+                GroupPictureUrl = "/img/picture2.jpg"
             },
             new()
             {
                 GroupId = group3Id,
                 Name = "Группа Вани",
-                AdminUserId = vanyaId
+                AdminUserId = vanyaId,
+                GroupPictureUrl = "/img/picture.jpg"
             },
             new()
             {
                 GroupId = group4Id,
                 Name = "Test group2",
-                AdminUserId = vasyaPupkinId
+                AdminUserId = vasyaPupkinId,
+                GroupPictureUrl = "/img/avatar.jpg"
             }
         };
         var addGroups = groups.Select(group => groupService.AddGroup(group)).ToArray();
