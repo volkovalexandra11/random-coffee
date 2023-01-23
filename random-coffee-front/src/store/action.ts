@@ -9,4 +9,4 @@ export const setGroups = createAction<{groups: Array<TGroupShort>}>('setGroups')
 export const setIsGroupsLoaded = createAction<boolean>('setIsGroupsLoaded');
 export const setCurrentGroup = createAction<{currentGroup: TGroup | null}>('setCurrentGroup');
 export const deleteUserFromGroup = createAction<{userToDelete: TUser}>('deleteUserFromGroup');
-export const deleteGroupFromUser = createAction<string>('deleteGroupFromUser');
+export const deleteGroupFromUser = createAction<{userId: string}>('deleteGroupFromUser');
