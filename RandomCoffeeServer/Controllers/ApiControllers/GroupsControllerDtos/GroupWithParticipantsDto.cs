@@ -10,4 +10,5 @@ public class GroupWithParticipantsDto
     public bool IsPrivate { get; init; }
     public List<ParticipantDto> Participants { get; init; }
     public DateTime NextRoundDate { get; init; }
+    public string? GroupPictureUrl { get; init; }
 }

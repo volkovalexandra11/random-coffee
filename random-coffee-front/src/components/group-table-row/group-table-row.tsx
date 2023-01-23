@@ -12,7 +12,7 @@ export const GroupTableRow: FC<Props> = ({ group }) => {
 	return (
 		<section className={style.wrapper}>
 			<div className={style.NameAvatar}>
-				<ImageWithPlaceholder showPlaceholder={group.picturePath === undefined} picturePath={group.picturePath}/>
+				<ImageWithPlaceholder showPlaceholder={group.groupPictureUrl === undefined} picturePath={group.groupPictureUrl}/>
 				<div className={style.GroupName}>{group.name}</div>
 			</div>
 			<div className={style.information}>

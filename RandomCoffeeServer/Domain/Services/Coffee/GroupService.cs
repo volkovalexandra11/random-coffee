@@ -24,7 +24,8 @@ public class GroupService
             GroupId = groupId,
             Name = createGroupDto.Name,
             IsPrivate = createGroupDto.IsPrivate,
-            AdminUserId = createGroupDto.AdminUserId
+            AdminUserId = createGroupDto.AdminUserId,
+            GroupPictureUrl = createGroupDto.GroupPictureUrl
         };
 
         await groupRepository.AddGroup(group);
@@ -78,7 +79,8 @@ public class GroupService
                 GroupId = group!.GroupId,
                 Name = group.Name,
                 ParticipantsCount = await GetParticipantsCountInGroup(group.GroupId) ?? 0,
-                NextRoundDate = DateTime.Now
+                NextRoundDate = DateTime.Now,
+                GroupPictureUrl = group.GroupPictureUrl
             }));
     }
 
@@ -125,6 +127,7 @@ public class GroupService
         public bool IsPrivate { get; init; }
         public DateTime NextRoundDate { get; init; }
         public int IntervalDays { get; init; }
+        public string? GroupPictureUrl { get; init; }
     }
 
     public enum DeleteParticipantResult

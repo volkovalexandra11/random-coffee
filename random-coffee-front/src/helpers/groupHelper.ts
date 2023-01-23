@@ -5,6 +5,7 @@ import {
     ONCE_A_WEAK_CONST,
     SET_MANUALLY_CONST
 } from '../constants/text-constants';
+import { getRandomImg } from './randomHelper';
 
 type TempObj = {
     groupName: string,
@@ -13,11 +14,13 @@ type TempObj = {
     repeatMeetings: string,
     meetingDate: string;
 };
+
 export const getGroupDto = (data: TempObj): TGroupDto => {
     const isPrivate = getIsPrivate(data.groupType);
     const frequency = getFrequency(data.repeatMeetings);
     const nextRoundDate = getISODate(data.meetingDate);
-    return { name: data.groupName, isPrivate, nextRoundDate, intervalDays: frequency };
+    const pictureUrl = `/img/${getRandomImg()}`;
+    return { name: data.groupName, isPrivate, nextRoundDate, intervalDays: frequency, groupPictureUrl: pictureUrl };
 };
 
 const getIsPrivate = (literal: string): boolean => {

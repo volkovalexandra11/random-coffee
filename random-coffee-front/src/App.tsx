@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from './hooks';
 import { UserPage } from './pages/user-page';
 import { useEffect } from 'react';
 import { AuthStatus } from './types/authStatus';
-import { fetchGroupsAction, fetchUserAction } from './store/api-action';
+import { fetchUserAction } from './store/api-action';
 import './App.scss';
 import {changeAuthStatus} from "./store/action";
 
@@ -17,7 +17,6 @@ function App() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const { user } = useAppSelector((state) => state);
     const { authStatus } = useAppSelector((state) => state);
 
     useEffect(() => {
@@ -29,12 +28,6 @@ function App() {
             navigate('/login');
         }
     }, [dispatch, navigate]);
-
-    useEffect(() => {
-        if (authStatus === AuthStatus.Logged) {
-            dispatch(fetchGroupsAction(user?.userId));
-        }
-    }, [authStatus, dispatch, user])
 
     return (
         <main>

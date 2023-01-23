@@ -35,7 +35,8 @@ public class GroupsController : ControllerBase
             AdminUserId = groupAdmin.UserId,
             IsPrivate = createGroupDto.IsPrivate,
             NextRoundDate = createGroupDto.NextRoundDate,
-            IntervalDays = createGroupDto.IntervalDays
+            IntervalDays = createGroupDto.IntervalDays,
+            GroupPictureUrl = createGroupDto.GroupPictureUrl
         });
 
         var adminDto = new ParticipantDto
@@ -52,7 +53,8 @@ public class GroupsController : ControllerBase
             Admin = adminDto,
             Participants = new List<ParticipantDto> { adminDto },
             IsPrivate = group.IsPrivate,
-            NextRoundDate = DateTime.Now
+            NextRoundDate = DateTime.Now,
+            GroupPictureUrl = group.GroupPictureUrl
         };
         return CreatedAtAction(nameof(Get), new { groupId = group.GroupId }, groupWithParticipant);
     }
@@ -94,7 +96,8 @@ public class GroupsController : ControllerBase
             Name = group.Name,
             IsPrivate = group.IsPrivate,
             Participants = participantsAsDto,
-            NextRoundDate = DateTime.Now
+            NextRoundDate = DateTime.Now,
+            GroupPictureUrl = group.GroupPictureUrl
         };
 
 

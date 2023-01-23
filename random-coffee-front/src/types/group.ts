@@ -4,7 +4,7 @@ export type TGroupShort = {
     groupId: string;
     name: string;
     participantsCount: number;
-    picturePath?: string;
+    groupPictureUrl?: string;
     nextRoundDate: string;
 };
 
@@ -13,7 +13,7 @@ export type TGroup = {
     name: string;
     admin: TUser;
     participantsCount: number;
-    picturePath?: string;
+    groupPictureUrl?: string;
     participants: TUser[];
     description: string;
     isPrivate: boolean;
@@ -24,4 +24,5 @@ export type TGroupDto = {
     isPrivate: boolean;
     nextRoundDate: string;
     intervalDays: number;
+    groupPictureUrl?: string;
 }

@@ -6,4 +6,5 @@ public class CreateGroupDto
     public bool IsPrivate { get; set; }
     public DateTime NextRoundDate { get; set; }
     public int IntervalDays { get; set; }
+    public string? GroupPictureUrl { get; set; }
 }
