@@ -4,8 +4,6 @@ import { GroupTableRow } from '../group-table-row/group-table-row';
 import style from './group-table.module.scss'
 import { Button } from '@skbkontur/react-ui';
 import { Link, useNavigate } from 'react-router-dom';
-import store from '../../store';
-import { fetchGroupByIdAction } from '../../store/api-action';
 
 type Props = {
 	groups: TGroupShort[];
@@ -22,9 +20,7 @@ export const GroupTable: FC<Props> = ({ groups }) => {
 			</div>
 			<div className={style.wrapper}>
 				{groups.map((group) =>
-					<Link key={group.groupId} to={`/group/${group.groupId}`}
-								onClick={() => store.dispatch(fetchGroupByIdAction(group.groupId))}
-					>
+					<Link key={group.groupId} to={`/group/${group.groupId}`}>
 						<GroupTableRow group={group}/>
 					</Link>)}
 			</div>
