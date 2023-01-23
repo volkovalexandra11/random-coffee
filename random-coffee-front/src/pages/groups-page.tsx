@@ -7,10 +7,10 @@ import { GroupTable } from '../components/group-table/group-table';
 import { AuthStatus } from '../types/authStatus';
 import { fetchGroupsAction, fetchUserAction } from '../store/api-action';
 import { EmptyGroupList } from "../components/empty-group-list/empty-group-list";
+import store from "../store";
 
 export const GroupsPage: FC = () => {
 	const navigate = useNavigate();
-	const dispatch = useAppDispatch();
 
 	const { groups } = useAppSelector((state) => state);
 	const { isGroupsLoaded } = useAppSelector((state) => state);
@@ -24,18 +24,18 @@ export const GroupsPage: FC = () => {
 			const respStatusCode = resp.status;
 			if (respStatusCode === 401) {
 				navigate('/login');
-			} else if (authStatus === AuthStatus.Logged) {
-				dispatch(fetchUserAction());
+			} else {
+				store.dispatch(fetchUserAction());
 			}
 		}
 		getAuthStatus();
-	}, [authStatus, dispatch, navigate]);
+	}, [navigate]);
 
 	useEffect(() => {
 		if (authStatus === AuthStatus.Logged) {
-			dispatch(fetchGroupsAction(user?.userId));
+			store.dispatch(fetchGroupsAction(user?.userId));
 		}
-	}, [authStatus, dispatch, user])
+	}, [authStatus, user])
 
 
 	return (

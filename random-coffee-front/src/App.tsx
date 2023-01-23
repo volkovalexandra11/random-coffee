@@ -10,6 +10,7 @@ import { Group } from "./pages/group-page";
 import { useAppSelector } from './hooks';
 import { Mock } from './pages/mock';
 import {UserPage} from "./pages/user-page";
+import {ErrorPage} from "./components/error/error-page";
 
 function App() {
 	const { user } = useAppSelector((state) => state);
@@ -23,6 +24,7 @@ function App() {
 				<Route path={'/group/:groupId'} element={<Group/>}/>
 				<Route path={'/mock'} element={<Mock/>}/>
 				<Route path={'/user'} element={<UserPage/>}/>
+				<Route path={'/error'} element={<ErrorPage errorCode={404} message={"qwe"}/>}/>
 				{/*<Route path={'*'} element={<GroupsPage/>}/>*/}
 			</Routes>
 		</main>
