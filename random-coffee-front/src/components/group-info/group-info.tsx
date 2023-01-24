@@ -1,5 +1,5 @@
 import { FC, MouseEvent, useState } from 'react';
-import { Button } from '@skbkontur/react-ui';
+import {Button, DropdownMenu, Gapped, MenuSeparator} from '@skbkontur/react-ui';
 import style from './group-info.module.scss';
 import { TGroup } from '../../types/group';
 import { TUser } from '../../types/user';
@@ -63,20 +63,22 @@ export const GroupInfo: FC<Props> = ({ group, adminView }) => {
 						</div>
 						<div>
 							<div className={style.description}>{group.description}</div>
+							<Gapped vertical gap={10}>
 							<AdminInfo user={group.admin}/>
+							<InviteLink link={window.location.href}/>
+							</Gapped>
 						</div>
 					</div>
 					<div className={style.buttons}>
 							{!userInGroup && <Button use='primary' width={"200px"} className={style.button}
 													 onClick={handleJoinButtonClick}>Присоединится</Button>}
-							{adminView && userInGroup &&
-								<Button use='primary' width={"200px"} className={style.button} onClick={()=>navigate(`/group/${group.groupId}/edit`)}>Редактировать</Button>}
+							{/*{adminView && userInGroup &&*/}
+							{/*	<Button use='primary' width={"200px"} className={style.button} onClick={()=>navigate(`/group/${group.groupId}/edit`)}>Редактировать</Button>}*/}
 							{adminView && userInGroup && <Button use='primary' width={"200px"} className={style.button}
 																 onClick={handleMakeRoundClick}>Начать случайный
 								кофе</Button>}
 							{!adminView && userInGroup && <Button use='primary' width={"200px"} className={style.button}
 																  onClick={handleLeaveButtonClick}>Покинуть</Button>}
-							<InviteLink linkToCopy={`group/${group.groupId}`}/>
 					</div>
 				</div>
 				<div className={style.users}>

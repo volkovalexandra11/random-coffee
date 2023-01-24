@@ -39,7 +39,6 @@ function App() {
                 <Route path={'/create'} element={<CreateGroup/>}/>
                 <Route path={'/group/:groupId'} element={<Group/>}/>
                 <Route path={'/user'} element={<UserPage/>}/>
-                <Route path={'/group/:groupId/edit'} element={<EditGroup/>}/>
                 {/*<Route path={'*'} element={<GroupsPage/>}/>*/}
             </Routes>
         </main>
