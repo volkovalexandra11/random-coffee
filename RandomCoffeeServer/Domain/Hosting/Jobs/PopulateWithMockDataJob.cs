@@ -53,7 +53,6 @@ public class PopulateWithMockDataJob
                 "113028660294942278861",
                 cancellationToken),
 
-
             AddUser(new User
                 {
                     UserId = Guid.Parse("f8b97237-2b08-4062-a916-77b7285e93c4"),
