@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import {FC, useState, useRef, useCallback} from 'react';
 import { NotificationBellIcon } from '@skbkontur/icons'
 import { Button } from '@skbkontur/react-ui';
 import { User } from '@skbkontur/react-icons';
@@ -11,13 +11,13 @@ export const NavBar: FC = () => {
     const { user } = useAppSelector((state) => state);
     const [opened, setOpened] = useState(false);
 
-    const openModal = () => {
+    const openModal = useCallback(() => {
         setOpened(true);
-    }
+    }, []);
 
-    const closeModal = () => {
+    const closeModal = useCallback(() => {
         setOpened(false);
-    }
+    }, []);
 
     const navigate = useNavigate();
 

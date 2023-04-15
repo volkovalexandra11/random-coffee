@@ -22,8 +22,8 @@ function App() {
 
     useEffect(() => {
         if (authStatus === AuthStatus.Unknown) {
-            dispatch(fetchUserAction());
-            dispatch(changeAuthStatus({ authStatus: AuthStatus.Logged }));
+            dispatch(fetchUserAction()).then(() =>
+            dispatch(changeAuthStatus({ authStatus: AuthStatus.Logged })));
         }
         if (authStatus === AuthStatus.NotLogged) {
             navigate('/login');
