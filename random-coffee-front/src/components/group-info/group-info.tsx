@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useState } from 'react';
+import {FC, MouseEvent, useCallback, useMemo, useRef, useState} from 'react';
 import {Button, DropdownMenu, Gapped, MenuSeparator} from '@skbkontur/react-ui';
 import style from './group-info.module.scss';
 import { TGroup } from '../../types/group';
@@ -7,7 +7,7 @@ import { UserTableRow } from '../user-table-row/user-table-row';
 import { AdminInfo } from '../admin-info/admin-user';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import { deleteGroupFromUser } from '../../store/action';
-import {joinAGroup, leaveGroupAction, makeRoundAction} from '../../store/api-action';
+import {fetchGroupByIdAction, joinAGroup, leaveGroupAction, makeRoundAction} from '../../store/api-action';
 import { useNavigate } from 'react-router-dom';
 import { RoundMadeModal } from '../round-made-modal/round-made-modal';
 import {InviteLink} from "../invite-link/invite-link";
@@ -20,9 +20,10 @@ type Props = {
 export const GroupInfo: FC<Props> = ({ group, adminView }) => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
-
-
 	const [openModal, setOpenModal] = useState(false);
+
+	const clearTimerRef = useRef();
+
 	let { user } = useAppSelector((state) => state);
 	user = user as TUser;
 	let userInGroup = false;
@@ -32,6 +33,17 @@ export const GroupInfo: FC<Props> = ({ group, adminView }) => {
 			break;
 		}
 	}
+	const handlerOpenModal = useCallback(() => {
+		setOpenModal(true);
+		// @ts-ignore
+		clearTimerRef.current = setTimeout(()=>setOpenModal(false) , 5000);
+	}, []);
+
+	const handlerCloseModal = useCallback(() => {
+		setOpenModal(false);
+		clearTimeout(clearTimerRef.current);
+	}, []);
+
 	const handleLeaveButtonClick = (_: MouseEvent<HTMLButtonElement>) => {
 		// @ts-ignore
 		dispatch(deleteGroupFromUser());
@@ -41,17 +53,19 @@ export const GroupInfo: FC<Props> = ({ group, adminView }) => {
 	};
 
 	const handleMakeRoundClick = () => {
-		dispatch(makeRoundAction(group.groupId));
-		setOpenModal(true);
+		dispatch(makeRoundAction(group.groupId))
+			.catch(e => console.log(e));
+		handlerOpenModal();
 	}
 
 	const handleJoinButtonClick = () => {
-		dispatch(joinAGroup(group.groupId))
+		dispatch(joinAGroup(group.groupId));
+		dispatch(fetchGroupByIdAction(group.groupId));
 	}
 
 	return (
 		<div className={style.background}>
-			{openModal && <RoundMadeModal onClose={() => setOpenModal(false)}/>}
+			{openModal && <RoundMadeModal onClose={handlerCloseModal}/>}
 			<div className={style.header}>
 				<span className={style.name}>{group.name}</span>
 			</div>
