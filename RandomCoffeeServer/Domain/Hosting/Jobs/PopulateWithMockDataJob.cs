@@ -27,6 +27,7 @@ public class PopulateWithMockDataJob
         var aidarId = Guid.Parse("f8b97237-2b08-4062-a916-77b7285e93c4");
         var vanyaId = Guid.Parse("98998fff-1b58-4364-9aa3-b0e23babb074");
         var vasyaPupkinId = Guid.Parse("43ef1000-0000-0000-0000-000000000000");
+        var mishaId = Guid.Parse("7c0db301-69bf-4295-a2e0-67905c9ff390");
         var addUsers = new Task[]
         {
             AddUser(new User
@@ -83,6 +84,17 @@ public class PopulateWithMockDataJob
                     LastName = "Пупкин",
                     ProfilePictureUrl =
                         "https://avatars.dzeninfra.ru/get-zen_doc/1337093/pub_5eceb0ed6079e31d4ed971c4_5eceb18c92e0f61ff3249dc6/scale_1200"
+                },
+                "im-fake-google-key",
+                cancellationToken),
+            AddUser(new User
+                {
+                    UserId = mishaId,
+                    Email = "muxa09032002@gmail.com",
+                    FirstName = "Михаил",
+                    LastName = "Романенко",
+                    ProfilePictureUrl =
+                        "https://lh3.googleusercontent.com/a/AGNmyxatQ0FMHdTnY1cHQDdUftzA9odWVbQv1C4r3Aq6=s96-c"
                 },
                 "im-fake-google-key",
                 cancellationToken),
@@ -144,7 +156,11 @@ public class PopulateWithMockDataJob
             groupService.AddParticipantToGroup(vanyaId, group2Id),
             groupService.AddParticipantToGroup(vanyaId, group3Id),
 
-            groupService.AddParticipantToGroup(vasyaPupkinId, group1Id)
+            groupService.AddParticipantToGroup(vasyaPupkinId, group1Id),
+            
+            groupService.AddParticipantToGroup(mishaId, group1Id),
+            groupService.AddParticipantToGroup(mishaId, group2Id),
+            groupService.AddParticipantToGroup(mishaId, group3Id),
         };
 
         await Task.WhenAll(addUsers.Concat(addGroups).Concat(addUsersToGroups));
