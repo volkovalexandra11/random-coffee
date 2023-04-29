@@ -11,7 +11,7 @@ public class Group
     public bool IsPrivate { get; init; } = true;
     public string? GroupPictureUrl { get; init; }
 
-    public Dictionary<string, YdbValue> ToYdb()
+    public Dictionary<string, YdbValue> ToYdb() //TODO(Cockamamie): все имена столбцов в класс с константами
     {
         return new Dictionary<string, YdbValue>
         {

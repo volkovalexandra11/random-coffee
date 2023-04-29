@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RandomCoffeeServer.Controllers.ApiControllers.GroupsControllerDtos;
+using RandomCoffeeServer.Controllers.ApiControllers.QueryStrings;
+using RandomCoffeeServer.Domain;
 using RandomCoffeeServer.Domain.Dtos;
+using RandomCoffeeServer.Domain.Models;
 using RandomCoffeeServer.Domain.Services.Coffee;
 using RandomCoffeeServer.Domain.Services.Coffee.Rounds;
 using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
@@ -60,13 +63,25 @@ public class GroupsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Find([FromQuery] Guid userId)
+    public async Task<IActionResult> Find([FromQuery] GroupsQueryStringParameters queryParameters)
     {
-        if (userId == Guid.Empty)
-            return BadRequest();
+        var userId = queryParameters.UserId;
+        if (userId != null)
+        {
+            if (userId == Guid.Empty)
+                return BadRequest();
+            
+            var userGroups = await groupService.GetGroupsByUser(userId.Value);
+            return Ok(userGroups);
+        }
 
-        var groupIds = await groupService.GetGroupsByUser(userId);
-        return Ok(groupIds);
+        var groups = await groupService.GetPublicGroups().ConfigureAwait(false);
+        var pageList = PageList<Group>.ToPageList(
+            groups.AsQueryable(),
+            queryParameters.PageNumber,
+            queryParameters.PageSize);
+
+        return Ok(pageList);
     }
 
     [HttpGet("{groupId:guid}")]

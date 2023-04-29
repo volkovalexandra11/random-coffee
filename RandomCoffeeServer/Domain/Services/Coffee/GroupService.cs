@@ -39,6 +39,11 @@ public class GroupService
         return await groupRepository.FindGroup(groupId);
     }
 
+    public async Task<IEnumerable<Group>> GetPublicGroups()
+    {
+        return await groupRepository.FindPublicGroups().ConfigureAwait(false);
+    }
+
     public async Task<(Group? group, User[]? participants)> GetGroupWithParticipantModels(Guid groupId)
     {
         var group = await GetGroup(groupId);
@@ -119,7 +124,7 @@ public class GroupService
     private readonly UserRepository userRepository;
     private readonly GroupUserRepository groupUserRepository;
 
-    public class CreateGroupDto
+    public class CreateGroupDto //TODO(Cockamamie): separate file
     {
         public Guid? GroupId { get; init; }
         public string Name { get; init; }
@@ -130,7 +135,7 @@ public class GroupService
         public string? GroupPictureUrl { get; init; }
     }
 
-    public enum DeleteParticipantResult
+    public enum DeleteParticipantResult //TODO(Cockamamie): separate file
     {
         Success,
         Forbidden,
