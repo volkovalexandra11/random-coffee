@@ -11,38 +11,40 @@ import { useEffect } from 'react';
 import { AuthStatus } from './types/authStatus';
 import { fetchUserAction } from './store/api-action';
 import './App.scss';
-import {changeAuthStatus} from "./store/action";
-import {EditGroup} from "./pages/edit-group-page";
+import { changeAuthStatus } from './store/action';
+import { ErrorPage } from './components/error/error-page';
 
 function App() {
-    const navigate = useNavigate();
-    const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-    const { authStatus } = useAppSelector((state) => state);
+  const { authStatus } = useAppSelector((state) => state);
 
-    useEffect(() => {
-        if (authStatus === AuthStatus.Unknown) {
-            dispatch(fetchUserAction()).then(() =>
-            dispatch(changeAuthStatus({ authStatus: AuthStatus.Logged })));
-        }
-        if (authStatus === AuthStatus.NotLogged) {
-            navigate('/login');
-        }
-    }, [dispatch, navigate]);
+  useEffect(() => {
+    if (authStatus === AuthStatus.Unknown) {
+      dispatch(fetchUserAction()).then(() =>
+        dispatch(changeAuthStatus({ authStatus: AuthStatus.Logged }))
+      );
+    }
+    if (authStatus === AuthStatus.NotLogged) {
+      navigate('/login');
+    }
+  }, [dispatch, navigate]);
 
-    return (
-        <main>
-            {authStatus === AuthStatus.Logged && <NavBar/>}
-            <Routes>
-                <Route path={'/'} element={<GroupsPage/>}/>
-                <Route path={'/login'} element={<LoginWithGoogle/>}/>
-                <Route path={'/create'} element={<CreateGroup/>}/>
-                <Route path={'/group/:groupId'} element={<Group/>}/>
-                <Route path={'/user'} element={<UserPage/>}/>
-                {/*<Route path={'*'} element={<GroupsPage/>}/>*/}
-            </Routes>
-        </main>
-    );
+  return (
+    <main>
+      {authStatus === AuthStatus.Logged && <NavBar />}
+      <Routes>
+        <Route path={'/'} element={<GroupsPage />} />
+        <Route path={'/login'} element={<LoginWithGoogle />} />
+        <Route path={'/create'} element={<CreateGroup />} />
+        <Route path={'/group/:groupId'} element={<Group />} />
+        <Route path={'/user'} element={<UserPage />} />
+        <Route path={'/error/:errorCode'} element={<ErrorPage />} />
+        {/*<Route path={'*'} element={<GroupsPage/>}/>*/}
+      </Routes>
+    </main>
+  );
 }
 
 export default App;

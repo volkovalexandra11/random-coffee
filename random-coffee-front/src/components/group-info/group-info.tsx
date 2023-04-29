@@ -1,110 +1,148 @@
-import {FC, MouseEvent, useCallback, useMemo, useRef, useState} from 'react';
-import {Button, DropdownMenu, Gapped, MenuSeparator} from '@skbkontur/react-ui';
+import { FC, MouseEvent, useCallback, useMemo, useRef, useState } from 'react';
+import {
+  Button,
+  DropdownMenu,
+  Gapped,
+  MenuSeparator,
+} from '@skbkontur/react-ui';
 import style from './group-info.module.scss';
 import { TGroup } from '../../types/group';
 import { TUser } from '../../types/user';
 import { UserTableRow } from '../user-table-row/user-table-row';
 import { AdminInfo } from '../admin-info/admin-user';
-import {useAppDispatch, useAppSelector} from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { deleteGroupFromUser } from '../../store/action';
-import {fetchGroupByIdAction, joinAGroup, leaveGroupAction, makeRoundAction} from '../../store/api-action';
+import {
+  fetchGroupByIdAction,
+  joinAGroup,
+  leaveGroupAction,
+  makeRoundAction,
+} from '../../store/api-action';
 import { useNavigate } from 'react-router-dom';
 import { RoundMadeModal } from '../round-made-modal/round-made-modal';
-import {InviteLink} from "../invite-link/invite-link";
+import { InviteLink } from '../invite-link/invite-link';
 
 type Props = {
-	group: TGroup;
-	adminView: boolean;
-}
+  group: TGroup;
+  adminView: boolean;
+};
 
 export const GroupInfo: FC<Props> = ({ group, adminView }) => {
-	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
-	const [openModal, setOpenModal] = useState(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
 
-	const clearTimerRef = useRef();
+  const closeModalTimer = useRef();
 
-	let { user } = useAppSelector((state) => state);
-	user = user as TUser;
-	let userInGroup = false;
-	for (let i = 0; i < group.participants.length; i++) {
-		if (user.userId === group.participants[i].userId) {
-			userInGroup = true
-			break;
-		}
-	}
-	const handlerOpenModal = useCallback(() => {
-		setOpenModal(true);
-		// @ts-ignore
-		clearTimerRef.current = setTimeout(()=>setOpenModal(false) , 5000);
-	}, []);
+  let { user } = useAppSelector((state) => state);
+  user = user as TUser;
+  let userInGroup = false;
+  for (let i = 0; i < group.participants.length; i++) {
+    if (user.userId === group.participants[i].userId) {
+      userInGroup = true;
+      break;
+    }
+  }
+  const handleOpenModal = useCallback(() => {
+    setOpenModal(true);
+    // @ts-ignore
+	  closeModalTimer.current = setTimeout(() => setOpenModal(false), 5000);
+  }, []);
 
-	const handlerCloseModal = useCallback(() => {
-		setOpenModal(false);
-		clearTimeout(clearTimerRef.current);
-	}, []);
+  const handleCloseModal = useCallback(() => {
+    setOpenModal(false);
+    clearTimeout(closeModalTimer.current);
+  }, []);
 
-	const handleLeaveButtonClick = (_: MouseEvent<HTMLButtonElement>) => {
-		// @ts-ignore
-		dispatch(deleteGroupFromUser());
-		// @ts-ignore
-		dispatch(leaveGroupAction(group.groupId));
-		navigate('/');
-	};
+  const handleLeaveButtonClick = (_: MouseEvent<HTMLButtonElement>) => {
+    // @ts-ignore
+    dispatch(deleteGroupFromUser());
+    // @ts-ignore
+    dispatch(leaveGroupAction(group.groupId));
+    navigate('/');
+  };
 
-	const handleMakeRoundClick = () => {
-		dispatch(makeRoundAction(group.groupId))
-			.catch(e => console.log(e));
-		handlerOpenModal();
-	}
+  const handleMakeRoundClick = () => {
+    dispatch(makeRoundAction(group.groupId)).catch((e) => console.log(e));
+    handleOpenModal();
+  };
 
-	const handleJoinButtonClick = () => {
-		dispatch(joinAGroup(group.groupId));
-		dispatch(fetchGroupByIdAction(group.groupId));
-	}
+  const handleJoinButtonClick = () => {
+    dispatch(joinAGroup(group.groupId));
+    dispatch(fetchGroupByIdAction(group.groupId));
+  };
 
-	return (
-		<div className={style.background}>
-			{openModal && <RoundMadeModal onClose={handlerCloseModal}/>}
-			<div className={style.header}>
-				<span className={style.name}>{group.name}</span>
-			</div>
-			<div className={style.wrapper}>
-				<div className={style.information}>
-					<div className={style.about}>
-						<div className={style.avatar}>
-							{group.groupPictureUrl && <img className={style.avatar} src={group.groupPictureUrl} referrerPolicy='no-referrer'/>}
-						</div>
-						<div>
-							<div className={style.description}>{group.description}</div>
-							<Gapped vertical gap={10}>
-							<AdminInfo user={group.admin}/>
-							<InviteLink link={window.location.href}/>
-							</Gapped>
-						</div>
-					</div>
-					<div className={style.buttons}>
-							{!userInGroup && <Button use='primary' width={"200px"} className={style.button}
-													 onClick={handleJoinButtonClick}>Присоединится</Button>}
-							{/*{adminView && userInGroup &&*/}
-							{/*	<Button use='primary' width={"200px"} className={style.button} onClick={()=>navigate(`/group/${group.groupId}/edit`)}>Редактировать</Button>}*/}
-							{adminView && userInGroup && <Button use='primary' width={"200px"} className={style.button}
-																 onClick={handleMakeRoundClick}>Начать случайный
-								кофе</Button>}
-							{!adminView && userInGroup && <Button use='primary' width={"200px"} className={style.button}
-																  onClick={handleLeaveButtonClick}>Покинуть</Button>}
-					</div>
-				</div>
-				<div className={style.users}>
-					<h2>Участники</h2>
-					{group.participants.map((user: TUser) =>
-						<div key={user.userId}>
-							<UserTableRow user={user} isAdmin={group.admin.userId === user.userId}
-														adminView={adminView}
-							/>
-						</div>)}
-				</div>
-			</div>
-		</div>
-	);
-}
+  return (
+    <div className={style.background}>
+      {openModal && <RoundMadeModal onClose={handleCloseModal} />}
+      <div className={style.header}>
+        <span className={style.name}>{group.name}</span>
+      </div>
+      <div className={style.wrapper}>
+        <div className={style.information}>
+          <div className={style.about}>
+            <div className={style.avatar}>
+              {group.groupPictureUrl && (
+                <img
+                  className={style.avatar}
+                  src={group.groupPictureUrl}
+                  referrerPolicy="no-referrer"
+                />
+              )}
+            </div>
+            <div>
+              <div className={style.description}>{group.description}</div>
+              <Gapped vertical gap={10}>
+                <AdminInfo user={group.admin} />
+                <InviteLink link={window.location.href} />
+              </Gapped>
+            </div>
+          </div>
+          <div className={style.buttons}>
+            {!userInGroup && (
+              <Button
+                use="primary"
+                width={'200px'}
+                className={style.button}
+                onClick={handleJoinButtonClick}>
+                Присоединится
+              </Button>
+            )}
+            {/*{adminView && userInGroup &&*/}
+            {/*	<Button use='primary' width={"200px"} className={style.button} onClick={()=>navigate(`/group/${group.groupId}/edit`)}>Редактировать</Button>}*/}
+            {adminView && userInGroup && (
+              <Button
+                use="primary"
+                width={'200px'}
+                className={style.button}
+                onClick={handleMakeRoundClick}>
+                Начать случайный кофе
+              </Button>
+            )}
+            {!adminView && userInGroup && (
+              <Button
+                use="primary"
+                width={'200px'}
+                className={style.button}
+                onClick={handleLeaveButtonClick}>
+                Покинуть
+              </Button>
+            )}
+          </div>
+        </div>
+        <div className={style.users}>
+          <h2>Участники</h2>
+          {group.participants.map((user: TUser) => (
+            <div key={user.userId}>
+              <UserTableRow
+                user={user}
+                isAdmin={group.admin.userId === user.userId}
+                adminView={adminView}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
