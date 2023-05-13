@@ -5,12 +5,12 @@ public abstract class QueryStringParametersBase
     private const int MaxPageSize = 20;
     private const int MinPageSize = 1;
     private int pageSize = 5;
-    private int pageNumber = 1;
+    private int page = 1;
 
-    public int PageNumber
+    public int Page
     {
-        get => pageNumber;
-        set => pageNumber = value < 1 ? pageNumber : value;
+        get => page;
+        set => page = value < 1 ? page : value;
     }
 
     public int PageSize

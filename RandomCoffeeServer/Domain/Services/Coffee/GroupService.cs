@@ -1,6 +1,7 @@
 ﻿using RandomCoffeeServer.Domain.Dtos;
 using RandomCoffeeServer.Domain.Models;
 using RandomCoffeeServer.Storage.Repositories.CoffeeRepositories;
+using Ydb.Sdk.Value;
 
 namespace RandomCoffeeServer.Domain.Services.Coffee;
 
@@ -18,11 +19,12 @@ public class GroupService
 
     public async Task<Group> AddGroup(CreateGroupDto createGroupDto)
     {
-        var groupId = createGroupDto.GroupId ?? Guid.NewGuid();
+        var groupId = createGroupDto.GroupId ?? Guid.NewGuid(); //TODO(Cockamamie) зачем получать айди от клиента?
         var group = new Group
         {
             GroupId = groupId,
             Name = createGroupDto.Name,
+            Tag = createGroupDto.Tag,
             IsPrivate = createGroupDto.IsPrivate,
             AdminUserId = createGroupDto.AdminUserId,
             GroupPictureUrl = createGroupDto.GroupPictureUrl
@@ -42,6 +44,11 @@ public class GroupService
     public async Task<IEnumerable<Group>> GetPublicGroups()
     {
         return await groupRepository.FindPublicGroups().ConfigureAwait(false);
+    }
+
+    public async Task<IEnumerable<Group>> FilterGroups(Dictionary<string, YdbValue> filterParameters)
+    {
+        return await groupRepository.FindGroups(filterParameters);
     }
 
     public async Task<(Group? group, User[]? participants)> GetGroupWithParticipantModels(Guid groupId)
@@ -83,6 +90,7 @@ public class GroupService
             {
                 GroupId = group!.GroupId,
                 Name = group.Name,
+                Tag = group.Tag,
                 ParticipantsCount = await GetParticipantsCountInGroup(group.GroupId) ?? 0,
                 NextRoundDate = DateTime.Now,
                 GroupPictureUrl = group.GroupPictureUrl
@@ -128,6 +136,7 @@ public class GroupService
     {
         public Guid? GroupId { get; init; }
         public string Name { get; init; }
+        public string Tag { get; set; }
         public Guid AdminUserId { get; init; }
         public bool IsPrivate { get; init; }
         public DateTime NextRoundDate { get; init; }
