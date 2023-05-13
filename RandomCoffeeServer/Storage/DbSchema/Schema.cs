@@ -36,7 +36,8 @@ public static class Schema
                 new("admin_user_id", PrimitiveTypeId.String),
                 new("name", PrimitiveTypeId.Utf8),
                 new("is_private", PrimitiveTypeId.Int32),
-                new("group_picture_url", PrimitiveTypeId.Utf8)
+                new("group_picture_url", PrimitiveTypeId.Utf8),
+                new("description", PrimitiveTypeId.Utf8)
             },
             PrimaryKeyColumns = new[] { 0 }
         },
