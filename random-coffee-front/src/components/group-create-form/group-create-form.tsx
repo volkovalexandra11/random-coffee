@@ -42,7 +42,17 @@ export const GroupCreateForm: FC = () => {
 	const minDate = String(today.getDate()).padStart(2, '0')
 		+ '.' + String(today.getMonth() + 1).padStart(2, '0')
 		+ '.' + today.getFullYear();
-	const maxDate = '02.05.2023';
+	const maxDateToString = new Date(
+    today.getFullYear() + 1,
+    today.getMonth(),
+    today.getDate()
+  );
+  const maxDate =
+    String(maxDateToString.getDate()).padStart(2, '0') +
+    '.' +
+    String(maxDateToString.getMonth() + 1).padStart(2, '0') +
+    '.' +
+    maxDateToString.getFullYear();
 
 	const isHasError = () => {
 		const errorData = !!data.meetingDate && !DatePicker.validate(data.meetingDate, {

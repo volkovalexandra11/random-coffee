@@ -1,0 +1,65 @@
+.wrapper {
+  background-color: white;
+  width: 100%;
+  height: min-content;
+  padding: 30px;
+}
+
+.text {
+  font-size: 24px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.info {
+  display: flex;
+  gap: 40%;
+  padding-top: 10px;
+}
+
+.adminHolder {
+  display: flex;
+  align-items: center;
+  gap: 20%;
+}
+
+.users {
+  display: flex;
+  margin-top: 30px;
+  gap: 25px 25px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.userAvatar {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+@media (max-width: 1270px) {
+  .info {
+    flex-direction: column;
+  }
+
+  .adminHolder {
+    flex-direction: column;
+    align-items: start;
+  }
+}
+
+@media (max-width: 800px) {
+  .info {
+    flex-direction: row;
+  }
+
+  .adminHolder {
+    flex-direction: row;
+    align-items: center;
+  }
+}

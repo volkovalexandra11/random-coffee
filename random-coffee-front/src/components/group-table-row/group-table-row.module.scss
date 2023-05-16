@@ -3,9 +3,9 @@
   align-items: center;
   justify-content: space-between;
   border-radius: 10px;
-  margin: 3px 40px;
+  margin: 3px 0;
   height: 80px;
-  padding-left: 20px;
+  padding-left: 5px;
   padding-right: 20px;
 
   &:hover {
@@ -38,6 +38,6 @@
 
 .information{
   display: flex;
-  width: 50%;
+  flex-grow: 2;
   justify-content: center;
 }
