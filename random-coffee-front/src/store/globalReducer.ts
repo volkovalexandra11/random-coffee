@@ -15,7 +15,7 @@ import { fetchUserAction } from './api-action';
 
 export const INITIAL_STATE: AppState = {
 	user: null,
-	authStatus: AuthStatus.Unknown,
+	authStatus: AuthStatus.NotLogged,
 	groups: new Array<TGroupShort>(),
 	isGroupsLoaded: false,
 	currentGroup: null

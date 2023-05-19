@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { GroupInfo } from '../components/group-info/group-info';
+import { GroupInfo } from '../components/new-group-info/group-info';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { Loader } from '@skbkontur/react-ui';
 import { StubGroupInfo } from '../components/stub/stub-group-info/stub-group-info';
