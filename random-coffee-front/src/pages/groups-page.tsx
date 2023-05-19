@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { Loader } from '@skbkontur/react-ui';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { StubGroupTable } from '../components/stub/stub-group-table/stub-group-table';
-import { GroupTable } from '../components/group-table/group-table';
+import { GroupTable } from '../components/new-group-table/group-table';
 import { AuthStatus } from '../types/authStatus';
 import { EmptyGroupList } from '../components/empty-group-list/empty-group-list';
 import { fetchGroupsAction } from '../store/api-action';
