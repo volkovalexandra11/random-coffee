@@ -28,6 +28,12 @@ public class GroupsController : ControllerBase
         this.userManager = userManager;
     }
 
+    [HttpGet("tags")]
+    public ActionResult<IEnumerable<string>> GetGroupTags()
+    {
+        return GroupTags.Tags.ToList();
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateGroupDto createGroupDto)
     {
@@ -66,7 +72,7 @@ public class GroupsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<object>> Find([FromQuery] GroupsQueryStringParameters queryParameters)
+    public async Task<ActionResult<PageList<Group>>> Find([FromQuery] GroupsQueryStringParameters queryParameters)
     {
         if (queryParameters.UserId.HasValue &&
             queryParameters.UserId.Value == Guid.Empty ||
