@@ -49,10 +49,19 @@ public class Query
         return this;
     }
 
-    public Query Update()
+    public Query Update(Dictionary<string, YdbValue> setParameters, Dictionary<string, YdbValue> whereParameters)
     {
         method = "UPDATE";
-        return this;
+        var query = this;
+        foreach (var (column, value) in setParameters)
+        {
+            query = Set(column, value);
+        }
+        foreach (var (column, value) in whereParameters)
+        {
+            query = Where(column, value);
+        }
+        return query;
     }
 
     public Query ViewByColumn(string columnName)

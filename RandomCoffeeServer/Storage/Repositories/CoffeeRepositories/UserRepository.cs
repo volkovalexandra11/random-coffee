@@ -2,6 +2,7 @@
 using RandomCoffeeServer.Storage.DbSchema;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
+using Ydb.Sdk.Value;
 
 namespace RandomCoffeeServer.Storage.Repositories.CoffeeRepositories;
 
@@ -35,6 +36,20 @@ public class UserRepository : RepositoryBase
         await Users
             .Replace(user.ToYdb()) // todo if exists
             .ExecuteNonData(Ydb);
+    }
+
+    public async Task UpdateUser(Guid userId, User user)
+    {
+        var whereParameters = new Dictionary<string, YdbValue>
+        {
+            {
+                "user_id",
+                userId.ToYdb()
+            }
+        };
+        var setParameters = user.ToYdb();
+        setParameters.Remove("user_id");
+        await Users.Update(setParameters, whereParameters).ExecuteData(Ydb);
     }
 
     public async Task<User?> FindUser(Guid userId)
