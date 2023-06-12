@@ -11,4 +11,5 @@ public class GroupWithParticipantsDto
     public List<ParticipantDto> Participants { get; init; }
     public DateTime NextRoundDate { get; init; }
     public string? GroupPictureUrl { get; init; }
+    public string? GroupDescription { get; init; }
 }

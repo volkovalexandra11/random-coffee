@@ -36,7 +36,8 @@ public class GroupsController : ControllerBase
             IsPrivate = createGroupDto.IsPrivate,
             NextRoundDate = createGroupDto.NextRoundDate,
             IntervalDays = createGroupDto.IntervalDays,
-            GroupPictureUrl = createGroupDto.GroupPictureUrl
+            GroupPictureUrl = createGroupDto.GroupPictureUrl,
+            GroupDescription = createGroupDto.GroupDescription
         });
 
         var adminDto = new ParticipantDto
@@ -97,7 +98,8 @@ public class GroupsController : ControllerBase
             IsPrivate = group.IsPrivate,
             Participants = participantsAsDto,
             NextRoundDate = DateTime.Now,
-            GroupPictureUrl = group.GroupPictureUrl
+            GroupPictureUrl = group.GroupPictureUrl,
+            GroupDescription = group.GroupDescription
         };
 
 
