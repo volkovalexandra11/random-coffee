@@ -2,10 +2,15 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RandomCoffeeServer.Controllers.ApiControllers.GroupsControllerDtos;
+using RandomCoffeeServer.Controllers.ApiControllers.QueryStrings;
+using RandomCoffeeServer.Domain;
 using RandomCoffeeServer.Domain.Dtos;
+using RandomCoffeeServer.Domain.Models;
 using RandomCoffeeServer.Domain.Services.Coffee;
 using RandomCoffeeServer.Domain.Services.Coffee.Rounds;
 using RandomCoffeeServer.Storage.Repositories.AspIdentityStorages.IdentityModel;
+using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
+using Ydb.Sdk.Value;
 
 namespace RandomCoffeeServer.Controllers.ApiControllers;
 
@@ -51,6 +56,7 @@ public class GroupsController : ControllerBase
         {
             GroupId = group.GroupId,
             Name = group.Name,
+            Tag = group.Tag,
             Admin = adminDto,
             Participants = new List<ParticipantDto> { adminDto },
             IsPrivate = group.IsPrivate,
@@ -61,13 +67,60 @@ public class GroupsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Find([FromQuery] Guid userId)
+    public async Task<ActionResult<object>> Find([FromQuery] GroupsQueryStringParameters queryParameters)
     {
-        if (userId == Guid.Empty)
+        if (queryParameters.UserId.HasValue &&
+            queryParameters.UserId.Value == Guid.Empty ||
+            queryParameters.UsersCount is < 0)
+        {
             return BadRequest();
+        }
 
-        var groupIds = await groupService.GetGroupsByUser(userId);
-        return Ok(groupIds);
+        var filterParameters = new Dictionary<string, YdbValue>();
+        filterParameters.Add("is_private", YdbValue.MakeInt32(0));
+        if (queryParameters.Name != null && !string.IsNullOrEmpty(queryParameters.Name))
+            filterParameters.Add("name", queryParameters.Name.ToYdb());
+        if (queryParameters.Tag != null && !string.IsNullOrEmpty(queryParameters.Tag))
+            filterParameters.Add("tag", queryParameters.Tag.ToLower().ToYdb());
+        
+        var groups = (await groupService.FilterGroups(filterParameters).ConfigureAwait(false)).AsQueryable();
+        var groupIdsFilteredByUserInfo = await FilterByUsersInfoAsync(
+                groups.Select(g => g.GroupId),
+                queryParameters.UserId,
+                queryParameters.UsersCount)
+            .ConfigureAwait(false);
+        var resultGroups = groups.Where(g => groupIdsFilteredByUserInfo.Contains(g.GroupId));
+
+        var pageList = PageList<Group>.ToPageList(
+            Request,
+            resultGroups,
+            queryParameters.Page,
+            queryParameters.PageSize);
+
+        return Ok(pageList);
+    }
+
+    private async Task<IEnumerable<Guid>> FilterByUsersInfoAsync(
+        IEnumerable<Guid> groupIds,
+        Guid? userId,
+        int? usersCount)
+    {
+        if (!userId.HasValue && !usersCount.HasValue)
+            return groupIds;
+
+        var groups = new List<Guid>();
+        foreach (var groupId in groupIds)
+        {
+            var groupUserIds = await groupService.GetParticipantsInGroup(groupId).ConfigureAwait(false);
+            if (groupUserIds is null) //note(Cockamamie): Не может быть, если смотрим список групп из groupService.FilterGroups
+                continue;
+            var hasUserId = userId.HasValue && groupUserIds.Contains(userId.Value);
+            var hasUsersCount = usersCount.HasValue && groupUserIds.Length == usersCount.Value;
+            if (hasUserId && hasUsersCount || hasUserId && !usersCount.HasValue || hasUsersCount && !userId.HasValue)
+                groups.Add(groupId);
+        }
+
+        return groups;
     }
 
     [HttpGet("{groupId:guid}")]
@@ -95,6 +148,7 @@ public class GroupsController : ControllerBase
             GroupId = group.GroupId,
             Admin = participantsAsDto.First(participant => participant.UserId == group.AdminUserId),
             Name = group.Name,
+            Tag = group.Tag,
             IsPrivate = group.IsPrivate,
             Participants = participantsAsDto,
             NextRoundDate = DateTime.Now,
