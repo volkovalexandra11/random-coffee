@@ -2,6 +2,7 @@
 using RandomCoffeeServer.Storage.DbSchema;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
+using Ydb.Sdk.Value;
 
 namespace RandomCoffeeServer.Storage.Repositories.CoffeeRepositories;
 
@@ -30,5 +31,19 @@ public class GroupRepository : RepositoryBase
             .ExecuteData(Ydb);
 
         return groups.SingleOrNull(Group.FromYdbRow);
+    }
+
+    public async Task UpdateGroupAsync(Guid groupId, Group group)
+    {
+        var whereParameters = new Dictionary<string, YdbValue>
+        {
+            {
+                "group_id",
+                groupId.ToYdb()
+            }
+        };
+        var setParameters = group.ToYdb();
+        setParameters.Remove("group_id");
+        await Groups.Update(setParameters, whereParameters).ExecuteData(Ydb);
     }
 }

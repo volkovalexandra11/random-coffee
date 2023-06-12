@@ -90,6 +90,11 @@ public class GroupService
         await groupUserRepository.AddToGroup(userId: userId, groupId: groupId);
     }
 
+    public async Task UpdateGroupAsync(Group group)
+    {
+        await groupRepository.UpdateGroupAsync(group.GroupId, group).ConfigureAwait(false);
+    }
+
     public async Task<DeleteParticipantResult> TryLeaveFromGroup(Guid userId, Guid groupId)
     {
         var group = await groupRepository.FindGroup(groupId);
