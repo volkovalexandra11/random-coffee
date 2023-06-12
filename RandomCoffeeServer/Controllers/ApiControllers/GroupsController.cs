@@ -69,7 +69,9 @@ public class GroupsController : ControllerBase
     public async Task<ActionResult<object>> Find([FromQuery] GroupsQueryStringParameters queryParameters)
     {
         if (queryParameters.UserId.HasValue &&
-            queryParameters.UserId.Value == Guid.Empty ||
+            queryParameters.UserId == Guid.Empty ||
+            queryParameters.AdminUserId.HasValue &&
+            queryParameters.AdminUserId == Guid.Empty ||
             queryParameters.UsersCount is < 0)
         {
             return BadRequest();
@@ -81,6 +83,8 @@ public class GroupsController : ControllerBase
             filterParameters.Add("name", queryParameters.Name.ToYdb());
         if (queryParameters.Tag != null && !string.IsNullOrEmpty(queryParameters.Tag))
             filterParameters.Add("tag", queryParameters.Tag.ToLower().ToYdb());
+        if (queryParameters.AdminUserId != null)
+            filterParameters.Add("admin_user_id", queryParameters.AdminUserId.Value.ToYdb());
         
         var groups = (await groupService.FilterGroups(filterParameters).ConfigureAwait(false)).AsQueryable();
         var groupIdsFilteredByUserInfo = await FilterByUsersInfoAsync(
