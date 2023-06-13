@@ -33,6 +33,20 @@ public class GroupRepository : RepositoryBase
         return groups.SingleOrNull(Group.FromYdbRow);
     }
 
+    public async Task UpdateGroupAsync(Guid groupId, Group group)
+    {
+        var whereParameters = new Dictionary<string, YdbValue>
+        {
+            {
+                "group_id",
+                groupId.ToYdb()
+            }
+        };
+        var setParameters = group.ToYdb();
+        setParameters.Remove("group_id");
+        await Groups.Update(setParameters, whereParameters).ExecuteData(Ydb);
+    }
+
     public async Task<IEnumerable<Group>> FindPublicGroups()
     {
         var notPrivateValue = YdbValue.MakeInt32(0);

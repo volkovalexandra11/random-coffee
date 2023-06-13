@@ -49,10 +49,19 @@ public class Query
         return this;
     }
 
-    public Query Update()
+    public Query Update(Dictionary<string, YdbValue> setParameters, Dictionary<string, YdbValue> whereParameters)
     {
         method = "UPDATE";
-        return this;
+        var query = this;
+        foreach (var (column, value) in setParameters)
+        {
+            query = Set(column, value);
+        }
+        foreach (var (column, value) in whereParameters)
+        {
+            query = Where(column, value);
+        }
+        return query;
     }
 
     public Query ViewByColumn(string columnName)
@@ -108,7 +117,7 @@ public class Query
 
         if (method is "SELECT" or "DELETE")
             builder.Append(" FROM");
-        else
+        else if (method != "UPDATE")
             builder.Append(" INTO");
 
         builder.Append(' ').Append(table.TableName);
@@ -119,7 +128,7 @@ public class Query
         {
             builder.Append(" SET ");
             builder.Append(string.Join(
-                    " AND ",
+                    " , ",
                     setParams.Select(
                         columnAndValue => $"{columnAndValue.Key} = {ToSetParamName(columnAndValue.Key)}")
                 )

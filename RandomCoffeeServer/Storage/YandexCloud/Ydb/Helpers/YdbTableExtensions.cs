@@ -74,9 +74,12 @@ public static class YdbTableExtensions
             .Replace(value);
     }
 
-    public static Query Update(this YdbTable table)
+    public static Query Update(
+        this YdbTable table,
+        Dictionary<string, YdbValue> setParameters,
+        Dictionary<string, YdbValue> whereParameters)
     {
         return new Query(table)
-            .Update();
+            .Update(setParameters, whereParameters);
     }
 }

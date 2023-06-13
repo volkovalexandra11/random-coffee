@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using RandomCoffeeServer.Controllers.ApiControllers.GroupsControllerDtos;
 using RandomCoffeeServer.Controllers.ApiControllers.QueryStrings;
@@ -18,6 +19,10 @@ namespace RandomCoffeeServer.Controllers.ApiControllers;
 [Route("api/[controller]")]
 public class GroupsController : ControllerBase
 {
+    private readonly GroupService groupService;
+    private readonly GroupRoundMakerService roundMakerService;
+    private readonly UserManager<IdentityCoffeeUser> userManager;
+
     public GroupsController(
         GroupService groupRepository,
         GroupRoundMakerService roundMakerService,
@@ -70,7 +75,9 @@ public class GroupsController : ControllerBase
     public async Task<ActionResult<object>> Find([FromQuery] GroupsQueryStringParameters queryParameters)
     {
         if (queryParameters.UserId.HasValue &&
-            queryParameters.UserId.Value == Guid.Empty ||
+            queryParameters.UserId == Guid.Empty ||
+            queryParameters.AdminUserId.HasValue &&
+            queryParameters.AdminUserId == Guid.Empty ||
             queryParameters.UsersCount is < 0)
         {
             return BadRequest();
@@ -82,6 +89,8 @@ public class GroupsController : ControllerBase
             filterParameters.Add("name", queryParameters.Name.ToYdb());
         if (queryParameters.Tag != null && !string.IsNullOrEmpty(queryParameters.Tag))
             filterParameters.Add("tag", queryParameters.Tag.ToLower().ToYdb());
+        if (queryParameters.AdminUserId != null)
+            filterParameters.Add("admin_user_id", queryParameters.AdminUserId.Value.ToYdb());
         
         var groups = (await groupService.FilterGroups(filterParameters).ConfigureAwait(false)).AsQueryable();
         var groupIdsFilteredByUserInfo = await FilterByUsersInfoAsync(
@@ -158,6 +167,38 @@ public class GroupsController : ControllerBase
 
 
         return Ok(groupWithParticipants);
+    }
+
+    [HttpPut("{groupId:guid}")]
+    public async Task<IActionResult> UpdateGroup(Guid groupId, [FromBody] UpdateGroupDto updateGroupDto)
+    {
+        if (groupId == Guid.Empty)
+            return BadRequest();
+
+        var group = await groupService.GetGroup(groupId).ConfigureAwait(false);
+        if (group is null)
+            return NotFound();
+
+        var updatedGroup = FromUpdateGroupDto(groupId, group.AdminUserId, updateGroupDto);
+        await groupService.UpdateGroupAsync(updatedGroup).ConfigureAwait(false);
+
+        return NoContent();
+    }
+
+    [HttpPatch("{groupId:guid}")]
+    public async Task<IActionResult> PatchGroup(Guid groupId, [FromBody] JsonPatchDocument<Group> groupPatch)
+    {
+        if (groupId == Guid.Empty)
+            return BadRequest();
+
+        var group = await groupService.GetGroup(groupId).ConfigureAwait(false);
+        if (group is null)
+            return NotFound();
+        
+        groupPatch.ApplyTo(group);
+        await groupService.UpdateGroupAsync(group).ConfigureAwait(false);
+
+        return NoContent();
     }
 
     [Authorize]
@@ -248,7 +289,17 @@ public class GroupsController : ControllerBase
         return Ok();
     }
 
-    private readonly GroupService groupService;
-    private readonly GroupRoundMakerService roundMakerService;
-    private readonly UserManager<IdentityCoffeeUser> userManager;
+    private static Group FromUpdateGroupDto(Guid groupId, Guid groupAdminId, UpdateGroupDto updateGroupDto)
+    {
+        return new Group
+        {
+            GroupId = groupId,
+            AdminUserId = groupAdminId,
+            Name = updateGroupDto.Name,
+            Tag = updateGroupDto.Tag,
+            IsPrivate = updateGroupDto.IsPrivate,
+            GroupPictureUrl = updateGroupDto.GroupPictureUrl,
+            GroupDescription = updateGroupDto.GroupDescription
+        };
+    }
 }
