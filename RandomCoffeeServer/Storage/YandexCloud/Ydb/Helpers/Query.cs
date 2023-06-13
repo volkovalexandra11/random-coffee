@@ -106,7 +106,7 @@ public class Query
 
         if (method is "SELECT" or "DELETE")
             builder.Append(" FROM");
-        else
+        else if (method != "UPDATE")
             builder.Append(" INTO");
 
         builder.Append(' ').Append(table.TableName);
@@ -117,7 +117,7 @@ public class Query
         {
             builder.Append(" SET ");
             builder.Append(string.Join(
-                    " AND ",
+                    " , ",
                     setParams.Select(
                         columnAndValue => $"{columnAndValue.Key} = {ToSetParamName(columnAndValue.Key)}")
                 )

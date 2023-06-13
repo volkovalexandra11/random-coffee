@@ -15,7 +15,10 @@ DotEnv.Load("./.env");
 var builder = WebApplication.CreateBuilder(args);
 var modes = ArgsParser.GetApplicationModes();
 
-builder.Services.AddControllers().ConfigureApplicationPartManager(manager =>
+builder.Services
+    .AddControllers()
+    .AddNewtonsoftJson()
+    .ConfigureApplicationPartManager(manager =>
 {
     manager.ApplicationParts.Clear();
     if (modes.HasFlag(ApplicationMode.ApiServer))
