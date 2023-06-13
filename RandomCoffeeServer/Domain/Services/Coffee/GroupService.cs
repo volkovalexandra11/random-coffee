@@ -27,7 +27,8 @@ public class GroupService
             Tag = createGroupDto.Tag,
             IsPrivate = createGroupDto.IsPrivate,
             AdminUserId = createGroupDto.AdminUserId,
-            GroupPictureUrl = createGroupDto.GroupPictureUrl
+            GroupPictureUrl = createGroupDto.GroupPictureUrl,
+            GroupDescription = createGroupDto.GroupDescription
         };
 
         await groupRepository.AddGroup(group);
@@ -142,6 +143,7 @@ public class GroupService
         public DateTime NextRoundDate { get; init; }
         public int IntervalDays { get; init; }
         public string? GroupPictureUrl { get; init; }
+        public string? GroupDescription { get; init; }
     }
 
     public enum DeleteParticipantResult //TODO(Cockamamie): separate file

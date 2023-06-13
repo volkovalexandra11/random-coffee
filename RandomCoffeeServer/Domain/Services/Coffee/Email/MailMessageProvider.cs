@@ -28,7 +28,8 @@ public class MailMessageProvider
             Subject = $"Новый раунд случайного кофе в группе {group.Name}",
             Body = $"Привет, {toUser.FullName}!\n" +
                    $"Твой собеседник в этом раунде {matchedUser.FullName}\n" +
-                   $"Можешь написать ему на почту: {matchedUser.Email}"
+                   $"Можешь написать ему на почту: {matchedUser.Email}\n" +
+                   $"Или в telegram: {matchedUser.Telegram}"
         };
     }
 }

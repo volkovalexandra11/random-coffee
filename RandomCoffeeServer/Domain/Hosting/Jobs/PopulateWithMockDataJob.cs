@@ -101,7 +101,8 @@ public class PopulateWithMockDataJob
                 Name = "Test group",
                 Tag = "test",
                 AdminUserId = sashaId,
-                GroupPictureUrl = "/img/picture1.jpg"
+                GroupPictureUrl = "/img/picture1.jpg",
+                GroupDescription = "This is Sasha's test group"
             },
             new()
             {

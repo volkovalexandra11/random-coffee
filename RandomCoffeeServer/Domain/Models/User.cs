@@ -10,7 +10,7 @@ public class User
     public string FirstName { get; init; }
     public string LastName { get; init; }
     public string? ProfilePictureUrl { get; init; }
-
+    public string? Telegram { get; init; }
     public string FullName => $"{FirstName} {LastName}";
 
     public Dictionary<string, YdbValue> ToYdb()
@@ -21,7 +21,8 @@ public class User
             ["email"] = Email.ToYdb(),
             ["first_name"] = FirstName.ToYdb(),
             ["last_name"] = LastName.ToYdb(),
-            ["profile_picture_url"] = YdbValue.MakeUtf8(ProfilePictureUrl ?? "")
+            ["profile_picture_url"] = YdbValue.MakeUtf8(ProfilePictureUrl ?? ""),
+            ["telegram"] = YdbValue.MakeUtf8(Telegram ?? ""),
         };
     }
 
@@ -33,7 +34,8 @@ public class User
             FirstName = row["first_name"].GetNonNullUtf8(),
             LastName = row["last_name"].GetNonNullUtf8(),
             Email = row["email"].GetNonNullUtf8(),
-            ProfilePictureUrl = row["profile_picture_url"].GetOptionalUtf8()
+            ProfilePictureUrl = row["profile_picture_url"].GetOptionalUtf8(),
+            Telegram = row["telegram"].GetNonNullUtf8(),
         };
     }
 }
