@@ -45,28 +45,28 @@ public class UsersController : ControllerBase
         return Ok(user);
     }
 
-    [HttpPut("userId:guid")]
-    public async Task<IActionResult> UpdateUser(Guid userId, [FromBody] UpdateUserDto updateUserDto)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+    [HttpPut("{userId:guid}")]
+    public async Task<IActionResult> UpdateUser(Guid userId, [FromBody] UpdateUserDto updateUserDto) 
     {
         if (userId == Guid.Empty)
             return BadRequest();
-
+        
         var user = await userService.GetUser(userId).ConfigureAwait(false);
         if (user is null)
             return NotFound();
-
+        
         var updatedUser = FromUpdateUserDto(userId, updateUserDto);
         await userService.UpdateUser(updatedUser).ConfigureAwait(false);
-
+        
         return NoContent();
     }
 
-    [HttpPatch("userId:guid")]
+    [HttpPatch("{userId:guid}")]
     public async Task<IActionResult> PatchUser(Guid userId, [FromBody] JsonPatchDocument<User> userPatch)
     {
         if (userId == Guid.Empty)
             return BadRequest();
-
+        
         var user = await userService.GetUser(userId).ConfigureAwait(false);
         if (user is null)
             return NotFound();
