@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using RandomCoffeeServer.Controllers.ApiControllers.GroupsControllerDtos;
-using RandomCoffeeServer.Controllers.ApiControllers.UsersControllerDtos;
 using RandomCoffeeServer.Controllers.ApiControllers.QueryStrings;
 using RandomCoffeeServer.Domain;
 using RandomCoffeeServer.Domain.Dtos;
@@ -297,6 +296,7 @@ public class GroupsController : ControllerBase
             GroupId = groupId,
             AdminUserId = groupAdminId,
             Name = updateGroupDto.Name,
+            Tag = updateGroupDto.Tag,
             IsPrivate = updateGroupDto.IsPrivate,
             GroupPictureUrl = updateGroupDto.GroupPictureUrl,
             GroupDescription = updateGroupDto.GroupDescription
