@@ -36,9 +36,7 @@ public class GroupUserRepository : RepositoryBase
             .ExecuteNonData(Ydb);
     }
 
-    // Guid[] if found some users, null if no users found (<=> group doesn't exist)
-    // todo(Cockamamie): почему не возвращать пустой список пользователей, это интуитивно понятнее, чем null
-    // и не может ли быть сценария, когда у группы нет даже админа => группа существует, но в ней нет пользователей?
+    // Guid[] if found some users, null if no users found (<=> group doesn't exist) 
     public async Task<Guid[]?> FindUsersInGroup(Guid groupId)
     {
         var userIds = await GroupsUsers
