@@ -72,6 +72,11 @@ $div-width: 95%;
   font-weight: 500;
 }
 
+.font {
+  font-family: 'privalor', sans-serif;
+  font-size: 20px;
+}
+
 @media (max-width: 850px) {
   .wrapper{
     flex-direction: column;

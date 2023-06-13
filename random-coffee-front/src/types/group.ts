@@ -25,5 +25,7 @@ export type TGroupDto = {
     isPrivate: boolean;
     nextRoundDate: string;
     intervalDays: number;
+    tag?: string;
+    groupDescription?: string;
     groupPictureUrl?: string;
 }

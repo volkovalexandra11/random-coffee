@@ -4,12 +4,14 @@ import { GroupTableRow } from '../group-table-row/group-table-row';
 import style from './group-table.module.scss';
 import { Button, ThemeContext, ThemeFactory } from '@skbkontur/react-ui';
 import { Link, useNavigate } from 'react-router-dom';
+import {useAppSelector} from "../../hooks";
 
 type Props = {
   groups: TGroupShort[];
 };
 
 export const GroupTable: FC<Props> = ({ groups }) => {
+  const { user } = useAppSelector((state) => state);
   const navigate = useNavigate();
   const [copyData] = useState(groups);
   const [group, setGroups] = useState(groups);
@@ -86,10 +88,15 @@ export const GroupTable: FC<Props> = ({ groups }) => {
           ))}
         </section>
         <section className={style.info}>
-          <h2 className={style.header}>Рекомендуемые группы</h2>
-          <div>
-            Выбери увлечения в профиле, и здесь появится что-то интересное
-          </div>
+          <h2 className={style.header}>Рекомендуемый <span className={style.font}>кофе</span></h2>
+          {/*// @ts-ignore*/}
+          {user.tag.length === 0 ?
+              <div>
+                Выбери увлечения в профиле, и здесь появится что-то интересное
+              </div>
+              :
+              <></>
+          }
         </section>
       </div>
     </div>

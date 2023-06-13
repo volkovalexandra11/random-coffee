@@ -26,7 +26,7 @@ export const fetchGroupsAction = createAsyncThunk<void, string | undefined, {
                 groupId: g.groupId,
                 name: g.name,
                 participantsCount: g.participantsCount,
-                tag: g.tag === null ? null : Array.isArray(g.tag) ? [...g.tag] : [g.tag],
+                tag: g.tag === null ? [] : Array.isArray(g.tag) ? [...g.tag] : [g.tag],
                 groupPictureUrl: g?.groupPictureUrl,
                 nextRoundDate: g.nextRoundDate,
             } as TGroupShort));
@@ -108,6 +108,7 @@ export const postGroupAction = createAsyncThunk<void, TGroupDto, {
 }>(
     '/data/groups',
     async (groupDto: TGroupDto, { dispatch, extra: api }) => {
+        console.log(groupDto);
         const { data } = await api.post<TGroup>(`/api/groups`, groupDto);
         dispatch(setCurrentGroup({ currentGroup: data }));
     }

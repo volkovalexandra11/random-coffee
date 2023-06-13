@@ -9,18 +9,21 @@ import { getRandomImg } from './randomHelper';
 
 type TempObj = {
     groupName: string,
-    description: string,
     groupType: string,
     repeatMeetings: string,
-    meetingDate: string;
+    meetingDate: string,
+    description?: string,
 };
 
 export const getGroupDto = (data: TempObj): TGroupDto => {
     const isPrivate = getIsPrivate(data.groupType);
-    const frequency = getFrequency(data.repeatMeetings);
+    //const frequency = getFrequency(data.repeatMeetings);
+    const frequency = 7;
     const nextRoundDate = getISODate(data.meetingDate);
+    const description = data.description;
     const pictureUrl = `/img/${getRandomImg()}`;
-    return { name: data.groupName, isPrivate, nextRoundDate, intervalDays: frequency, groupPictureUrl: pictureUrl };
+    const tags = '';
+    return { name: data.groupName, isPrivate, nextRoundDate, intervalDays: frequency, groupPictureUrl: pictureUrl, groupDescription: description, tag: tags };
 };
 
 const getIsPrivate = (literal: string): boolean => {

@@ -44,6 +44,8 @@
 
 .headerH1{
   font-size: 80px;
+  font-family: 'privalor', sans-serif;
+  line-height: 0.8em;
 }
 
 .input{
@@ -62,6 +64,13 @@
 }
 
 .googleButton {
+}
+
+.buttonEntry{
+  color: #1F87EF;
+  cursor: pointer;
+  background: transparent;
+  border: none;
 }
 
 .googleButton:hover {

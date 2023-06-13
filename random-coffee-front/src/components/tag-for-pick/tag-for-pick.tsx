@@ -8,6 +8,8 @@ type Props = {
 };
 
 const colors = ['#1F87EF', '#F8AA63'];
+
+
 export const TagForPick: FC<Props> = (props) => {
   const [color] = useState(Math.floor(Math.random() * colors.length));
   const handleCheckboxChange = () => {

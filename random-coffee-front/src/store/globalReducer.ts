@@ -7,7 +7,7 @@ import {
 	deleteUserFromGroup,
 	setCurrentGroup,
 	setGroups,
-	setIsGroupsLoaded,
+	setIsGroupsLoaded, setTags,
 	setUser
 } from './action';
 import { TGroupShort } from '../types/group';
@@ -40,6 +40,8 @@ export const globalReducer = createReducer(INITIAL_STATE, (builder) => {
 		})
 		.addCase(fetchUserAction.fulfilled, (state, action) => {
 			state.user = action.payload;
+			// @ts-ignore
+			state.user.tag = [];
 		})
 		.addCase(fetchUserAction.rejected, (state) => {
 			state.authStatus = AuthStatus.NotLogged;
@@ -51,6 +53,10 @@ export const globalReducer = createReducer(INITIAL_STATE, (builder) => {
 		.addCase(deleteGroupFromUser, (state) => {
 			// @ts-ignore
 			state.groups = state.groups.filter(group => group.groupId !== state.currentGroup.groupId);
+		})
+		.addCase(setTags, (state, action) => {
+			// @ts-ignore
+			state.user.tag =  action.payload.tags;
 		})
 });
 

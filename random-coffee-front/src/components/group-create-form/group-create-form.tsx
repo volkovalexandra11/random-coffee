@@ -33,7 +33,6 @@ export const GroupCreateForm: FC = () => {
 
 	const [hasError, setHasError] = useState({
 		name: false,
-		repeat: false,
 		date: false,
 		type: false
 	});
@@ -60,23 +59,23 @@ export const GroupCreateForm: FC = () => {
 			maxDate: maxDate
 		}) || data.meetingDate === '';
 		const errorName = data.groupName === '';
-		const errorRepeat = data.repeatMeetings === 'Выберите частоту встреч';
+		// const errorRepeat = data.repeatMeetings === 'Выберите частоту встреч';
 		const errorType = data.groupType === '';
-		setHasError({ name: errorName, repeat: errorRepeat, type: errorType, date: errorData });
-		return errorData || errorRepeat || errorType || errorName;
+		setHasError({ name: errorName, type: errorType, date: errorData });
+		return errorData  || errorType || errorName;
 	};
 
-	const choseRepeatValue = (value: string) => {
-		setData({ ...data, repeatMeetings: value });
-		setHasError({ ...hasError, repeat: false });
-	}
+	// const choseRepeatValue = (value: string) => {
+	// 	setData({ ...data, repeatMeetings: value });
+	// 	setHasError({ ...hasError, repeat: false });
+	// }
 
-	const sendData = () => {
+	const sendData = async () => {
 		if (!isHasError()) {
 			const groupDto = getGroupDto(data);
 			// @ts-ignore
-			dispatch(postGroupAction(groupDto));
-			navigate(`/group/${currentGroup?.groupId}`);
+			await dispatch(postGroupAction(groupDto));
+			navigate(`/`);
 		}
 	};
 
@@ -96,20 +95,20 @@ export const GroupCreateForm: FC = () => {
 										onValueChange={value => setData({ ...data, description: value })}
 					/>
 				</label>
-				<label className={style.label}>
-					<p className={style.name}>Повтор</p>
-					<Dropdown className={style.input} caption={data.repeatMeetings} error={hasError.repeat}>
-						<MenuItem onClick={() => choseRepeatValue('Раз в неделю')}>
-							Раз в неделю
-						</MenuItem>
-						<MenuItem onClick={() => choseRepeatValue('Раз в месяц')}>
-							Раз в месяц
-						</MenuItem>
-						<MenuItem onClick={() => choseRepeatValue('Настраивать вручную')}>
-							Настраивать вручную
-						</MenuItem>
-					</Dropdown>
-				</label>
+				{/*<label className={style.label}>*/}
+				{/*	<p className={style.name}>Повтор</p>*/}
+				{/*	<Dropdown className={style.input} caption={data.repeatMeetings} error={hasError.repeat}>*/}
+				{/*		<MenuItem onClick={() => choseRepeatValue('Раз в неделю')}>*/}
+				{/*			Раз в неделю*/}
+				{/*		</MenuItem>*/}
+				{/*		<MenuItem onClick={() => choseRepeatValue('Раз в месяц')}>*/}
+				{/*			Раз в месяц*/}
+				{/*		</MenuItem>*/}
+				{/*		<MenuItem onClick={() => choseRepeatValue('Настраивать вручную')}>*/}
+				{/*			Настраивать вручную*/}
+				{/*		</MenuItem>*/}
+				{/*	</Dropdown>*/}
+				{/*</label>*/}
 				<label className={style.label}>
 					<p className={style.name}>Первая<br/> встреча</p>
 					<div className={style.input}>
@@ -124,21 +123,21 @@ export const GroupCreateForm: FC = () => {
 						/>
 					</div>
 				</label>
-				{/*<label className={style.label}>*/}
-				{/*	<p className={style.name}>Тип</p>*/}
-				{/*	<div className={style.input}>*/}
-				{/*		<RadioGroup width={'50%'} onValueChange={value => {*/}
-				{/*			setData({ ...data, groupType: String(value) });*/}
-				{/*			setHasError({ ...hasError, type: false })*/}
-				{/*		}} error={hasError.type}*/}
-				{/*		>*/}
-				{/*			<Gapped gap={15}>*/}
-				{/*				<Radio value={'private'}>Приватная</Radio>*/}
-				{/*				<Radio value={'public'}>Публичная</Radio>*/}
-				{/*			</Gapped>*/}
-				{/*		</RadioGroup>*/}
-				{/*	</div>*/}
-				{/*</label>*/}
+				<label className={style.label}>
+					<p className={style.name}>Тип</p>
+					<div className={style.input}>
+						<RadioGroup width={'50%'} onValueChange={value => {
+							setData({ ...data, groupType: String(value) });
+							setHasError({ ...hasError, type: false })
+						}} error={hasError.type}
+						>
+							<Gapped gap={15}>
+								<Radio value={'private'}>Приватная</Radio>
+								<Radio value={'public'}>Публичная</Radio>
+							</Gapped>
+						</RadioGroup>
+					</div>
+				</label>
 				<div className={style.button}>
 					<Button use={'primary'} className={style.input} style={{ borderRadius: '10px', overflow: 'hidden' }}
 									size='medium' onClick={sendData}

@@ -95,6 +95,11 @@
   background-size: contain;
 }
 
+.forTags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 @media screen and (max-width: 800px) {
   .user {
     padding: 30px;

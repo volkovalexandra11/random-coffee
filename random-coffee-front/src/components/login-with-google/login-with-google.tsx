@@ -31,7 +31,9 @@ export const LoginWithGoogleForm: FC = () => {
     <div className={style.background}>
       <div className={style.wrapper}>
         <section className={style.info}>
-          <h1 className={style.headerH1}>Случайный <br/> кофе</h1>
+          <h1 className={style.headerH1}>
+            Случайный <br /> кофе
+          </h1>
           <span>
             Крокодилы ходят лежа, а здесь ты сможешь найти новые знакомства,
             идеи, или просто хорошо провести время с людьми с похожими
@@ -39,8 +41,13 @@ export const LoginWithGoogleForm: FC = () => {
           </span>
         </section>
         <form className={style.form}>
-          <div className={style.login}>Уже есть аккаунт?  Войти</div>
-          <Gapped gap={14} vertical style={{width: "100%"}}>
+          <div className={style.login}>
+            Уже есть аккаунт?{' '}
+            <button className={style.buttonEntry} type={"button"} onClick={handleClick}>
+              Войти
+            </button>
+          </div>
+          <Gapped gap={14} vertical style={{ width: '100%' }}>
             <h2 className={style.headerH2}>Регистрация</h2>
             <Button
               use={'primary'}
@@ -49,14 +56,16 @@ export const LoginWithGoogleForm: FC = () => {
               Зарегистрироваться через Google
             </Button>
             <div className={style.parser}>или</div>
-            <Input placeholder={"Имя"} className={style.input}/>
-            <Input placeholder={"Фамилия"} className={style.input}/>
-            <Input placeholder={"Придумайте логин"} className={style.input}/>
-            <Input placeholder={"Придумайте пароль"} className={style.input}/>
-            <Input placeholder={"Повторите пароль"} className={style.input}/>
-            <Input placeholder={"Почта для связи"} className={style.input}/>
+            <Input placeholder={'Имя'} className={style.input} />
+            <Input placeholder={'Фамилия'} className={style.input} />
+            <Input placeholder={'Придумайте логин'} className={style.input} />
+            <Input placeholder={'Придумайте пароль'} className={style.input} />
+            <Input placeholder={'Повторите пароль'} className={style.input} />
+            <Input placeholder={'Почта для связи'} className={style.input} />
             <ThemeContext.Provider value={theme}>
-              <Button use={'pay'} className={style.button}>Зарегистрироваться</Button>
+              <Button use={'pay'} className={style.button}>
+                Зарегистрироваться
+              </Button>
             </ThemeContext.Provider>
           </Gapped>
         </form>

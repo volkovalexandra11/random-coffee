@@ -7,12 +7,7 @@ export const StubGroupTableRow : FC = () => {
 		<section className={style.wrapper}>
 			<div className={style.NameAvatar}>
 				<StubImage />
-				<div className={style.GroupName}></div>
-			</div>
-			<div className={style.information}>
-				<div className={style.params}></div>
-				<div className={style.params}></div>
-				<div className={style.params}></div>
+				<div className={style.GroupName}/>
 			</div>
 		</section>
 	);

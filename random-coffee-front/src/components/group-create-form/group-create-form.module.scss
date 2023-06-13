@@ -22,7 +22,6 @@
 
 .input{
   width: 75%;
-  //border: 1px solid blue;
 }
 
 .button {
@@ -44,6 +43,7 @@
 
 .form{
   width: 100%;
+  min-width: 322px;
   display: inline-flex;
   justify-content: center;
   flex-direction: column;

@@ -13,7 +13,7 @@ export const GroupTableRow: FC<Props> = ({ group }) => {
 		if (tag === null)
 			return '';
 		return tag.join(', ');
-	}, []);
+	}, [group.tag]);
 	return (
 		<section className={style.wrapper}>
 			<div className={style.NameAvatar}>

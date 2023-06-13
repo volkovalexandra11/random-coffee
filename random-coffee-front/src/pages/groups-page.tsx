@@ -20,7 +20,6 @@ export const GroupsPage: FC = () => {
         }
     }, [authStatus, dispatch, user])
 
-    console.log(groups);
 
     return (
         <Loader active={!isGroupsLoaded}>

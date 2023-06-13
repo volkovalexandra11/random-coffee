@@ -9,6 +9,8 @@ import {
 } from '@skbkontur/react-ui';
 import { useAppSelector } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
+import {forGroups} from "../../mocks/tags";
+import {UserTags} from "../user-tags/user-tags";
 
 export const UserInfo: FC = () => {
   const { user } = useAppSelector((state) => state);
@@ -104,6 +106,10 @@ export const UserInfo: FC = () => {
                   Увлечение
                   <button className={style.change} onClick={() => navigator('/user/tags')}/>
                 </span>
+                <div className={style.forTags}>
+                {/*@ts-ignore*/}
+                {user.tag && user.tag.map(t => <UserTags name={t} key={t}/>)}
+                </div>
               </Gapped>
             ) : (
               <></>

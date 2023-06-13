@@ -25,7 +25,7 @@ export const NavBar: FC = () => {
     <>
       <nav className={`${style.navBar} ${isOpened && style.responsive}`}>
         <div
-          className={`${style.logo} ${style.text}`}
+          className={`${style.text} ${style.logo}`}
           onClick={() => {
             navigate('');
           }}>
