@@ -2,6 +2,7 @@
 using RandomCoffeeServer.Storage.DbSchema;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb;
 using RandomCoffeeServer.Storage.YandexCloud.Ydb.Helpers;
+using Ydb.Sdk.Value;
 
 namespace RandomCoffeeServer.Storage.Repositories.CoffeeRepositories;
 
@@ -30,5 +31,29 @@ public class GroupRepository : RepositoryBase
             .ExecuteData(Ydb);
 
         return groups.SingleOrNull(Group.FromYdbRow);
+    }
+
+    public async Task<IEnumerable<Group>> FindPublicGroups()
+    {
+        var notPrivateValue = YdbValue.MakeInt32(0);
+        var groups = await Groups
+            .Select()
+            .Where("is_private", notPrivateValue)
+            .ExecuteData(Ydb);
+
+        return groups.Select(Group.FromYdbRow);
+    }
+
+    public async Task<IEnumerable<Group>> FindGroups(Dictionary<string, YdbValue> filterParameters)
+    {
+        var query = Groups.Select();
+        foreach (var (filterKey, filterValue) in filterParameters)
+        {
+            query = query.Where(filterKey, filterValue);
+        }
+
+        var groups = await query.ExecuteData(Ydb);
+
+        return groups.Select(Group.FromYdbRow);
     }
 }

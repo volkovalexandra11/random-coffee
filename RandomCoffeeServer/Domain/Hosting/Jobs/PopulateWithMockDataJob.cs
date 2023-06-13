@@ -99,13 +99,16 @@ public class PopulateWithMockDataJob
             {
                 GroupId = group1Id,
                 Name = "Test group",
+                Tag = "test",
                 AdminUserId = sashaId,
-                GroupPictureUrl = "/img/picture1.jpg"
+                GroupPictureUrl = "/img/picture1.jpg",
+                GroupDescription = "This is Sasha's test group"
             },
             new()
             {
                 GroupId = group2Id,
                 Name = "Moon group",
+                Tag = "moon",
                 AdminUserId = serezhaId,
                 GroupPictureUrl = "/img/picture2.jpg"
             },
@@ -113,6 +116,7 @@ public class PopulateWithMockDataJob
             {
                 GroupId = group3Id,
                 Name = "Группа Вани",
+                Tag = "vanya",
                 AdminUserId = vanyaId,
                 GroupPictureUrl = "/img/picture.jpg"
             },
@@ -120,6 +124,7 @@ public class PopulateWithMockDataJob
             {
                 GroupId = group4Id,
                 Name = "Test group2",
+                Tag = "test2",
                 AdminUserId = vasyaPupkinId,
                 GroupPictureUrl = "/img/avatar.jpg"
             }
