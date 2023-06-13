@@ -8,23 +8,23 @@ import {forGroups} from "../../mocks/tags";
 type Props = {
 	group: TGroupShort;
 }
-const tags = forGroups;
 export const GroupTableRow: FC<Props> = ({ group }) => {
-	const tagsToString = useCallback((tag: string[]) => {
+	const tagsToString = useCallback((tag: string[] | null) => {
+		if (tag === null)
+			return '';
 		return tag.join(', ');
-	}, [tags]);
-
+	}, []);
 	return (
 		<section className={style.wrapper}>
 			<div className={style.NameAvatar}>
 				<ImageWithPlaceholder showPlaceholder={group.groupPictureUrl === undefined} picturePath={group.groupPictureUrl}/>
 				<div className={style.name}>
 					<span className={style.GroupName}>{group.name}</span>
-					<span className={style.tags}>{tagsToString(tags)}</span>
+					<span className={style.tags}>{tagsToString(group.tag)}</span>
 				</div>
 			</div>
 			<div className={style.information}>
-				<div className={style.params}>{formatDate(group.nextRoundDate)}</div>
+				<div className={style.params}></div>
 			</div>
 		</section>
 	);

@@ -19,11 +19,25 @@ export const fetchGroupsAction = createAsyncThunk<void, string | undefined, {
     '/data/groups',
     async (userId, { dispatch, extra: api }) => {
         dispatch(setIsGroupsLoaded(false));
-        const { data } = await api.get<TGroupShort[]>(`/api/groups?userId=${userId}`);
-        dispatch(setGroups({ groups: data }));
-        dispatch(setIsGroupsLoaded(true));
+        try {
+            const response = await api.get<TGroupShort[]>(`/api/groups?userId=${userId}`);
+            // @ts-ignore
+            const groups: TGroupShort[] = response.data.items.map((g: TGroupShort) => ({
+                groupId: g.groupId,
+                name: g.name,
+                participantsCount: g.participantsCount,
+                tag: g.tag === null ? null : Array.isArray(g.tag) ? [...g.tag] : [g.tag],
+                groupPictureUrl: g?.groupPictureUrl,
+                nextRoundDate: g.nextRoundDate,
+            } as TGroupShort));
+            dispatch(setGroups({ groups }));
+            dispatch(setIsGroupsLoaded(true));
+        } catch (error) {
+            console.error(error);
+            dispatch(setIsGroupsLoaded(true));
+        }
     }
-)
+);
 
 export const fetchGroupByIdAction = createAsyncThunk<void, string | undefined, {
     dispatch: AppDispatch,
@@ -81,7 +95,6 @@ export const fetchUserAction = createAsyncThunk<TUser | null, undefined, {
 }>(
     'user/info',
     async (_arg, { extra: api }) => {
-        console.log('fetch');
         const { data } = await api.get<TUser>(`/api/account`);
 
         return data;

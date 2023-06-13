@@ -4,6 +4,7 @@ export type TGroupShort = {
     groupId: string;
     name: string;
     participantsCount: number;
+    tag: string[] | null;
     groupPictureUrl?: string;
     nextRoundDate: string;
 };
