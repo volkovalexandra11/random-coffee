@@ -70,14 +70,25 @@ public class Query
         return this;
     }
 
-    public Query Where(string column, YdbValue value)
+    public Query Where(string column, YdbValue value) //TODO(Cockamamie): неудобно передавать несколько столбцов
     {
         whereParams ??= new Dictionary<string, YdbValue>();
         whereParams[column] = value;
         return this;
     }
 
-    public Query Set(string column, YdbValue value)
+    public Query Where(Dictionary<string, YdbValue> filterValues)
+    {
+        whereParams ??= new Dictionary<string, YdbValue>();
+        foreach (var (column, value) in filterValues)
+        {
+            whereParams[column] = value;
+        }
+
+        return this;
+    }
+
+    public Query Set(string column, YdbValue value) //TODO(Cockamamie): неудобно передавать несколько столбцов
     {
         setParams ??= new Dictionary<string, YdbValue>();
         setParams[column] = value;
@@ -128,7 +139,7 @@ public class Query
         {
             builder.Append(" WHERE ");
             builder.Append(string.Join(
-                    " AND ",
+                    " AND ", // TODO(Cockamamie): нужна опция для OR
                     whereParams.Select(
                         columnAndValue => $"{columnAndValue.Key} = {ToWhereParamName(columnAndValue.Key)}")
                 )

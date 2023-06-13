@@ -1,17 +1,14 @@
 import { FC } from 'react';
 import style from './error-page.module.scss';
+import {useParams} from "react-router-dom";
 
-type Props = {
-    errorCode: number;
-    message: string;
-}
-
-export const ErrorPage: FC<Props> = ({ errorCode, message }) => {
+export const ErrorPage: FC = () => {
+    const { errorCode } = useParams();
     return (
         <div className={style.wrapper}>
             <div className={style.form}>
                 <div className={style.errorCode}>{errorCode}</div>
-                <div className={style.message}>{message}</div>
+                <div className={style.message}>Что-то пошло не так :(</div>
             </div>
         </div>
     );
