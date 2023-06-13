@@ -21,5 +21,10 @@ public class UserService
         return await userRepository.FindUser(userId);
     }
 
+    public async Task UpdateUser(User user)
+    {
+        await userRepository.UpdateUser(user.UserId, user);
+    }
+
     private readonly UserRepository userRepository;
 }
