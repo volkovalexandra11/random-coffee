@@ -29,13 +29,10 @@ export const UserForm: FC = () => {
 		}
 	}
 
+
 	return (
 		<div className={style.form}>
 			<Gapped gap={10} vertical className={style.gapped}>
-				{/*<label className={style.label}>*/}
-				{/*    <p className={style.name}>Логин</p>*/}
-				{/*    <Input className={style.input} type={'text'} placeholder={'Введите название группы'}/>*/}
-				{/*</label>*/}
 				<label className={style.label}>
 					<p className={style.name}>Имя</p>
 					<Input className={style.input} type={'text'} placeholder={'Введите имя'} value={data.firstName}

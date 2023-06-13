@@ -1,0 +1,112 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.form {
+  display: flex;
+  gap: 22px;
+  width: 95%;
+}
+
+.user,
+.forCoffee {
+  display: flex;
+  background-color: white;
+  flex-direction: column;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.user {
+  width: 100%;
+  max-width: 555px;
+  padding: 55px 70px 63px 70px;
+}
+
+.name {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: clamp(15px, 2vw, 30px);
+}
+
+.profilePictureUrl {
+  width: 100%;
+  aspect-ratio: 1/1;
+}
+
+.user .name {
+  margin-top: 34px;
+}
+
+.forCoffee {
+  margin-top: 22px;
+  width: 100%;
+  padding: 22px;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+}
+
+.title_control{
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 200px;
+}
+.input {
+  background-color: transparent;
+  color: black;
+  border-radius: 10px;
+  border: 1px solid rgba(163, 163, 163, 1);
+  font-size: 15px;
+  padding: 2px 5px;
+}
+
+.change {
+  background-image: url('../../../public/img/pen.png');
+}
+
+.confirm {
+  background-image: url('../../../public/img/checkmark.svg');
+}
+
+.confirm,
+.change {
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  border: none;
+  background-color: transparent;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+@media screen and (max-width: 800px) {
+  .user {
+    padding: 30px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .form {
+    flex-direction: column;
+  }
+
+  .name {
+    font-size: clamp(15px, 4vw, 30px);
+  }
+}

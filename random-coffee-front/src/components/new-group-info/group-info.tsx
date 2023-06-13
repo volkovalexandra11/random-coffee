@@ -90,7 +90,6 @@ export const GroupInfo: FC<Props> = ({ group, adminView }) => {
           <Gapped vertical gap={10}>
             <h1>{group.name}</h1>
             <span className={style.description}>{group.description}</span>
-            <InviteLink link={window.location.href} />
             <div className={style.buttons}>
               {!userInGroup && (
                 <Button
@@ -119,6 +118,7 @@ export const GroupInfo: FC<Props> = ({ group, adminView }) => {
                 </Button>
               )}
             </div>
+            <InviteLink link={window.location.href} />
           </Gapped>
         </section>
         <section className={style.info}>

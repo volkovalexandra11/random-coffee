@@ -13,7 +13,7 @@
   }
 
   img {
-    border-radius: 10px;
+    border-radius: 50%;
     margin-right: 20px;
     height: 60px;
     width: 60px;
@@ -21,7 +21,13 @@
 }
 
 .GroupName {
-  flex-grow: 1;
+  color: rgba(31, 135, 239, 1);
+  font-size: 20px;
+}
+
+.tags {
+  font-size: 13px;
+  color: rgba(163, 163, 163, 1);
 }
 
 .params{
@@ -30,14 +36,22 @@
   justify-content: center;
 }
 
+.name {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .NameAvatar {
-  width: 50%;
+  flex-grow: 1;
   display: inline-flex;
   align-items: center;
 }
 
 .information{
   display: flex;
-  flex-grow: 2;
   justify-content: center;
 }

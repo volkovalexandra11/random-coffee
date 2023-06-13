@@ -1,0 +1,19 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.form {
+  display: flex;
+  gap: 22px;
+  align-self: center;
+}
+
+.tags {
+  display: flex;
+  max-width: 560px;
+  gap: 22px;
+  flex-wrap: wrap;
+}

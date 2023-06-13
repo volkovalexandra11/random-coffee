@@ -13,6 +13,8 @@ import { fetchUserAction } from './store/api-action';
 import './App.scss';
 import { changeAuthStatus } from './store/action';
 import { ErrorPage } from './components/error/error-page';
+import {ChangeUserNamePage} from "./pages/change-user-name-page";
+import {TagsPage} from "./pages/tags-page";
 
 function App() {
   const navigate = useNavigate();
@@ -41,6 +43,8 @@ function App() {
         <Route path={'/group/:groupId'} element={<Group />} />
         <Route path={'/user'} element={<UserPage />} />
         <Route path={'/error/:errorCode'} element={<ErrorPage />} />
+        <Route path={'/user/change'} element={<ChangeUserNamePage/>}/>
+        <Route path={'/user/tags'} element={<TagsPage/>}/>
         {/*<Route path={'*'} element={<GroupsPage/>}/>*/}
       </Routes>
     </main>

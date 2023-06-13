@@ -8,26 +8,32 @@ $div-width: 95%;
 
 .wrapper {
   display: flex;
+  height: max-content;
   width: $div-width;
   flex-direction: row;
+  align-items: start;
   margin: 32px 40px;
   gap: 20px;
 }
 
 .panel {
   display: flex;
+  height: max-content;
   flex-direction: column;
   flex-grow: 2;
   background-color: white;
   padding: 16px 31px;
   min-height: calc(100vh - 90%);
+  border-radius: 8px;
 }
 
 .info {
-  flex-grow: 1;
   background-color: white;
   padding: 16px 31px;
-  min-height: calc(50vh - 90%)
+  min-height: 20vh;
+  min-width: 300px;
+  width: 30%;
+  border-radius: 8px;
 }
 
 .controls{
@@ -54,7 +60,7 @@ $div-width: 95%;
   background-color: white;
   border: none;
   box-shadow: 0 0 0 1px rgb(0 0 0 / 16%);
-  height: 48px;
+  height: 30px;
   border-radius: 8px;
   color: black;
   padding-left: 10px;
@@ -69,5 +75,10 @@ $div-width: 95%;
 @media (max-width: 850px) {
   .wrapper{
     flex-direction: column;
+    align-items: inherit;
+  }
+
+  .info{
+    width: 100%;
   }
 }

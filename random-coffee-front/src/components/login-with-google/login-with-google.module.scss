@@ -1,3 +1,60 @@
+.background{
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  padding-top: 100px;
+}
+
+.login{
+  position: absolute;
+  top: 50px;
+}
+
+.wrapper{
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+  min-width: 900px;
+}
+
+.info{
+  width: 45%;
+  min-width: 320px;
+}
+
+.form{
+  background: white;
+  width: 40%;
+  min-width: 320px;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px 40px 20px;
+}
+
+.parser{
+  text-align: center;
+}
+
+.headerH2{
+  text-align: center;
+}
+
+.headerH1{
+  font-size: 80px;
+}
+
+.input{
+  width: 100%;
+}
+
+.button{
+  width: 100%;
+}
+
+
 .center {
   display: flex;
   justify-content: center;
@@ -5,22 +62,27 @@
 }
 
 .googleButton {
-  width: 70px;
-  height: 70px;
-  padding: 2px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background: none;
-  color: inherit;
-  border: none;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
 }
 
 .googleButton:hover {
   background-color: #D8D8D8;
 }
 
+@media screen and (max-width: 900px) {
+  .wrapper{
+    flex-direction: column;
+    min-width: 320px;
+  }
+
+  .form{
+    order: -1;
+  }
+
+  .info{
+    text-align: center;
+  }
+
+  .headerH1{
+    font-size: 40px;
+  }
+}

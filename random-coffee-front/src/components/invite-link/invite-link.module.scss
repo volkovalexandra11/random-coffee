@@ -1,17 +1,4 @@
-.wrapper {
-  position: relative;
-  display: inline-flex;
-  width: 400px;
-  justify-content: right;
-}
-
-.input{
-  margin-right: auto;
-  width: 360px;
-}
-
-.button{
-  position: absolute;
-  border-radius: 0 10px 10px 0;
-  overflow: hidden;
+.button {
+  width: 100%;
+  color: blue;
 }
