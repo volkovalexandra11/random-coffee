@@ -3,11 +3,12 @@ $text-color: #333;
 
 
 .wrapper {
-  height: 50px;
+  height: inherit;
 }
 
 .navBar {
   width: 100%;
+  height: 50px;
   background: $bg-color;
   display: inline-flex;
   color: $text-color;
@@ -19,7 +20,6 @@ $text-color: #333;
   top: 0;
   left: 0;
   right: 0;
-  height: 50px;
   z-index: 8;
 
   span {
@@ -34,14 +34,13 @@ $text-color: #333;
   }
 
   &:after {
-    position: fixed;
-    top: 50px;
-    left: 0;
-    width: 100vw;
     content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     display: block;
     height: 2px;
-    background-color: #F2F2F2;
+    background-color: rgb(227, 227, 227);
   }
 }
 
@@ -49,10 +48,14 @@ $text-color: #333;
   display: flex;
   padding-left: 20px;
   height: 50px;
+  font-family: 'privalor', sans-serif;
   align-items: center;
   justify-content: center;
 }
 
+.logo.text{
+  font-size: 30px;
+}
 .line {
   width: 0;
   height: 20px;
@@ -78,7 +81,15 @@ $text-color: #333;
 
 .userPanel {
   display: flex;
-  padding-right: 8px;
+  height: 100%;
+  flex-grow: 1;
+  justify-content: end;
+  align-items: center;
+}
+
+.controls {
+  display: flex;
+  flex-grow: 2;
   height: 100%;
   align-items: center;
 }
@@ -89,10 +100,68 @@ $text-color: #333;
   align-items: center;
 }
 
+.icon{
+  display: none;
+  border: none;
+}
+
+.button {
+  height: 100%;
+  padding: 0 20px;
+  background: transparent;
+  border: none;
+  color: black;
+  cursor: pointer;
+
+  &:hover {
+    background: rgb(242, 242, 242);
+  }
+}
+
 .logo{
   cursor: pointer;
   -moz-user-select: none;
   -khtml-user-select: none;
   -webkit-user-select: none;
   user-select: none;
+}
+
+@media screen and (max-width: 650px) {
+  .controls{
+    display: none;
+  }
+
+  .icon{
+    display: block;
+  }
+
+  .responsive {
+    flex-direction: column;
+    height: min-content;
+
+    .button {
+      width: 100%;
+      height: 30px;
+    }
+
+    .controls {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .userPanel {
+      width: 100%;
+      flex-direction: column;
+
+      .buttons {
+        width: 100%;
+      }
+
+      .line{
+        display: none;
+      }
+
+    }
+  }
 }

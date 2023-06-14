@@ -4,6 +4,7 @@ export type TGroupShort = {
     groupId: string;
     name: string;
     participantsCount: number;
+    tag: string[] | null;
     groupPictureUrl?: string;
     nextRoundDate: string;
 };
@@ -24,5 +25,7 @@ export type TGroupDto = {
     isPrivate: boolean;
     nextRoundDate: string;
     intervalDays: number;
+    tag?: string;
+    groupDescription?: string;
     groupPictureUrl?: string;
 }

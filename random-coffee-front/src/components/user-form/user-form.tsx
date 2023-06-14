@@ -1,10 +1,13 @@
 import { FC, useState } from 'react';
 import style from './user-form.module.scss';
 import { Button, Gapped, Input } from '@skbkontur/react-ui';
-import { useAppSelector } from '../../hooks';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {TUpdateUserDto} from "../../types/user";
+import {updateUserInfo} from "../../store/api-action";
 
 export const UserForm: FC = () => {
 	const { user } = useAppSelector((state) => state);
+	const dispatch = useAppDispatch();
 
 	const [data, setData] = useState({
 		firstName: user?.firstName,
@@ -23,19 +26,29 @@ export const UserForm: FC = () => {
 		return errorName || errorLastName;
 	};
 
-	const SendData = () => {
+	const SendData = async () => {
 		if (!isHasError()) {
-			console.log('sent');
+			const dto: TUpdateUserDto = {
+				// @ts-ignore
+				email: user.email,
+				// @ts-ignore
+				firstName: data.firstName,
+				// @ts-ignore
+				lastName: data.lastName,
+				// @ts-ignore
+				profilePictureUrl: user.profilePictureUrl,
+				// @ts-ignore
+				telegram: user.telegram,
+			}
+			// @ts-ignore
+			await dispatch(updateUserInfo({userDto: dto, userId: user.userId}));
 		}
 	}
+
 
 	return (
 		<div className={style.form}>
 			<Gapped gap={10} vertical className={style.gapped}>
-				{/*<label className={style.label}>*/}
-				{/*    <p className={style.name}>Логин</p>*/}
-				{/*    <Input className={style.input} type={'text'} placeholder={'Введите название группы'}/>*/}
-				{/*</label>*/}
 				<label className={style.label}>
 					<p className={style.name}>Имя</p>
 					<Input className={style.input} type={'text'} placeholder={'Введите имя'} value={data.firstName}

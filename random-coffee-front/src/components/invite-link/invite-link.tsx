@@ -8,7 +8,8 @@ type Props = {
   link: string;
 };
 export const InviteLink: FC<Props> = ({ link }) => {
-  const theme = ThemeFactory.create({ inputBorderRadiusSmall: '10px' });
+  const theme = ThemeFactory.create({ btnDefaultBorderColor: 'none', btnBorderRadiusSmall: '10px', btnDefaultHoverBorderColor: 'none',
+      btnDefaultTextColor: 'rgba(31, 135, 239, 1)'});
   const [isCopied, setIsCopied] = useState(false);
   const handleClick = () => {
     setIsCopied(true);
@@ -16,18 +17,14 @@ export const InviteLink: FC<Props> = ({ link }) => {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <CopyToClipboard text={link} onCopy={handleClick}>
       <ThemeContext.Provider value={theme}>
-        <Input className={styles.input} value={link} />
-      </ThemeContext.Provider>
-      <CopyToClipboard text={link} onCopy={handleClick}>
         <Button
           className={styles.button}
-          width={'47px'}
-          use={isCopied ? 'success' : 'primary'}>
-          <Copy />
+          use={isCopied ? 'success' : 'default'}>
+          Скопировать ссылку-приглашение
         </Button>
-      </CopyToClipboard>
-    </div>
+      </ThemeContext.Provider>
+    </CopyToClipboard>
   );
 };

@@ -8,10 +8,10 @@
 }
 
 .wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   width: 95%;
-  grid-gap: 32px;
+  align-items: start;
+  gap: 32px;
   margin: 24px 0;
 }
 
@@ -21,6 +21,7 @@
   width: 100%;
   background-color: white;
   padding: 10px 30px;
+  border-radius: 8px;
 }
 
 .info {
@@ -64,8 +65,14 @@
   margin-bottom: 10px;
 }
 
+.stub {
+  width: 100%;
+  height: 100px;
+  background-color: white;
+  border-radius: 8px;
+}
 @media (max-width: 800px) {
   .wrapper {
-    grid-template-columns: 100%;
+    flex-direction: column;
   }
 }

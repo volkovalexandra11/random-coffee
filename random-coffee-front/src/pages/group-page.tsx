@@ -6,29 +6,29 @@ import { StubGroupInfo } from '../components/stub/stub-group-info/stub-group-inf
 import { useParams } from 'react-router-dom';
 import { fetchGroupByIdAction } from '../store/api-action';
 
-
 export const Group: FC = () => {
-	const { groupId } = useParams();
+  const { groupId } = useParams();
 
-	const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-	useEffect(() => {
-		dispatch(fetchGroupByIdAction(groupId));
-		console.log(currentGroup);
-	}, []);
+  useEffect(() => {
+    dispatch(fetchGroupByIdAction(groupId));
+  }, []);
 
-	const { currentGroup } = useAppSelector((state) => state);
-	const { isGroupsLoaded } = useAppSelector((state) => state);
-	const { user } = useAppSelector((state) => state);
+  const { currentGroup } = useAppSelector((state) => state);
+  const { isGroupsLoaded } = useAppSelector((state) => state);
+  const { user } = useAppSelector((state) => state);
 
-	console.log(currentGroup);
-
-	return (
-		<Loader active={!isGroupsLoaded}>
-			{isGroupsLoaded && currentGroup !== null ?
-				<GroupInfo group={currentGroup} adminView={user?.userId === currentGroup.admin.userId}/> :
-				<StubGroupInfo/>}
-		</Loader>
-
-	);
+  return (
+    <Loader active={!isGroupsLoaded}>
+      {isGroupsLoaded && currentGroup !== null ? (
+        <GroupInfo
+          group={currentGroup}
+          adminView={user?.userId === currentGroup.admin.userId}
+        />
+      ) : (
+        <StubGroupInfo />
+      )}
+    </Loader>
+  );
 };

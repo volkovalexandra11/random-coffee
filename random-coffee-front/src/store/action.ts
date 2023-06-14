@@ -4,6 +4,7 @@ import { AuthStatus } from '../types/authStatus';
 import { TGroup, TGroupShort } from '../types/group';
 
 export const changeAuthStatus = createAction<{authStatus: AuthStatus}>('changeAuthStatus');
+export const setTags = createAction<{tags: Array<string>}>('setTags');
 export const setUser = createAction<{user: TUser | null }>('setUser');
 export const setGroups = createAction<{groups: Array<TGroupShort>}>('setGroups');
 export const setIsGroupsLoaded = createAction<boolean>('setIsGroupsLoaded');
