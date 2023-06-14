@@ -85,7 +85,8 @@ public class UsersController : ControllerBase
             Email = updateUserDto.Email,
             FirstName = updateUserDto.FirstName,
             LastName = updateUserDto.LastName,
-            ProfilePictureUrl = updateUserDto.ProfilePictureUrl
+            ProfilePictureUrl = updateUserDto.ProfilePictureUrl,
+            Telegram = updateUserDto.Telegram
         };
 
         return user;

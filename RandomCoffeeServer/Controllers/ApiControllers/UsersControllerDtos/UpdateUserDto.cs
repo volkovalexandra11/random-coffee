@@ -6,4 +6,5 @@ public class UpdateUserDto
     public string FirstName { get; init; }
     public string LastName { get; init; }
     public string? ProfilePictureUrl { get; init; }
+    public string? Telegram { get; init; }
 }
