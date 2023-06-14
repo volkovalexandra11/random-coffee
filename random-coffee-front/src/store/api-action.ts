@@ -140,6 +140,7 @@ export const getManagedGroup = createAsyncThunk<void, string | undefined, {
                 groupId: g.groupId,
                 name: g.name,
                 participantsCount: g.participantsCount,
+                // @ts-ignore
                 tag: g.tag === null ? [] : Array.isArray(g.tag) ? [...g.tag] : [g.tag],
                 groupPictureUrl: g?.groupPictureUrl,
             } as TGroupShort));
