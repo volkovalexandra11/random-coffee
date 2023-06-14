@@ -3,8 +3,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { AppDispatch, State } from '../types/store';
 import { TGroup, TGroupDto, TGroupShort } from '../types/group';
-import { setCurrentGroup, setGroups, setIsGroupsLoaded } from './action';
-import { TUser } from '../types/user';
+import {setCurrentGroup, setGroups, setIsGroupsLoaded, setUser} from './action';
+import {TUpdateUserDto, TUser} from '../types/user';
 
 type Ids = {
     groupId: string | undefined;
@@ -122,5 +122,49 @@ export const joinAGroup = createAsyncThunk<void, string | undefined, {
     '/data/groups',
     async (groupId: string | undefined, { dispatch, extra: api }) => {
         await api.post<TGroup>(`/api/groups/${groupId}/join`);
+    }
+)
+
+export const getManagedGroup = createAsyncThunk<void, string | undefined, {
+    dispatch: AppDispatch,
+    state: State,
+    extra: AxiosInstance
+}>(
+    '/data/groups',
+    async (userId, { dispatch, extra: api }) => {
+        dispatch(setIsGroupsLoaded(false));
+        try {
+            const response = await api.get<TGroupShort[]>(`/api/groups?AdminUserId=${userId}`);
+            // @ts-ignore
+            const groups: TGroupShort[] = response.data.items.map((g: TGroupShort) => ({
+                groupId: g.groupId,
+                name: g.name,
+                participantsCount: g.participantsCount,
+                tag: g.tag === null ? [] : Array.isArray(g.tag) ? [...g.tag] : [g.tag],
+                groupPictureUrl: g?.groupPictureUrl,
+            } as TGroupShort));
+            dispatch(setGroups({ groups }));
+            dispatch(setIsGroupsLoaded(true));
+        } catch (error) {
+            console.error(error);
+            dispatch(setIsGroupsLoaded(true));
+        }
+    }
+);
+
+type TUpdateUserArgs = {
+    userDto: TUpdateUserDto;
+    userId: string;
+}
+
+export const updateUserInfo = createAsyncThunk<void, TUpdateUserArgs, {
+    dispatch: AppDispatch,
+    state: State,
+    extra: AxiosInstance
+}>(
+    '/user/info',
+    async ({ userDto, userId }, { dispatch, extra: api }) => {
+        const { data } = await api.put<TUser>(`/api/users/${userId}`, userDto);
+        dispatch(setUser({ user: data }));
     }
 )

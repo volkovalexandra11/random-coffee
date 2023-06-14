@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import style from './user-info.module.scss';
 import {
   Button,
@@ -7,22 +7,59 @@ import {
   ThemeFactory,
   ThemeContext,
 } from '@skbkontur/react-ui';
-import { useAppSelector } from '../../hooks';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 import { useNavigate } from 'react-router-dom';
-import {forGroups} from "../../mocks/tags";
-import {UserTags} from "../user-tags/user-tags";
+import { UserTags } from '../user-tags/user-tags';
+import { TGModal } from '../tg-modal/tg-modal';
+import {updateUserInfo} from "../../store/api-action";
+import {TUpdateUserDto} from "../../types/user";
 
 export const UserInfo: FC = () => {
   const { user } = useAppSelector((state) => state);
+  const [text, setText] = useState('');
+  const [opened, setOpened] = useState(false);
+  const dispatch = useAppDispatch();
   const navigator = useNavigate();
   const [isBtnForCoffeeUse, setIsBntForCoffeeUse] = useState(true);
   const [isChanging, setIsChanging] = useState(false);
-  const [email, setEmail] = useState('email');
-  const [tg, setTg] = useState('tg');
-  const handlerClickChange = () => {
+  const [email, setEmail] = useState(
+    //@ts-ignore
+    user.email === undefined ? '' : user.email
+  );
+
+  const [tg, setTg] = useState(
+    //@ts-ignore
+    user.telegram === undefined ? '' : user.telegram
+  );
+
+  const handlerClickChange = async () => {
     if (!isChanging) setIsChanging(true);
-    else setIsChanging(false);
+    else {
+      setIsChanging(false);
+      const dto: TUpdateUserDto = {
+        email: email,
+        // @ts-ignore
+        firstName: user.firstName,
+        // @ts-ignore
+        lastName: user.lastName,
+        // @ts-ignore
+        profilePictureUrl: user.profilePictureUrl,
+      }
+      // @ts-ignore
+      await dispatch(updateUserInfo({userDto: dto, userId: user.userId}));
+      openModal('Не забудь подтвердить свой телеграмм');
+    }
   };
+
+  const openModal = (text: string) => {
+    setText(text);
+    setOpened(true);
+  };
+
+  const closeModal = useCallback(() => {
+    setOpened(false);
+  }, []);
+
   const buttonTheme = ThemeFactory.create({
     btnBorderRadiusSmall: `10px`,
     btnDefaultTextColor: `rgba(163, 163, 163, 1)`,
@@ -37,6 +74,7 @@ export const UserInfo: FC = () => {
 
   return (
     <div className={style.wrapper}>
+      <TGModal text={text} opened={opened} close={closeModal} />
       <section className={style.form}>
         <section className={style.user}>
           <img
@@ -87,28 +125,40 @@ export const UserInfo: FC = () => {
                           className={style.input}
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
+                          placeholder={'email'}
                         />
                         <input
                           className={style.input}
                           value={tg}
                           onChange={(e) => setTg(e.target.value)}
+                          placeholder={'telegram'}
                         />
                       </>
                     ) : (
                       <>
                         <div className={style.title}>{email}</div>
                         <div className={style.title}>{tg}</div>
+                        <button
+                          className={style.hint}
+                          onClick={() => openModal('Подтверди свой телеграм')}>
+                          ?
+                        </button>
                       </>
                     )}
                   </div>
                 </div>
                 <span className={style.name}>
                   Увлечение
-                  <button className={style.change} onClick={() => navigator('/user/tags')}/>
+                  <button
+                    className={style.change}
+                    onClick={() => navigator('/user/tags')}
+                  />
                 </span>
                 <div className={style.forTags}>
-                {/*@ts-ignore*/}
-                {user.tag && user.tag.map(t => <UserTags name={t} key={t}/>)}
+                  {/*@ts-ignore*/}
+                  {user.tag &&
+                    //@ts-ignore
+                    user.tag.map((t) => <UserTags name={t} key={t} />)}
                 </div>
               </Gapped>
             ) : (

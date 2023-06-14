@@ -8,14 +8,16 @@ import {useAppSelector} from "../../hooks";
 
 type Props = {
   groups: TGroupShort[];
+  setFilter: any;
+  isAllGroup: any;
 };
 
-export const GroupTable: FC<Props> = ({ groups }) => {
+export const GroupTable: FC<Props> = ({ groups, setFilter, isAllGroup }) => {
   const { user } = useAppSelector((state) => state);
   const navigate = useNavigate();
   const [copyData] = useState(groups);
   const [group, setGroups] = useState(groups);
-  const [isBtnAllGroupUse, setIsBtnAllGroupUse] = useState(true);
+  const [isBtnAllGroupUse, setIsBtnAllGroupUse] = useState(isAllGroup);
   const handlerCreateGroup = useCallback(() => navigate('/create'), []);
   const themeAllGroups = ThemeFactory.create({
     btnBorderRadiusSmall: `10px`,
@@ -57,13 +59,13 @@ export const GroupTable: FC<Props> = ({ groups }) => {
               <ThemeContext.Provider value={themeAllGroups}>
                 <Button
                   use={isBtnAllGroupUse ? 'pay' : 'default'}
-                  onClick={() => setIsBtnAllGroupUse(true)}
+                  onClick={() => {setIsBtnAllGroupUse(true); setFilter(true); }}
                   className={style.all_groups}>
                   Все группы
                 </Button>
                 <Button
                   use={!isBtnAllGroupUse ? 'pay' : 'default'}
-                  onClick={() => setIsBtnAllGroupUse(false)}>
+                  onClick={() => {setIsBtnAllGroupUse(false); setFilter(false); }}>
                   Управляемые
                 </Button>
               </ThemeContext.Provider>
