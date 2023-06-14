@@ -13,4 +13,5 @@ export type TUpdateUserDto = {
 	firstName: string,
 	lastName: string,
 	profilePictureUrl: string,
+	telegram: string,
 }

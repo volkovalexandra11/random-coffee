@@ -163,9 +163,10 @@ export const updateUserInfo = createAsyncThunk<void, TUpdateUserArgs, {
     state: State,
     extra: AxiosInstance
 }>(
-    '/user/info',
-    async ({ userDto, userId }, { dispatch, extra: api }) => {
-        const { data } = await api.put<TUser>(`/api/users/${userId}`, userDto);
+    'user/updateInfo',
+    async ({ userDto, userId }, { dispatch, getState, extra: api }) => {
+        await api.put<TUser>(`/api/users/${userId}`, userDto);
+        const { data } = await api.get<TUser>(`/api/users/${userId}`);
         dispatch(setUser({ user: data }));
     }
 )

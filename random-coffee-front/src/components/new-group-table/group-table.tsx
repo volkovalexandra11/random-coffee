@@ -92,7 +92,7 @@ export const GroupTable: FC<Props> = ({ groups, setFilter, isAllGroup }) => {
         <section className={style.info}>
           <h2 className={style.header}>Рекомендуемый <span className={style.font}>кофе</span></h2>
           {/*// @ts-ignore*/}
-          {user.tag.length === 0 ?
+          {user && user.tag && user.tag.length === 0 ?
               <div>
                 Выбери увлечения в профиле, и здесь появится что-то интересное
               </div>

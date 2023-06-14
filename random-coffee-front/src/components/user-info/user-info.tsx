@@ -44,6 +44,7 @@ export const UserInfo: FC = () => {
         lastName: user.lastName,
         // @ts-ignore
         profilePictureUrl: user.profilePictureUrl,
+        telegram: tg,
       }
       // @ts-ignore
       await dispatch(updateUserInfo({userDto: dto, userId: user.userId}));
