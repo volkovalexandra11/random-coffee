@@ -20,7 +20,7 @@ public class Group
             ["group_id"] = GroupId.ToYdb(),
             ["admin_user_id"] = AdminUserId.ToYdb(),
             ["name"] = Name.ToYdb(),
-            ["tag"] = Tag.ToYdb(),
+            ["tag"] = "Tag".ToYdb(),
             ["is_private"] = YdbValue.MakeInt32(IsPrivate ? 1 : 0),
             ["group_picture_url"] = YdbValue.MakeUtf8(GroupPictureUrl ?? ""),
             ["description"] = YdbValue.MakeUtf8(GroupDescription ?? "")
